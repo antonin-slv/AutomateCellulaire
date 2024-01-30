@@ -1,6 +1,6 @@
 public class Moteur {
     private Automate automate;
-    private Grille grille;
+    private Grid grid;
 
     public void update() {
         //Todo : update the grid
