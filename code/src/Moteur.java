@@ -12,6 +12,12 @@ public class Moteur {
 
     public void update() {
         //Todo : update the grid
+        
+        Grid grid_temp = new Grille()
+        int[][] voisin = this.automate.getCoordsVoisinage()
+        for(int i; i < grid_temp.getLenGrid(); i++){
+            // on a les voisin et le numero de la case à évaluer
+        }
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
