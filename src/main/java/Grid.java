@@ -14,6 +14,14 @@ public class Grid {
         this.size = size;
         this.grid = grid;
     }
+
+    public int getDim() {
+        return dim;
+    }
+
+    public int getSize() {
+        return size;
+    }
     
     public int getCase(int[] coords) {
         int indice = coordToInt(coords, size);

@@ -1,19 +1,13 @@
-package code.src;
-
 import java.util.Map;
-import java.io.*;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.*;
 
 
 public class Automate {
     private int dim;
     private int[] Q;
-    private Map<Integer,Map<String, Map<String,Integer>>> rules;
+    private Map<Integer, Map<String, Map<String, Integer>>> rules;
     private int[][] voisinage;
 
-    public Automate(int dim, int[] Q, Map<Integer,Map<String, Map<String,Integer>>> rules, int[][] voisinage) {
+    public Automate(int dim, int[] Q, Map<Integer, Map<String, Map<String, Integer>>> rules, int[][] voisinage) {
         this.dim = dim;
         this.Q = Q;
         this.rules = rules;
@@ -34,7 +28,7 @@ public class Automate {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    public int[] getCoordsVoisinage() {
+    public int[][] getCoordsVoisinage() {
         //Todo : get the neighborhood of the cell at the given coordinates
         throw new UnsupportedOperationException("Not implemented yet");
     }
