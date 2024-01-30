@@ -1,4 +1,9 @@
 import java.util.Map;
+import java.io.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
+
 
 public class Automate {
     private int dim;
@@ -11,6 +16,15 @@ public class Automate {
         this.Q = Q;
         this.rules = rules;
         this.voisinage = voisinage;
+    }
+
+    public Automate(String rules_path) {
+        //Todo : read the rules from the file
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    public int getDim() {
+        return dim;
     }
 
     public int sigma(int[] voisinage, int etat) {
