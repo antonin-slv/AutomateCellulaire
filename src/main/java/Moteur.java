@@ -1,11 +1,12 @@
+import java.io.IOException;
 
 public class Moteur {
     private Automate automate;
     private Grid grid;
 
-    public Moteur(String rules_path) {
+    public Moteur(String rulesPath) throws IOException {
 
-        this.automate = new Automate(rules_path);
+        this.automate = Automate.fromJson(rulesPath);
         this.grid = new Grid(automate.getDim(), 20);
     }
 

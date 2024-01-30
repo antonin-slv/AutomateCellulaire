@@ -1,26 +1,36 @@
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
-
 public class Automate {
-    private int dim;
-    private int[] Q;
-    private Map<Integer, Map<String, Map<String, Integer>>> rules;
-    private int[][] voisinage;
+    private static final Gson GSON = new Gson();
 
-    public Automate(int dim, int[] Q, Map<Integer, Map<String, Map<String, Integer>>> rules, int[][] voisinage) {
-        this.dim = dim;
-        this.Q = Q;
-        this.rules = rules;
+    public int dimension;
+    public List<String> alphabet;
+    public int[][] voisinage;
+    public EnumMap<GameRule, List<Map<String, Integer>>> regle;
+
+    public Automate(int dimension, List<String> alphabet, int[][] voisinage, EnumMap<GameRule, List<Map<String, Integer>>> regle) {
+        this.dimension = dimension;
+        this.alphabet = alphabet;
         this.voisinage = voisinage;
+        this.regle = regle;
     }
 
-    public Automate(String rules_path) {
-        //Todo : read the rules from the file
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static Automate fromJson(String rulesPath) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(rulesPath))) {
+            return GSON.fromJson(reader, Automate.class);
+        }
     }
 
     public int getDim() {
-        return dim;
+        return this.dimension;
     }
 
     public int sigma(int[] voisinage, int etat) {
@@ -31,5 +41,9 @@ public class Automate {
     public int[][] getCoordsVoisinage() {
         //Todo : get the neighborhood of the cell at the given coordinates
         throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    public enum GameRule {
+        @SerializedName("somme") SOMME,
     }
 }

@@ -2,7 +2,6 @@ plugins {
     id "java"
 }
 
-
 version = "1.0.0"
 
 repositories {
@@ -11,4 +10,9 @@ repositories {
 
 dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
