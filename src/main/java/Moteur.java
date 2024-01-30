@@ -1,13 +1,12 @@
 import java.io.IOException;
 
 public class Moteur {
-    private Automate automate;
-    private Grid grid;
+    private final Automate automate;
+    private final Grid grid;
 
     public Moteur(String rulesPath) throws IOException {
-
         this.automate = Automate.fromJson(rulesPath);
-        this.grid = new Grid(automate.getDim(), 20);
+        this.grid = new Grid(automate.getDimension(), 20);
     }
 
     public void update() {
