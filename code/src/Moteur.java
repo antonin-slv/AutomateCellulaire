@@ -1,3 +1,5 @@
+package code.src;
+
 public class Moteur {
     private Automate automate;
     private Grid grid;
