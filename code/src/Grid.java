@@ -14,6 +14,7 @@ public class Grid {
         this.size = size;
         this.grid = grid;
     }
+    
     public int getCase(int[] coords) {
         int indice = coordToInt(coords, size);
         return grid[indice];
@@ -24,6 +25,10 @@ public class Grid {
         grid[indice] = value;
     }
 
+    public int getLenGrid(){
+        return this.grid.length;
+    }
+    
     public int[] getEtatVoisinage(int[][] coordsVoisinage) {
         int[] etatVoisinage = new int[coordsVoisinage.length];
         for (int i = 0; i < coordsVoisinage.length; i++) {
