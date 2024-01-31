@@ -6,22 +6,26 @@ public class Moteur {
 
     public Moteur(String rulesPath) throws IOException {
         this.automate = Automate.fromJson(rulesPath);
-        this.grid = new Grid(automate.getDimension(), 20);
+        this.grid = new Grid(automate.getDimension(), 3);
     }
 
     public void update() {
-        //Todo : update the grid
-        
+
+        //grid_temp est la grille temporaire qui va être remplie
         Grid grid_temp = new Grid(this.grid.getDim(), this.grid.getSize());
-        int[][] voisin = this.automate.getCoordsVoisinage();
+
+        //voisin est le voisinage relatif de l'automate
+        int[][] voisin = this.automate.getVoisinage();
+
+        //pour chaque cellule de la grille
         for(int i = 0 ; i < grid_temp.getLenGrid(); i++){
-            // on a les voisin et le numero de la case à évaluer
+
+            int[] etatVoisin = this.grid.getEtatVoisinage(voisin, i);
+
         }
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void print() {
-        //Todo : print the grid
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.grid.print();
     }
 }

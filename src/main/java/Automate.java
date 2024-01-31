@@ -64,11 +64,6 @@ public class Automate {
         throw new UnsupportedOperationException("We didn't set that yet");
     }
 
-    public int[][] getCoordsVoisinage() {
-        //Todo : get the neighborhood of the cell at the given coordinates
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
     public enum GameRule {
         @SerializedName("somme") SOMME,
     }
