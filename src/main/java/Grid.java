@@ -1,16 +1,12 @@
 import lombok.Getter;
 import lombok.Setter;
-
+@Getter
+@Setter
 public class Grid {
-    @Getter
-    private int dim;
-    @Getter
-    @Setter
+    private final int dim;
     private int[] grid;
-    @Getter
-    private int size;
-    @Getter
-    private boolean cycle = false;
+    private final int size;
+    private final boolean cycle = true;
 
     public Grid(int dim, int size) {
         this.dim = dim;
@@ -25,20 +21,20 @@ public class Grid {
     }
 
     public int getCase(int[] coords) {
-        int indice = coordToInt(coords);
-        if(indice == -1)
+        int index = coordToInt(coords);
+        if(index == -1)
             return 0;
-
-        return grid[indice];
+        
+        return grid[index];
     }
 
     public void setCase(int[] coords, int value) {
-        int indice = coordToInt(coords);
-        grid[indice] = value;
+        int index = coordToInt(coords);
+        grid[index] = value;
     }
 
-    public void setCase(int indice, int value) {
-        grid[indice] = value;
+    public void setCase(int index, int value) {
+        grid[index] = value;
     }
 
     public int getLenGrid(){
@@ -47,7 +43,7 @@ public class Grid {
 
     /**
      * @param coordsVoisinageRelatif : tableau des coordonnées relatives des voisins
-     * @param pos : position de la cellule dans la grille (indice int)
+     * @param pos : position de la cellule dans la grille (index int)
      * @return tableau des états des voisins
      */
     public int[] getEtatVoisinage(int[][] coordsVoisinageRelatif, int pos) {
@@ -70,7 +66,7 @@ public class Grid {
     }
 
     public int coordToInt(int[] coords) {
-        int indice = 0;
+        int index = 0;
         for (int i = 0; i < coords.length; i++) {
             if (coords[i] < 0 || coords[i] >= this.size) {
                 if(this.cycle){
@@ -80,9 +76,9 @@ public class Grid {
                     return -1;
                 }
             }
-            indice += (int) (coords[i] * Math.pow(this.size,coords.length -1 -i));
+            index += (int) (coords[i] * Math.pow(this.size,coords.length -1 -i));
         }
-        return indice;
+        return index;
     }
 
     public  int [] intToCoord(int number) {
@@ -104,6 +100,18 @@ public class Grid {
                 System.out.println();
         }
         System.out.println();
+    }
+
+    /**
+     * Print the grid in a 2D hexagonal shape
+     */
+    public void printHexa2D(){
+        for (int i = 0; i < grid.length; i++) {
+            System.out.print(grid[i] + " ");
+
+        }
+        System.out.println();
+
     }
 }
 

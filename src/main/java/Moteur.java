@@ -28,9 +28,7 @@ public class Moteur {
         for(int i = 0 ; i < grid_temp.getLenGrid(); i++){
 
             int[] etatVoisinage = this.grid.getEtatVoisinage(voisin, i);
-            int etatCase = etatVoisinage[0];
-            etatVoisinage[0] = 0;
-            int newEtat = this.automate.sigma(etatVoisinage, etatCase);
+            int newEtat = this.automate.sigma(etatVoisinage);
             grid_temp.setCase(i, newEtat);
         }
 

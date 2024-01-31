@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -29,17 +30,14 @@ public class Automate {
     /** !!!!!à tester un jour étonnamment.
      * Une fonction qui calcule le prochain état d'une cellule en fonction de celui de ses voisins et d'elle même
      * @param voisinage : Tableau contenant l'état des cellules voisines
-     * @param etat : Etat de la cellule
      * @return : Etat de la cellule à l'étape suivante
      */
-    public int sigma(int[] voisinage, int etat) {
+    public int sigma(int[] voisinage) {
         for (Map.Entry<GameRule, List<Map<String, Integer>>> gameRuleList : regle.entrySet()) {
             //on règle le cas de la somme
             if (gameRuleList.getKey() == GameRule.SOMME) {
-                int somme = 0;
-                for (int j : voisinage) {
-                    somme += j;
-                }
+                int etat = voisinage[0];
+                int somme = Arrays.stream(voisinage).skip(1).sum();
 
                 //on récupère la éta-ième règle de la somme (il y a autant de règle que d'état différent)
                 //on vérifie que état est bien une clef
@@ -58,7 +56,6 @@ public class Automate {
                         return miniRules.get(clef);
                     }
                 }
-
             }
         }
         throw new UnsupportedOperationException("We didn't set that yet");
