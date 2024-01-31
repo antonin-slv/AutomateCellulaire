@@ -10,14 +10,13 @@ public class Moteur {
     }
 
     public void initGrid(int[][] tab){
-        for (int i = 0; i < tab.length; i++) {
-            this.grid.setCase(tab[i][0], tab[i][1]);
+        for (int[] ints : tab) {
+            this.grid.setCase(ints[0], ints[1]);
         }
     }
 
     public void update() {
 
-        System.out.println("update");
         //grid_temp est la grille temporaire qui va être remplie
         Grid grid_temp = new Grid(this.grid.getDim(), this.grid.getSize());
 

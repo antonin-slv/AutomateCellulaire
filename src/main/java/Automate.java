@@ -57,11 +57,18 @@ public class Automate {
                     }
                 }
             }
+            if(gameRuleList.getKey() == GameRule.TABLE) {
+                Map<String, Integer> miniRules;
+                miniRules = gameRuleList.getValue().get(0);
+                String choix = "" + voisinage[0] + voisinage[1] + voisinage[2];
+                return miniRules.get(choix);
+            }
         }
         throw new UnsupportedOperationException("We didn't set that yet");
     }
 
     public enum GameRule {
         @SerializedName("somme") SOMME,
+        @SerializedName("table") TABLE,
     }
 }

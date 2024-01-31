@@ -3,9 +3,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Grid {
+    ///dim : dimension de la grille (1D, 2D, 3D, ...)
     private final int dim;
+    ///grid : tableau des états des cellules
     private int[] grid;
+    ///size : taille de la grille (taille d'un côté)
     private final int size;
+    ///cycle : true si la grille est cyclique, false sinon
     private final boolean cycle = true;
 
     public Grid(int dim, int size) {
@@ -94,11 +98,30 @@ public class Grid {
     }
 
     public void print2D() {
-        for (int i = 0; i < grid.length; i++) {
+        if(this.dim == 2) {
+            for (int i = 0; i < grid.length; i++) {
             System.out.print(grid[i] + " ");
             if((i + 1) % size == 0)
                 System.out.println();
+            }
         }
+        else if(this.dim == 1) {
+
+            for (int j : grid) {
+                if (j == 0){
+                    System.out.print(" ");
+                }
+                else
+                    System.out.print(j);
+            }
+            System.out.println();
+        }
+        else
+            System.out.println("Dimension non prise en charge");
+
+
+        if(this.dim == 1)
+            return;
         System.out.println();
     }
 
@@ -106,9 +129,17 @@ public class Grid {
      * Print the grid in a 2D hexagonal shape
      */
     public void printHexa2D(){
-        for (int i = 0; i < grid.length; i++) {
-            System.out.print(grid[i] + " ");
+        for (int i = 0; i < this.size; i++) {
+            if(i % 2 == 1)
+                System.out.print(" ");
 
+            for(int j = this.size - (i/2) ; j < this.size; j++){
+                System.out.print(this.grid[i * this.size + j] + " ");
+            }
+            for (int j = 0; j < this.size - (i/2) ;j++){
+                System.out.print(this.grid[i * this.size + j] + " ");
+            }
+            System.out.println();
         }
         System.out.println();
 
