@@ -1,8 +1,11 @@
 import lombok.Getter;
+import lombok.Setter;
 
 public class Grid {
     @Getter
     private int dim;
+    @Getter
+    @Setter
     private int[] grid;
     @Getter
     private int size;
@@ -34,6 +37,10 @@ public class Grid {
         grid[indice] = value;
     }
 
+    public void setCase(int indice, int value) {
+        grid[indice] = value;
+    }
+
     public int getLenGrid(){
         return this.grid.length;
     }
@@ -46,13 +53,6 @@ public class Grid {
     public int[] getEtatVoisinage(int[][] coordsVoisinageRelatif, int pos) {
 
         int[] position = intToCoord(pos);
-
-                            System.out.println("Position : ");
-                            for (int i = 0; i < position.length; i++) { /////PRINNNNTTT
-                                System.out.print(position[i] + " ");
-                            }
-                            System.out.println();
-
         int[][] coordsVoisinage = new int[coordsVoisinageRelatif.length][coordsVoisinageRelatif[0].length];
 
         for (int i = 0; i < coordsVoisinageRelatif.length; i++) {
@@ -80,7 +80,7 @@ public class Grid {
                     return -1;
                 }
             }
-            indice += (int) (coords[i] * Math.pow(this.size, i));
+            indice += (int) (coords[i] * Math.pow(this.size,coords.length -1 -i));
         }
         return indice;
     }
@@ -97,12 +97,13 @@ public class Grid {
         return truc;
     }
 
-    public void print() {
+    public void print2D() {
         for (int i = 0; i < grid.length; i++) {
             System.out.print(grid[i] + " ");
             if((i + 1) % size == 0)
                 System.out.println();
         }
+        System.out.println();
     }
 }
 
