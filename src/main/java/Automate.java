@@ -26,9 +26,42 @@ public class Automate {
         }
     }
 
+    /** !!!!!à tester un jour étonnamment.
+     * Une fonction qui calcule le prochain état d'une cellule en fonction de celui de ses voisins et d'elle même
+     * @param voisinage : Tableau contenant l'état des cellules voisines
+     * @param etat : Etat de la cellule
+     * @return : Etat de la cellule à l'étape suivante
+     */
     public int sigma(int[] voisinage, int etat) {
-        //Todo : get the next state of the cell at the given coordinates
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (Map.Entry<GameRule, List<Map<String, Integer>>> gameRuleList : regle.entrySet()) {
+            //on règle le cas de la somme
+            if (gameRuleList.getKey() == GameRule.SOMME) {
+                int somme = 0;
+                for (int j : voisinage) {
+                    somme += j;
+                }
+
+                //on récupère la éta-ième règle de la somme (il y a autant de règle que d'état différent)
+                //on vérifie que état est bien une clef
+
+                Map<String, Integer> miniRules;
+                if (etat >= gameRuleList.getValue().size()){
+                    //si on a pas de règle pour cet état, on prend la règle de l'état 0 (par défaut)
+                    miniRules = gameRuleList.getValue().get(0);
+                }
+                else miniRules = gameRuleList.getValue().get(etat);
+                //SOMME est fait pour marcher avec un état binaire. Si on a plus d'état, ça casse.
+                for (String clef : miniRules.keySet()) {
+                    int min = Integer.parseInt(clef.split(":")[0]);
+                    int max = Integer.parseInt(clef.split(":")[1]);
+                    if (somme >= min && somme <= max) {
+                        return miniRules.get(clef);
+                    }
+                }
+
+            }
+        }
+        throw new UnsupportedOperationException("We didn't set that yet");
     }
 
     public int[][] getCoordsVoisinage() {
