@@ -17,7 +17,7 @@ public class MajRule implements GameRule {
 
             tab.merge(voisin, 1, Integer::sum);
         }
-
+        int retour = tab.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(-1);
         return tab.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(-1);
     }
 }

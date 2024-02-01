@@ -45,6 +45,10 @@ public class Moteur {
         this.grid.randomize(alphabetSize);
     }
 
+    public int getEtat(int[] coords){
+        return this.grid.getCase(coords);
+    }
+
     public void print() {
         this.grid.print2D();
     }

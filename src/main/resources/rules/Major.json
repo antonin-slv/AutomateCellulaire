@@ -1,6 +1,6 @@
 {
   "dimension" : 2,
-  "alphabet": ["Mort", "Vivant"],
+  "alphabet": ["Mort", "Vivant", "Autre"],
   "voisinage": [[0,0],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1]],
   "regle": {
     "name": "majority"

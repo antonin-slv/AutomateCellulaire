@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="650.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GameController">
+
+    <!--Grid-->
+    <GridPane fx:id="gridPane" prefHeight="600.0" prefWidth="600.0" />
+    <HBox prefHeight="50.0" prefWidth="600.0">
+        <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="148.0">
+                <children>
+                    <Button mnemonicParsing="false" text="Retour">
+                        <HBox.margin>
+                            <Insets left="12.0" />
+                        </HBox.margin>
+                    </Button>
+                </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="173.0">
+                <children>
+                    <Button mnemonicParsing="false" text="PLAY" />
+                    <Button mnemonicParsing="false" text="PAUSE" />
+                    <Button fx:id="btn_update_once" mnemonicParsing="false" text="&gt;" />
+                </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="280.0">
+                <children>
+                    <Label text="Speed">
+                        <HBox.margin>
+                            <Insets right="10.0" />
+                        </HBox.margin>
+                    </Label>
+                    <Slider prefHeight="14.0" prefWidth="171.0" />
+                </children>
+            </HBox>
+        </children>
+    </HBox>
+</VBox>
