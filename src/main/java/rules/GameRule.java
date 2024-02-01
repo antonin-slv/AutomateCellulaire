@@ -1,8 +1,6 @@
 package rules;
 
-import java.util.List;
-
 @FunctionalInterface
 public interface GameRule {
-    int apply(List<String> alphabet, int[] voisinage);
+    int apply(int alphabetSize, int[] voisinage);
 }

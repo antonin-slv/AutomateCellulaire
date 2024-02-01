@@ -3,7 +3,6 @@
   "alphabet": ["Mort", "Vivant"],
   "voisinage": [[0,0],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1]],
   "regle": {
-    "name": "majority",
-    "weightNeighbour": [0,1,1,1,1,1,1,1,1]
+    "name": "majority"
   }
 }

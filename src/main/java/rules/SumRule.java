@@ -13,7 +13,7 @@ public class SumRule implements GameRule {
     private List<Double> weightNeighbour;
 
     @Override
-    public int apply(List<String> alphabet, int[] voisinage) {
+    public int apply(int alphabetSize, int[] voisinage) {
         int etat = voisinage[0];
 
         double somme = IntStream.range(0, voisinage.length)
@@ -23,7 +23,7 @@ public class SumRule implements GameRule {
         //on récupère la éta-ième règle de la somme (il y a autant de règle que d'état différent)
         //on vérifie que état est bien une clef
 
-        if (etat >= alphabet.size())//si on a pas de règle pour cet état, on crash !
+        if (etat >= alphabetSize)//si on a pas de règle pour cet état, on crash !
             throw new UnsupportedOperationException("état non défini");
 
         Map<String, List<Double>> miniRules = tab.get(etat);
@@ -34,7 +34,7 @@ public class SumRule implements GameRule {
                 double rand = Math.random();
 
                 double sum = 0.0;
-                for (int i = 0; i < alphabet.size(); i++) {
+                for (int i = 0; i < alphabetSize; i++) {
                     sum += proba.get(i);
                     if (rand <= sum) {
                         return i;
