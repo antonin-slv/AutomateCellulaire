@@ -1,3 +1,5 @@
+package core;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -9,7 +11,6 @@ import javafx.stage.Stage;
 import rules.GameRule;
 import rules.RuleDeserializer;
 
-import javax.tools.SimpleJavaFileObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -33,7 +34,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("javafx/scene.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../javafx/scene.fxml"));
 
         Scene scene = new Scene(root);
         // scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());

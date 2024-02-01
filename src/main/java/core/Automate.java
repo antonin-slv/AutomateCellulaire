@@ -1,3 +1,5 @@
+package core;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import rules.GameRule;
