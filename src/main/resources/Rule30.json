@@ -1,22 +1,10 @@
 {
   "dimension": 1,
-  "alphabet": [
-    "Mort",
-    "Vivant"
-  ],
-  "voisinage": [
-    [
-      -1
-    ],
-    [
-      0
-    ],
-    [
-      1
-    ]
-  ],
+  "alphabet": ["Mort","Vivant"],
+  "voisinage": [[-1],[0],[1]],
   "regle": {
-    "table": {
+    "name": "table",
+    "tab": {
       "111": 0,
       "110": 0,
       "101": 0,
