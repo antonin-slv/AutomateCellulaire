@@ -1,6 +1,9 @@
 plugins {
     id "java"
+    id "application"
+
     id "io.freefair.lombok" version "8.4"
+    id "org.openjfx.javafxplugin" version "0.1.0"
 }
 
 version = "1.0.0"
@@ -17,3 +20,10 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
+
+javafx {
+    version = "17"
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+mainClassName = "Main"
