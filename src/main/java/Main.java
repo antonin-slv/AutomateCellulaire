@@ -15,7 +15,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         URL rulesPath = Main.class.getClassLoader().getResource("rules/Major.json");
         URL gridPath = Main.class.getClassLoader().getResource("grids/grid1.json");
-        Moteur moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), gridPath.getPath());
+        Moteur moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), 50);
+        moteur.randomizeGrid();
         moteur.print();
 
     }

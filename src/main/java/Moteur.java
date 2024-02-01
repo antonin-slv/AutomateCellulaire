@@ -42,6 +42,11 @@ public class Moteur {
         this.grid.setGrid(grid_temp.getGrid());
     }
 
+    public void randomizeGrid() {
+        int alphabetSize = this.automate.getAlphabet().size();
+        this.grid.randomize(alphabetSize);
+    }
+
     public void print() {
         this.grid.print2D();
     }

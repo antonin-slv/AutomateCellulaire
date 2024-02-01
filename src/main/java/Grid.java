@@ -34,6 +34,7 @@ public class Grid {
         this.grid = grid;
     }
 
+
     public static Grid fromJson(String gridPath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(gridPath))) {
             JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
@@ -66,6 +67,11 @@ public class Grid {
         }
     }
 
+    public void randomize(int alphabetSize) {
+        for (int i = 0; i < grid.length; i++) {
+            grid[i] = (int) (Math.random() * alphabetSize);
+        }
+    }
     public int getCase(int[] coords) {
         int index = coordToInt(coords);
         if(index == -1)
