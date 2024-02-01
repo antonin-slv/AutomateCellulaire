@@ -1,5 +1,15 @@
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 @Getter
 @Setter
 public class Grid {
@@ -22,6 +32,38 @@ public class Grid {
         this.dim = dim;
         this.size = size;
         this.grid = grid;
+    }
+
+    public static Grid fromJson(String gridPath) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(gridPath))) {
+            JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
+            int dim = json.get("dim").getAsInt();
+            int size = json.get("size").getAsInt();
+            JsonArray grid = json.get("grid").getAsJsonArray();
+
+            Stream<JsonElement> stream = grid.asList().stream();
+
+            if (json.get("save") != null) {
+                int[] finalGrid = stream.mapToInt(JsonElement::getAsInt).toArray();
+                if (finalGrid.length != Math.pow(size, dim)) {
+                    throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
+                }
+
+                return new Grid(dim, size, finalGrid);
+            }
+
+            for (int i = 0; i < dim - 1; i++) {
+                stream = stream.flatMap(e -> e.getAsJsonArray().asList().stream());
+            }
+
+            int[] finalGrid = stream.mapToInt(JsonElement::getAsInt).toArray();
+
+            if (finalGrid.length != Math.pow(size, dim)) {
+                throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
+            }
+
+            return new Grid(dim, size, finalGrid);
+        }
     }
 
     public int getCase(int[] coords) {

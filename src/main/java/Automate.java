@@ -14,9 +14,6 @@ import java.util.*;
 @Getter
 @AllArgsConstructor
 public class Automate {
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(new TypeToken<GameRule>() {}.getType(), new RuleDeserializer())
-            .create();
 
     private int dimension;
     private List<String> alphabet;
@@ -25,7 +22,7 @@ public class Automate {
 
     public static Automate fromJson(String rulesPath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(rulesPath))) {
-            return GSON.fromJson(reader, Automate.class);
+            return Main.GSON.fromJson(reader, Automate.class);
         }
     }
 

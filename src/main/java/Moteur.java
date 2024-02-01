@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Moteur {
     private final Automate automate;
@@ -9,6 +13,10 @@ public class Moteur {
         this.grid = new Grid(automate.getDimension(), size);
     }
 
+    public Moteur(String rulesPath, String gridPath) throws IOException {
+        this.automate = Automate.fromJson(rulesPath);
+        this.grid = Grid.fromJson(gridPath);
+    }
     public void initGrid(int[][] tab){
         for (int[] ints : tab) {
             this.grid.setCase(ints[0], ints[1]);
