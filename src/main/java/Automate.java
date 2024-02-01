@@ -6,10 +6,7 @@ import lombok.Getter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @AllArgsConstructor
@@ -19,7 +16,7 @@ public class Automate {
     private int dimension;
     private List<String> alphabet;
     private int[][] voisinage;
-    private EnumMap<GameRule, List<Map<String, Integer>>> regle;
+    private EnumMap<GameRule, Map<String,Object>> regle;
 
     public static Automate fromJson(String rulesPath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(rulesPath))) {
@@ -33,37 +30,61 @@ public class Automate {
      * @return : Etat de la cellule à l'étape suivante
      */
     public int sigma(int[] voisinage) {
-        for (Map.Entry<GameRule, List<Map<String, Integer>>> gameRuleList : regle.entrySet()) {
-            //on règle le cas de la somme
-            if (gameRuleList.getKey() == GameRule.SOMME) {
-                int etat = voisinage[0];
-                int somme = Arrays.stream(voisinage).skip(1).sum();
+        //on règle le cas de la somme
+        // {"filtre": [{"filtre": [0,0,1,0]}]} on accède à la règle de la somme
+        if (regle.containsKey(GameRule.SOMME)) {
+            List<Map <String, List<Double>>> gameRuletab;
+            List<Double> weight;
+            try{
+                //on récupère la règle de la somme
+                gameRuletab = (List<Map<String, List<Double>>>) regle.get(GameRule.SOMME).get("tab");
+                //on récupère la liste des poids
+                weight = (List<Double>) regle.get(GameRule.SOMME).get("weight");
+            }
+            catch (ClassCastException e){
+                throw new UnsupportedOperationException("json mal formé");
+            }
 
-                //on récupère la éta-ième règle de la somme (il y a autant de règle que d'état différent)
-                //on vérifie que état est bien une clef
+            int etat = voisinage[0];
+            double somme = 0.0;
 
-                Map<String, Integer> miniRules;
-                if (etat >= gameRuleList.getValue().size()){
-                    //si on a pas de règle pour cet état, on prend la règle de l'état 0 (par défaut)
-                    miniRules = gameRuleList.getValue().get(0);
-                }
-                else miniRules = gameRuleList.getValue().get(etat);
-                //SOMME est fait pour marcher avec un état binaire. Si on a plus d'état, ça casse.
-                for (String clef : miniRules.keySet()) {
-                    int min = Integer.parseInt(clef.split(":")[0]);
-                    int max = Integer.parseInt(clef.split(":")[1]);
-                    if (somme >= min && somme <= max) {
-                        return miniRules.get(clef);
+            for (int i : voisinage) {
+                somme = weight.get(i) + somme;
+            }
+
+            //on récupère la éta-ième règle de la somme (il y a autant de règle que d'état différent)
+            //on vérifie que état est bien une clef
+
+            if (etat >= alphabet.size())//si on a pas de règle pour cet état, on crash !
+                throw new UnsupportedOperationException("état non défini");
+
+            Map<String, List<Double>> miniRules = gameRuletab.get(etat);
+            List<Double> proba;
+            //SOMME est fait pour marcher avec un état binaire. Si on a plus d'état, ça casse.
+            for (String clef : miniRules.keySet()) {
+                int min = Integer.parseInt(clef.split(":")[0]);
+                int max = Integer.parseInt(clef.split(":")[1]);
+                if (somme >= min && somme <= max) {
+
+                    proba = miniRules.get(clef);
+                    float rand = new Random().nextFloat();
+
+                    double sum = 0.0;
+                    for(int i = 0; i < this.alphabet.size(); i++){
+                        sum += proba.get(i);
+                        if(rand <= sum){
+                            return i;
+                        }
                     }
                 }
             }
-            if(gameRuleList.getKey() == GameRule.TABLE) {
-                Map<String, Integer> miniRules;
-                miniRules = gameRuleList.getValue().get(0);
-                String choix = "" + voisinage[0] + voisinage[1] + voisinage[2];
-                return miniRules.get(choix);
-            }
+
+            throw new UnsupportedOperationException("état non défini");
         }
+        // pour toi mon léo bébou-san
+        if(regle.containsKey(GameRule.TABLE)) return (int)java.lang.Math.round((Double)regle.get(GameRule.TABLE).get("" + voisinage[0] + voisinage[1] + voisinage[2]));
+
+
         throw new UnsupportedOperationException("We didn't set that yet");
     }
 
