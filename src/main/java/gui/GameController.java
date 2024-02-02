@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -47,7 +48,7 @@ import java.util.stream.Stream;
 public class GameController implements Initializable {
 
     Moteur moteur ;
-    private int gridSize = 10;
+    private int gridSize = 150;
     private Rectangle[][] cells = new Rectangle[gridSize][gridSize];
     private Polygon[][] hexaCells = new Polygon[gridSize][gridSize];
     private String[] colors;
@@ -64,10 +65,16 @@ public class GameController implements Initializable {
     private Button btn_play;
 
     @FXML
+    private Button btn_pause;
+
+    @FXML
     private Button btn_retour;
 
     @FXML
     private ComboBox<String> cmb_colors;
+
+    @FXML
+    private Slider speedSlider;
 
     public int gameSpeed = 100;
 
@@ -86,6 +93,15 @@ public class GameController implements Initializable {
             e.printStackTrace();
             System.exit(1);
         }
+
+        speedSlider.setMin(50);
+        speedSlider.setMax(500);
+        speedSlider.setValue(500 - gameSpeed + 50);
+
+        speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            gameSpeed = (int) (speedSlider.getMax() - (int) newValue.doubleValue() + speedSlider.getMin());
+            initializeTimeline(gameSpeed);
+        });
 
         this.gameRunning = new SimpleBooleanProperty();
         this.gameRunning.set(false);
@@ -113,6 +129,11 @@ public class GameController implements Initializable {
 
         btn_play.setOnAction(event -> {
             this.play();
+        });
+
+        btn_pause.setOnAction(event -> {
+            gameRunning.set(false);
+            timeLine.pause();
         });
 
         btn_retour.setOnAction(event -> {
@@ -220,7 +241,6 @@ public class GameController implements Initializable {
             etat = Arrays.asList(this.colors).indexOf(selectedColor);
         }
         this.moteur.setEtat(new int[]{(int) row, (int) col}, etat);
-        pane.getChildren().clear();
         displayPane();
     }
     private void initPaneHexa(){
