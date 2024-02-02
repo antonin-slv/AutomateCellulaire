@@ -158,7 +158,11 @@ public class GameController implements Initializable {
     }
     private void displayPaneHexa(){
 
-        int cellSize = 650/gridSize;
+        double cos30 = Math.sqrt(3)/2;
+        double INVcos30 = 1/cos30
+        double cellSize = 650.0/gridSize;
+        double dy = cellSize*(1-cos30);
+
 
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
@@ -168,14 +172,14 @@ public class GameController implements Initializable {
                 } else {
                     tile.setLayoutX(i*cellSize);
                 }
-                tile.setLayoutY(j*cellSize+cellSize/2);
+                tile.setLayoutY(j*(cellSize-dy)+cellSize/2);
                 tile.getPoints().addAll(new Double[]{
-                        0.0, 0.0 - cellSize/2,
-                        0.0 - cellSize/2*Math.sqrt(3)/2, 0.0-cellSize/4,
-                        0.0 - cellSize/2*Math.sqrt(3)/2, 0.0+cellSize/4,
-                        0.0, 0.0 + cellSize/2,
-                        0.0 + cellSize/2*Math.sqrt(3)/2, 0.0+cellSize/4,
-                        0.0 + cellSize/2*Math.sqrt(3)/2, 0.0-cellSize/4
+                        0.0, 0.0 - cellSize/2*INVcos30,
+                        0.0 - cellSize/2, 0.0-cellSize/4*INVcos30,
+                        0.0 - cellSize/2, 0.0+cellSize/4*INVcos30,
+                        0.0, 0.0 + cellSize/2*INVcos30,
+                        0.0 + cellSize/2, 0.0+cellSize/4*INVcos30,
+                        0.0 + cellSize/2, 0.0-cellSize/4*INVcos30
                 });
                 int etat = this.moteur.getEtat(new int[]{j, i-j/2%gridSize});
                 if (etat >= this.colors.length){
@@ -196,7 +200,7 @@ public class GameController implements Initializable {
     private void changeStatePolygon(javafx.scene.input.MouseEvent event){
         Polygon tile = (Polygon) event.getSource();
         int x = (int) (tile.getLayoutX() / (650/gridSize));
-        int y = (int) (tile.getLayoutY() / (650/gridSize));
+        int y = (int) (tile.getLayoutY() / (650/gridSize * (Math.sqrt(3)/2)));
         int etat = this.moteur.getEtat(new int[]{y, x-y/2%gridSize});
         if (selectedColor != null){
             etat = Arrays.asList(this.colors).indexOf(selectedColor);
