@@ -49,6 +49,10 @@ public class Moteur {
         return this.grid.getCase(coords);
     }
 
+    public void setEtat(int[] coords, int value){
+        this.grid.setCase(coords, value);
+    }
+
     public void print() {
         this.grid.print2D();
     }
