@@ -159,7 +159,7 @@ public class GameController implements Initializable {
     private void displayPaneHexa(){
 
         double cos30 = Math.sqrt(3)/2;
-        double INVcos30 = 1/cos30
+        double INVcos30 = 1/cos30;
         double cellSize = 650.0/gridSize;
         double dy = cellSize*(1-cos30);
 
