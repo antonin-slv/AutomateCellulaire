@@ -8,8 +8,11 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
@@ -23,7 +26,7 @@ public class GameController implements Initializable {
     private int gridSize = 100;
 
     @FXML
-    private GridPane gridPane;
+    private Pane pane;
 
     @FXML
     private Button btn_update_once;
@@ -34,85 +37,82 @@ public class GameController implements Initializable {
         try {
             URL rulesPath = Main.class.getClassLoader().getResource("rules/Major.json");
             this.moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), gridSize);
+            //this.moteur.initGrid(new int[][]{{0, 1}, {1, 1}, {2, 1}});
             this.moteur.randomizeGrid();
         }catch (Exception e){
             e.printStackTrace();
             System.exit(1);
         }
 
-        initializeGridPane();
+        displayPaneHexa();
 
         btn_update_once.setOnAction(event -> {
             this.moteur.update();
-            updateGrid();
+            pane.getChildren().clear();
+            displayPaneHexa();
         });
     }
 
-    private void initializeGridPane(){
+    private void displayPane(){
 
         int cellSize = 600/gridSize;
 
-        // Set up the rows and columns.
-        for (int i = 0; i < gridSize; i++) {
-            gridPane.getColumnConstraints().add(new ColumnConstraints(cellSize));
-            gridPane.getRowConstraints().add(new RowConstraints(cellSize));
-        }
-
-        //Add an image to each cell with on OnClick mouse event.
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                initializeGridRectangles(i,j);
+                Rectangle cellRect = new Rectangle();
+                cellRect.setHeight(cellSize);
+                cellRect.setWidth(cellSize);
+                int etat = this.moteur.getEtat(new int[]{i, j});
+                if (etat == 0){
+                    cellRect.setFill(Color.WHITE);
+                }
+                else{
+                    cellRect.setFill(Color.BLACK);
+                }
+                cellRect.setStroke(Color.web("#F6F6F6"));
+                cellRect.setStrokeType(StrokeType.INSIDE);
+                cellRect.setStrokeWidth(0.2);
+                cellRect.setSmooth(true);
+                cellRect.setX(j*cellSize);
+                cellRect.setY(i*cellSize);
+                pane.getChildren().add(cellRect);
             }
         }
     }
-
-    private void initializeGridRectangles(int row, int col) {
+    private void displayPaneHexa(){
 
         int cellSize = 600/gridSize;
 
-        // All cells will initially be dead, build a Rectangle for each.
-        Rectangle cellRect = new Rectangle();
-        cellRect.setHeight(cellSize);
-        cellRect.setWidth(cellSize);
-        int etat = this.moteur.getEtat(new int[]{row, col});
-        if (etat == 0){
-            cellRect.setFill(Color.WHITE);
-        }
-        else{
-            cellRect.setFill(Color.BLACK);
-        }
-        cellRect.setStroke(Color.web("#F6F6F6"));
-        cellRect.setStrokeType(StrokeType.INSIDE);
-        cellRect.setStrokeWidth(0.1);
-        cellRect.setSmooth(true);
-
-        // Add mouse event to this rectangle..
-        /*
-        cellRect.setOnMouseClicked(this::mouseClickedEvent);
-        cellRect.setOnDragDetected(this::mouseDragStartEvent);
-        cellRect.setOnMouseDragOver(this::mouseDragOverEvent);
-        cellRect.setOnMouseDragReleased(this::mouseDragEndEvent);
-        */
-
-        // Add the Rectangle to the grid at the col/row.
-        gridPane.add(cellRect, col, row);
-    }
-
-    private void updateGrid() {
-        //Update each node in the grid.
-        for (Node child : gridPane.getChildren()) {
-            //Get the row and col of the current grid node.
-            int col = GridPane.getColumnIndex(child);
-            int row = GridPane.getRowIndex(child);
-            Rectangle cellRect = (Rectangle)child;
-
-            int etat = this.moteur.getEtat(new int[]{row, col});
-            if(etat == 1) {
-                cellRect.setFill(Color.RED);
-            } else if (etat == 2) {
-                cellRect.setFill(Color.BLUE);
-            } else {
-                cellRect.setFill(Color.GREEN);
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                Polygon tile = new Polygon();
+                double x,y;
+                if (j%2 == 1) {
+                    x = i*cellSize+cellSize/2;
+                } else {
+                    x = i*cellSize;
+                }
+                y = j*cellSize+cellSize/2;
+                tile.getPoints().addAll(new Double[]{
+                        x, y - cellSize/2,
+                        x - cellSize/2*Math.sqrt(3)/2, y-cellSize/4,
+                        x - cellSize/2*Math.sqrt(3)/2, y+cellSize/4,
+                        x, y + cellSize/2,
+                        x + cellSize/2*Math.sqrt(3)/2, y+cellSize/4,
+                        x + cellSize/2*Math.sqrt(3)/2, y-cellSize/4
+                });
+                int etat = this.moteur.getEtat(new int[]{i, j});
+                if (etat == 0){
+                    tile.setFill(Color.WHITE);
+                }
+                else{
+                    tile.setFill(Color.BLACK);
+                }
+                tile.setStroke(Color.web("#F6F6F6"));
+                tile.setStrokeType(StrokeType.INSIDE);
+                tile.setStrokeWidth(0.2);
+                tile.setSmooth(true);
+                pane.getChildren().add(tile);
             }
         }
     }
