@@ -47,7 +47,7 @@ import java.util.stream.Stream;
 public class GameController implements Initializable {
 
     Moteur moteur ;
-    private int gridSize = 150;
+    private int gridSize = 10;
     private Rectangle[][] cells = new Rectangle[gridSize][gridSize];
     private Polygon[][] hexaCells = new Polygon[gridSize][gridSize];
     private String[] colors;
@@ -103,12 +103,12 @@ public class GameController implements Initializable {
                 };
 
         cmb_colors.setOnAction(event_cmb);
-
-        initPane();
+        initPaneHexa();
+        //initPane();
 
         btn_update_once.setOnAction(event -> {
             this.moteur.update();
-            displayPane();
+            displayPaneHexa();
         });
 
         btn_play.setOnAction(event -> {
@@ -140,7 +140,7 @@ public class GameController implements Initializable {
             //This is the stuff that will be done each interval.
             //Generate the next game board state.
             moteur.update();
-            displayPane();
+            displayPaneHexa();
             //Update the generation.
             //generation.set(generation.get() + 1);
         });
@@ -182,9 +182,11 @@ public class GameController implements Initializable {
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
                 cellRect.setFill(Color.web(this.colors[etat]));
+                /*
                 cellRect.setStroke(Color.web("#F6F6F6"));
                 cellRect.setStrokeType(StrokeType.INSIDE);
                 cellRect.setStrokeWidth(0.2);
+                */
                 cellRect.setSmooth(true);
                 cellRect.setX(j*cellSize);
                 cellRect.setY(i*cellSize);
@@ -221,9 +223,7 @@ public class GameController implements Initializable {
         pane.getChildren().clear();
         displayPane();
     }
-
-    private void displayPaneHexa(){
-
+    private void initPaneHexa(){
         double cos30 = Math.sqrt(3)/2;
         double INVcos30 = 1/cos30;
         double cellSize = 650.0/gridSize;
@@ -256,9 +256,22 @@ public class GameController implements Initializable {
                 tile.setStrokeType(StrokeType.INSIDE);
                 tile.setStrokeWidth(0.2);
                 tile.setSmooth(true);
-                tile.setId("tile" + i + j);
                 tile.setOnMouseClicked(this::changeStatePolygon);
                 pane.getChildren().add(tile);
+                this.hexaCells[j][i] = tile;
+            }
+        }
+    }
+    private void displayPaneHexa(){
+        int cellSize = 650/gridSize;
+
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                int etat = this.moteur.getEtat(new int[]{i, j});
+                if (etat >= this.colors.length){
+                    throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
+                }
+                hexaCells[i][j].setFill(Color.web(this.colors[etat]));
             }
         }
     }
@@ -271,8 +284,7 @@ public class GameController implements Initializable {
         if (selectedColor != null){
             etat = Arrays.asList(this.colors).indexOf(selectedColor);
         }
-        this.moteur.setEtat(new int[]{y, x-y/2%gridSize}, etat);
-        pane.getChildren().clear();
+        this.moteur.setEtat(new int[]{y, x}, etat);
         displayPaneHexa();
     }
 }
