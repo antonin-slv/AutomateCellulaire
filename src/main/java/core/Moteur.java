@@ -1,5 +1,12 @@
 package core;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.util.Duration;
+
 import java.io.IOException;
 
 public class Moteur {

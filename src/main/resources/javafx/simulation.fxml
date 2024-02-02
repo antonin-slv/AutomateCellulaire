@@ -14,7 +14,7 @@
                   <children>
                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="273.0">
                         <children>
-                                <Button mnemonicParsing="false" text="PLAY" />
+                                <Button fx:id="btn_play" mnemonicParsing="false" text="PLAY" />
                                 <Button fx:id="btn_update_once" mnemonicParsing="false" text="&gt;">
                               <HBox.margin>
                                  <Insets left="10.0" right="10.0" />

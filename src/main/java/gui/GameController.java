@@ -6,6 +6,11 @@ import com.google.gson.JsonObject;
 import core.Grid;
 import core.Main;
 import core.Moteur;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,6 +31,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import javafx.util.Duration;
 import org.w3c.dom.css.Rect;
 
 import javax.swing.event.ChangeListener;
@@ -41,8 +47,9 @@ import java.util.stream.Stream;
 public class GameController implements Initializable {
 
     Moteur moteur ;
-    private int gridSize = 50;
-
+    private int gridSize = 150;
+    private Rectangle[][] cells = new Rectangle[gridSize][gridSize];
+    private Polygon[][] hexaCells = new Polygon[gridSize][gridSize];
     private String[] colors;
     private String[] alphabet;
     private String selectedColor;
@@ -54,10 +61,18 @@ public class GameController implements Initializable {
     private Button btn_update_once;
 
     @FXML
+    private Button btn_play;
+
+    @FXML
     private Button btn_retour;
 
     @FXML
     private ComboBox<String> cmb_colors;
+
+    public int gameSpeed = 100;
+
+    private Timeline timeLine;
+    private BooleanProperty gameRunning;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,13 +80,16 @@ public class GameController implements Initializable {
         try {
             URL rulesPath = Main.class.getClassLoader().getResource("rules/RealWoodFire.json");
             this.moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), gridSize);
-            //this.moteur.initGrid(new int[][]{{0, 1}, {5, 1}, {10, 1}, {15,1}, {20,1}});
             paramsFromJson(rulesPath.getPath());
             this.moteur.randomizeGrid();
         }catch (Exception e){
             e.printStackTrace();
             System.exit(1);
         }
+
+        this.gameRunning = new SimpleBooleanProperty();
+        this.gameRunning.set(false);
+        initializeTimeline(gameSpeed);
 
         cmb_colors.getItems().addAll(Arrays.asList(this.alphabet));
         cmb_colors.getSelectionModel().selectFirst();
@@ -86,12 +104,15 @@ public class GameController implements Initializable {
 
         cmb_colors.setOnAction(event_cmb);
 
-        displayPaneHexa();
+        initPane();
 
         btn_update_once.setOnAction(event -> {
             this.moteur.update();
-            pane.getChildren().clear();
-            displayPaneHexa();
+            displayPane();
+        });
+
+        btn_play.setOnAction(event -> {
+            this.play();
         });
 
         btn_retour.setOnAction(event -> {
@@ -107,6 +128,30 @@ public class GameController implements Initializable {
         });
     }
 
+    public void initializeTimeline(int gameSpeed) {
+
+        this.gameSpeed = gameSpeed;
+        //Stop any old timeline if it is still running.
+        if(timeLine != null) {
+            timeLine.stop();
+        }
+        //Set up a new KeyFrame with he desired game speed interval.
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(gameSpeed), e -> {
+            //This is the stuff that will be done each interval.
+            //Generate the next game board state.
+            moteur.update();
+            displayPane();
+            //Update the generation.
+            //generation.set(generation.get() + 1);
+        });
+        //Attach the keyframe to the Timeline.
+        timeLine = new Timeline(keyFrame);
+        timeLine.setCycleCount(Timeline.INDEFINITE);
+        //If the game was running before make it run again.
+        if(gameRunning.get()) {
+            timeLine.play();
+        }
+    }
 
     public void paramsFromJson(String rulesPath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(rulesPath))) {
@@ -118,7 +163,12 @@ public class GameController implements Initializable {
         }
     }
 
-    private void displayPane(){
+    public void play() {
+        gameRunning.set(true);
+        timeLine.play();
+    }
+    public void initPane(){
+        pane.getChildren().clear();
 
         int cellSize = 650/gridSize;
 
@@ -140,6 +190,21 @@ public class GameController implements Initializable {
                 cellRect.setY(i*cellSize);
                 cellRect.setOnMouseClicked(this::changeStateRectangle);
                 pane.getChildren().add(cellRect);
+                this.cells[i][j] = cellRect;
+            }
+        }
+    }
+    private void displayPane(){
+
+        int cellSize = 650/gridSize;
+
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                int etat = this.moteur.getEtat(new int[]{i, j});
+                if (etat >= this.colors.length){
+                    throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
+                }
+                cells[i][j].setFill(Color.web(this.colors[etat]));
             }
         }
     }
@@ -156,6 +221,7 @@ public class GameController implements Initializable {
         pane.getChildren().clear();
         displayPane();
     }
+
     private void displayPaneHexa(){
 
         double cos30 = Math.sqrt(3)/2;
