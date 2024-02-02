@@ -70,7 +70,11 @@ public class Grid {
 
     public void randomize(int alphabetSize) {
         for (int i = 0; i < grid.length; i++) {
-            grid[i] = (int) (Math.random() * alphabetSize);
+            int etat = (int) (Math.random() * alphabetSize);
+            if (etat == 2) {
+                etat = 1;
+            }
+            grid[i] = etat;
         }
     }
     public int getCase(int[] coords) {

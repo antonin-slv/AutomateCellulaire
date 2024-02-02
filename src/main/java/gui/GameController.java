@@ -63,11 +63,11 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         try {
-            URL rulesPath = Main.class.getClassLoader().getResource("rules/WoodFire.json");
+            URL rulesPath = Main.class.getClassLoader().getResource("rules/RealWoodFire.json");
             this.moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), gridSize);
             //this.moteur.initGrid(new int[][]{{0, 1}, {5, 1}, {10, 1}, {15,1}, {20,1}});
             paramsFromJson(rulesPath.getPath());
-            //this.moteur.randomizeGrid();
+            this.moteur.randomizeGrid();
         }catch (Exception e){
             e.printStackTrace();
             System.exit(1);
