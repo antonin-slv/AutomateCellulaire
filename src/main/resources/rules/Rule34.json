@@ -1,6 +1,7 @@
 {
   "dimension": 1,
   "alphabet": ["Mort","Vivant"],
+  "colors": ["#FFFFFF", "#000000"],
   "voisinage": [[-1],[0],[1]],
   "regle": {
     "name": "table",

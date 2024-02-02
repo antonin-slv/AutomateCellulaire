@@ -1,5 +1,9 @@
 package gui;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import core.Grid;
 import core.Main;
 import core.Moteur;
 import javafx.fxml.FXML;
@@ -19,14 +23,21 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 public class GameController implements Initializable {
 
     Moteur moteur ;
-    private int gridSize = 100;
+    private int gridSize = 10;
+
+    private String[] colors;
 
     @FXML
     private Pane pane;
@@ -43,7 +54,8 @@ public class GameController implements Initializable {
         try {
             URL rulesPath = Main.class.getClassLoader().getResource("rules/Major.json");
             this.moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), gridSize);
-            //this.moteur.initGrid(new int[][]{{0, 1}, {1, 1}, {2, 1}});
+            //this.moteur.initGrid(new int[][]{{0, 1}, {5, 1}, {10, 1}, {15,1}, {20,1}});
+            colorsFromJson(rulesPath.getPath());
             this.moteur.randomizeGrid();
         }catch (Exception e){
             e.printStackTrace();
@@ -69,6 +81,14 @@ public class GameController implements Initializable {
                 System.exit(1);
             }
         });
+    }
+
+    public void colorsFromJson(String rulesPath) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(rulesPath))) {
+            JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
+            JsonArray colors = json.get("colors").getAsJsonArray();
+            this.colors = colors.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
+        }
     }
 
     private void displayPane(){
@@ -119,13 +139,11 @@ public class GameController implements Initializable {
                         x + cellSize/2*Math.sqrt(3)/2, y+cellSize/4,
                         x + cellSize/2*Math.sqrt(3)/2, y-cellSize/4
                 });
-                int etat = this.moteur.getEtat(new int[]{i, j});
-                if (etat == 0){
-                    tile.setFill(Color.WHITE);
+                int etat = this.moteur.getEtat(new int[]{j, i-j/2%gridSize});
+                if (etat >= this.colors.length){
+                    throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
-                else{
-                    tile.setFill(Color.BLACK);
-                }
+                tile.setFill(Color.web(this.colors[etat]));
                 tile.setStroke(Color.web("#F6F6F6"));
                 tile.setStrokeType(StrokeType.INSIDE);
                 tile.setStrokeWidth(0.2);
