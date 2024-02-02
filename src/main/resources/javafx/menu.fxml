@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FXMLController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MenuController">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <StackPane.margin>
@@ -43,9 +43,10 @@
               </rowConstraints>
                <children>
                   <Button fx:id="btn_new_automate" alignment="CENTER" mnemonicParsing="false" prefHeight="154.0" prefWidth="213.0" text="NEW AUTOMATE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="105.0" prefWidth="180.0" text="LOAD Rules" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="86.0" prefWidth="171.0" text="LOAD Map" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <Button fx:id="btn_load_rule" alignment="CENTER" mnemonicParsing="false" prefHeight="105.0" prefWidth="180.0" text="LOAD Rule" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Button fx:id="btn_load_map" alignment="CENTER" mnemonicParsing="false" prefHeight="86.0" prefWidth="171.0" text="LOAD Map" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                   <Button fx:id="btn_start" alignment="CENTER" defaultButton="true" mnemonicParsing="false" prefHeight="89.0" prefWidth="258.0" text="START" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <Button fx:id="btn_exit" mnemonicParsing="false" text="Exit" GridPane.columnIndex="6" GridPane.rowIndex="4" />
                </children>
             </GridPane>
          </left>

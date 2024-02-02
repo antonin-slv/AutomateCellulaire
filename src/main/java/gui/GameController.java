@@ -3,8 +3,11 @@ package gui;
 import core.Main;
 import core.Moteur;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -31,6 +34,9 @@ public class GameController implements Initializable {
     @FXML
     private Button btn_update_once;
 
+    @FXML
+    private Button btn_retour;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -50,6 +56,18 @@ public class GameController implements Initializable {
             this.moteur.update();
             pane.getChildren().clear();
             displayPaneHexa();
+        });
+
+        btn_retour.setOnAction(event -> {
+            System.out.println("Retour au menu principal");
+            try {
+                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("javafx/menu.fxml"));
+                Scene scene = new Scene(root);
+                Main.getStage().setScene(scene);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
         });
     }
 
