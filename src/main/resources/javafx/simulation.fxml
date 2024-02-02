@@ -34,6 +34,7 @@
                         </children></HBox>
                           <Button fx:id="btn_retour" mnemonicParsing="false" text="Retour" />
                      <ComboBox fx:id="cmb_colors" prefWidth="150.0" />
+                     <Button fx:id="btn_save" mnemonicParsing="false" text="SAVE" />
                   </children>
                </VBox>
               </children>

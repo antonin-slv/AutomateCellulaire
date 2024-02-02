@@ -28,6 +28,10 @@ public class Moteur {
         }
     }
 
+    public void saveGrid(String saveName) throws IOException {
+        this.grid.toJson(saveName);
+    }
+
     public void update() {
 
         //grid_temp est la grille temporaire qui va être remplie

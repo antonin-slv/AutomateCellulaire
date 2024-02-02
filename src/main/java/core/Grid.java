@@ -6,9 +6,8 @@ import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.time.Instant;
 import java.util.stream.Stream;
 
 @Getter
@@ -21,7 +20,7 @@ public class Grid {
     ///size : taille de la grille (taille d'un côté)
     private final int size;
     ///cycle : true si la grille est cyclique, false sinon
-    private final boolean cycle = true;
+    private final transient boolean cycle = true;
 
     public Grid(int dim, int size) {
         this.dim = dim;
@@ -65,6 +64,19 @@ public class Grid {
             }
 
             return new Grid(dim, size, finalGrid);
+        }
+    }
+
+    public void toJson(String saveName) throws IOException {
+        JsonObject json = Main.GSON.toJsonTree(this).getAsJsonObject();
+        json.addProperty("save", Instant.now().toString());
+
+        String fileName = saveName == null ? "save" + Instant.now().toEpochMilli() + ".json" : saveName + ".json";
+        File directory = new File("save");
+        directory.mkdirs();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(directory + "/" + fileName, false))) {
+            Main.GSON.toJson(json, writer);
         }
     }
 
