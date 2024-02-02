@@ -53,7 +53,15 @@ public class Moteur {
 
     public void randomizeGrid() {
         int alphabetSize = this.automate.getAlphabet().size();
-        this.grid.randomize(alphabetSize);
+        if (alphabetSize == 0) {
+            throw new UnsupportedOperationException("L'alphabet de l'automate est vide");
+        }
+        if (alphabetSize == 1) {
+            //si l'alphabet est de taille 1, il continent le nombre max d'états
+            this.grid.continusRandomize(Integer.parseInt(this.automate.getAlphabet().get(0)));
+        }
+        else
+            this.grid.randomize(alphabetSize);
     }
 
     public int getEtat(int[] coords){

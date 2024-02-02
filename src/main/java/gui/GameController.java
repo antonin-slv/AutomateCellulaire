@@ -189,9 +189,28 @@ public class GameController implements Initializable {
         try (BufferedReader reader = new BufferedReader(new FileReader(rulesPath))) {
             JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
             JsonArray colors = json.get("colors").getAsJsonArray();
-            this.colors = colors.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
+
             JsonArray alphabet = json.get("alphabet").getAsJsonArray();
             this.alphabet = alphabet.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
+
+            if (alphabet.size() == 1){
+
+                int colorNumber = Integer.parseInt(colors.get(0).getAsString());
+                this.colors = new String[colorNumber];
+
+                for (int i = 0; i < colorNumber; i++) {
+                    //int hex = (int) (Math.random() * 256 * 256 * 256);
+                    int r = (int) (colorNumber - i) * 255 / colorNumber;
+                    int b = i * 255 / colorNumber;
+                    int g = (int) (Math.random() * 255); // * colorNumber / colorNumber;
+                    int hex = (r << 16) + (g << 8) + b;
+                    String hexStr = Integer.toHexString(hex);
+                    hexStr = "0".repeat(6 - hexStr.length()) + hexStr;
+                    this.colors[i] = String.format("#" + hexStr);
+                }
+            } else
+                this.colors = colors.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
+
         }
     }
 
@@ -211,9 +230,16 @@ public class GameController implements Initializable {
                 cellRect.setWidth(cellSize);
                 int etat = this.moteur.getEtat(new int[]{i, j});
                 if (etat >= this.colors.length){
-                    throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
+                    if (alphabet.length == 1){
+                        cellRect.setFill(Color.web(this.colors[etat%colors.length]));
+                    }
+                    else
+                        throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
-                cellRect.setFill(Color.web(this.colors[etat]));
+                else {
+                    cellRect.setFill(Color.web(this.colors[etat]));
+                }
+
                 /*
                 cellRect.setStroke(Color.web("#F6F6F6"));
                 cellRect.setStrokeType(StrokeType.INSIDE);
@@ -235,7 +261,10 @@ public class GameController implements Initializable {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 int etat = this.moteur.getEtat(new int[]{i, j});
-                if (etat >= this.colors.length){
+                if  (alphabet.length == 1){
+                    etat = etat%colors.length;
+                }
+                if (etat >= this.colors.length) {
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
                 cells[i][j].setFill(Color.web(this.colors[etat]));

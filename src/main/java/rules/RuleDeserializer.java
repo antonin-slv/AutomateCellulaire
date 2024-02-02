@@ -14,6 +14,7 @@ public class RuleDeserializer implements JsonDeserializer<GameRule> {
             case "somme" -> SumRule.class;
             case "table" -> TabRule.class;
             case "majority" -> MajRule.class;
+            case "average" -> AvgRule.class;
             default -> throw new UnsupportedOperationException("Unknown rule `" + name + "`");
         };
 

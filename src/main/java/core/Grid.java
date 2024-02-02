@@ -89,6 +89,11 @@ public class Grid {
             grid[i] = etat;
         }
     }
+    public void continusRandomize(int max) {
+        for (int i = 0; i < grid.length; i++) {
+            grid[i] = (int) (Math.random() * max);
+        }
+    }
     public int getCase(int[] coords) {
         int index = coordToInt(coords);
         if(index == -1)
