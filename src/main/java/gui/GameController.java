@@ -231,7 +231,7 @@ public class GameController implements Initializable {
                 else {
                     cellRect.setFill(Color.web(colors[etat]));
                 }
-
+                cellRect.setId(i+" "+j);
                 cellRect.setSmooth(true);
                 cellRect.setX(j*cellSize);
                 cellRect.setY(i*cellSize);
@@ -258,14 +258,15 @@ public class GameController implements Initializable {
 
     private void changeStateRectangle(javafx.scene.input.MouseEvent event){
         Rectangle eventSource = (Rectangle) event.getSource();
-        double col =  eventSource.getX() * gridSize /(650.0);
-        double row =  eventSource.getY() * gridSize/(650.0 ) ;
-        int etat = Main.getMoteur().getEtat(new int[]{(int) col, (int) row});
+        String[] id = eventSource.getId().split(" ");
+        int col =  Integer.parseInt(id[1]);
+        int row =  Integer.parseInt(id[0]);
+        int etat = Main.getMoteur().getEtat(new int[]{col, row});
         if (selectedColor != null){
             etat = Arrays.asList(colors).indexOf(selectedColor);
+            eventSource.setFill(Color.web(selectedColor));
         }
-        Main.getMoteur().setEtat(new int[]{(int) row, (int) col}, etat);
-        displayPane();
+        Main.getMoteur().setEtat(new int[]{row, col}, etat);
     }
     private void initPaneHexa(){
         double cos30 = Math.sqrt(3)/2;
@@ -293,6 +294,7 @@ public class GameController implements Initializable {
                 if (etat >= colors.length){
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
+                tile.setId(j+" "+i);
                 tile.setFill(Color.web(colors[etat]));
                 tile.setStroke(Color.web("#F6F6F6"));
                 tile.setStrokeType(StrokeType.INSIDE);
@@ -318,13 +320,14 @@ public class GameController implements Initializable {
 
     private void changeStatePolygon(javafx.scene.input.MouseEvent event){
         Polygon tile = (Polygon) event.getSource();
-        int x = (int) (tile.getLayoutX()* gridSize/ 650);
-        int y = (int) (tile.getLayoutY() * gridSize / (Math.sqrt(3)*325));
-        int etat = Main.getMoteur().getEtat(new int[]{y, x-y/2%gridSize});
+        String[] id = tile.getId().split(" ");
+        int x = Integer.parseInt(id[1]);
+        int y = Integer.parseInt(id[0]);
+        int etat = Main.getMoteur().getEtat(new int[]{y,(x-y/2%gridSize)});
         if (selectedColor != null){
             etat = Arrays.asList(colors).indexOf(selectedColor);
+            tile.setFill(Color.web(selectedColor));
         }
         Main.getMoteur().setEtat(new int[]{y, x}, etat);
-        displayPaneHexa();
     }
 }
