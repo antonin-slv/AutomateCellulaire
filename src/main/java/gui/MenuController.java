@@ -14,6 +14,8 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static gui.GameController.is_ready;
+
 public class MenuController implements Initializable {
 
 
@@ -34,6 +36,8 @@ public class MenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         btn_exit.setOnAction(event -> System.exit(0));
+
+        btn_start.setDisable(!is_ready());
 
         btn_start.setOnAction(event -> {
                     try {

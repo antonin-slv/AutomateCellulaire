@@ -219,6 +219,13 @@ public class Grid {
                 this.grid[i] = newValue;
         }
     }
+
+    public void setGridMaxEtat(int max){
+        for (int i = 0; i < this.grid.length; i++) {
+            if(this.grid[i] >= max)
+                this.grid[i] = (int) (Math.random() * max);
+        }
+    }
 }
 
 

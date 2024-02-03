@@ -61,7 +61,7 @@ public class AutomateCreatorController implements Initializable{
 
                         Main.setHexa(is_hexa.isSelected());
 
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("javafx/simulation.fxml")));
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("javafx/menu.fxml")));
                         Scene scene = new Scene(root);
                         Main.getStage().setScene(scene);
 
@@ -74,8 +74,11 @@ public class AutomateCreatorController implements Initializable{
 
         btn_load.setOnAction(event -> {
             try {
+                Grid grid = Main.getMoteur().getGrid();
                 Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), 150));
-                is_hexa.setSelected(Main.isHexa());
+                Main.getMoteur().setGrid(grid);
+
+                Main.setHexa(is_hexa.isSelected());
                 displayNeighbors();
             } catch (Exception e) {
                 e.printStackTrace();

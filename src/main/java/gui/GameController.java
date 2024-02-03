@@ -37,13 +37,17 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable {
 
     @Setter
-    private int gridSize = 150;
-    private final Rectangle[][] cells = new Rectangle[gridSize][gridSize];
-    private final Polygon[][] hexaCells = new Polygon[gridSize][gridSize];
+    private int gridSize;
+    private Rectangle[][] cells;
+    private Polygon[][] hexaCells;
     @Setter
     private static String[] colors;
     @Setter
     private static String[] alphabet;
+
+    public static boolean is_ready() {
+        return (colors != null && alphabet != null);
+    }
     private String selectedColor;
 
     @FXML
@@ -79,6 +83,8 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("GameController initialize");
 
+        this.gridSize = Main.getMoteur().getGrid().getSize();
+        Main.getMoteur().getGrid().setGridMaxEtat(alphabet.length);
         speedSlider.setMin(50);
         speedSlider.setMax(500);
         speedSlider.setValue(500 - gameSpeed + 50);
@@ -102,8 +108,10 @@ public class GameController implements Initializable {
 
         cmb_colors.setOnAction(event_cmb);
         if (Main.isHexa()) {
+            this.hexaCells = new Polygon[gridSize][gridSize];
             initPaneHexa();
         } else {
+            this.cells = new Rectangle[gridSize][gridSize];
             initPane();
         }
 
@@ -206,6 +214,8 @@ public class GameController implements Initializable {
         }
     }
 
+
+
     public void play() {
         gameRunning.set(true);
         timeLine.play();
@@ -225,8 +235,12 @@ public class GameController implements Initializable {
                     if (alphabet.length == 1){
                         cellRect.setFill(Color.web(colors[etat%colors.length]));
                     }
-                    else
-                        throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
+                    else{
+                        Main.getMoteur().setEtat(new int[]{i, j},0);
+                        cellRect.setFill(Color.web(colors[0]));
+
+                    }
+
                 }
                 else {
                     cellRect.setFill(Color.web(colors[etat]));
@@ -248,8 +262,9 @@ public class GameController implements Initializable {
                 if  (alphabet.length == 1){
                     etat = etat%colors.length;
                 }
-                if (etat >= colors.length) {
-                    throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
+                else if (etat >= colors.length) {
+                    Main.getMoteur().setEtat(new int[]{i, j},0);
+                    etat = 0;
                 }
                 cells[i][j].setFill(Color.web(colors[etat]));
             }
@@ -310,8 +325,12 @@ public class GameController implements Initializable {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 int etat = Main.getMoteur().getEtat(new int[]{i, j});
-                if (etat >= colors.length){
-                    throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
+                if  (alphabet.length == 1){
+                    etat = etat%colors.length;
+                }
+                else if (etat >= colors.length) {
+                    Main.getMoteur().setEtat(new int[]{i, j},0);
+                    etat = 0;
                 }
                 hexaCells[i][j].setFill(Color.web(colors[etat]));
             }

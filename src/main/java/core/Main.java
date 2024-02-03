@@ -15,7 +15,6 @@ import rules.RuleDeserializer;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -35,12 +34,8 @@ public class Main extends Application {
     public static void main(String[] args) throws IOException {
           URL rulesPath = Main.class.getClassLoader().getResource("rules/JDLV.json");
           moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), 20);
-//        moteur.randomizeGrid();
-//        moteur.print();
-//        moteur.update();
-//        moteur.print();
 
-        launch(); // lancer javafx
+          launch(); // lancer javafx
     }
 
     @Override
