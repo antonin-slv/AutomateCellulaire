@@ -37,6 +37,7 @@ import org.w3c.dom.css.Rect;
 
 import javax.swing.event.ChangeListener;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -48,6 +49,7 @@ import java.util.stream.Stream;
 public class GameController implements Initializable {
 
     Moteur moteur ;
+    private String rulesPath;
     private int gridSize = 150;
     private Rectangle[][] cells = new Rectangle[gridSize][gridSize];
     private Polygon[][] hexaCells = new Polygon[gridSize][gridSize];
@@ -86,10 +88,17 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        try (BufferedReader reader = new BufferedReader(new FileReader("config.json"))) {
+            JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
+            this.rulesPath = json.get("rule").getAsString();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         try {
-            URL rulesPath = Main.class.getClassLoader().getResource("rules/RealWoodFire.json");
-            this.moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), gridSize);
+            URL rulesPath = Main.class.getClassLoader().getResource("rules/"+this.rulesPath);
+            this.moteur = new Moteur("rules/"+this.rulesPath, gridSize);
             paramsFromJson(rulesPath.getPath());
             this.moteur.randomizeGrid();
         }catch (Exception e){
