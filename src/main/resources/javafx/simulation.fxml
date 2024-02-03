@@ -3,11 +3,12 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox prefHeight="650.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GameController">
+<VBox prefHeight="620.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GameController">
    <HBox prefHeight="653.0" prefWidth="800.0">
       <children>
-         <Pane fx:id="pane" prefHeight="650.0" prefWidth="650.0" />
+         <Pane fx:id="pane" prefHeight="574.0" prefWidth="649.0" />
           <HBox prefHeight="650.0" prefWidth="250.0">
               <children>
                <VBox prefHeight="650.0">
@@ -32,10 +33,24 @@
                            </Label>
                                 <Slider fx:id="speedSlider" prefHeight="14.0" prefWidth="171.0" />
                         </children></HBox>
-                          <Button fx:id="btn_retour" mnemonicParsing="false" text="Retour" />
-                     <ComboBox fx:id="cmb_colors" prefWidth="150.0" />
-                     <Button fx:id="btn_save" mnemonicParsing="false" text="SAVE" />
+                     <VBox alignment="CENTER" prefHeight="161.0" prefWidth="249.0" spacing="10.0">
+                        <children>
+                           <Label contentDisplay="CENTER" prefHeight="35.0" prefWidth="109.0" text="Set cell's states" textAlignment="CENTER">
+                              <font>
+                                 <Font size="16.0" />
+                              </font></Label>
+                           <ComboBox fx:id="cmb_colors" prefWidth="150.0" />
+                           <Button fx:id="btn_save" mnemonicParsing="false" text="Save" />
+                                <Button fx:id="btn_retour" mnemonicParsing="false" text="Back to Menu" />
+                        </children>
+                        <padding>
+                           <Insets left="5.0" right="5.0" />
+                        </padding>
+                     </VBox>
                   </children>
+                  <opaqueInsets>
+                     <Insets />
+                  </opaqueInsets>
                </VBox>
               </children>
           </HBox>
