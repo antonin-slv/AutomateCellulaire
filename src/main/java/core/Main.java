@@ -27,11 +27,6 @@ public class Main extends Application {
     @Getter
     private static Moteur moteur;
 
-    @Setter
-    @Getter
-    private static boolean isHexa = false;
-
-
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(new TypeToken<GameRule>() {}.getType(), new RuleDeserializer())
             .setPrettyPrinting()
@@ -59,6 +54,15 @@ public class Main extends Application {
         stage.setTitle("JavaFX and Gradle");
         stage.setScene(scene);
         stage.show();
+    }
+
+
+    public static boolean isHexa(){
+        return moteur.getAutomate().isHexa();
+    }
+
+    public static void setHexa(boolean hexa){
+        moteur.getAutomate().setHexa(hexa);
     }
 
 }

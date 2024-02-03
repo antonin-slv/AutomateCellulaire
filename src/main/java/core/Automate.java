@@ -15,6 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Automate {
 
+    @Getter
+    @Setter
+    private boolean isHexa=false;
+
     private int dimension;
     @Setter
     private List<String> alphabet;

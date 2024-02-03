@@ -75,7 +75,7 @@ public class AutomateCreatorController implements Initializable{
         btn_load.setOnAction(event -> {
             try {
                 Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), 150));
-                Main.setHexa(is_hexa.isSelected());
+                is_hexa.setSelected(Main.isHexa());
                 displayNeighbors();
             } catch (Exception e) {
                 e.printStackTrace();
