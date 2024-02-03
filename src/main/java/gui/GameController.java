@@ -347,8 +347,8 @@ public class GameController implements Initializable {
 
     private void changeStatePolygon(javafx.scene.input.MouseEvent event){
         Polygon tile = (Polygon) event.getSource();
-        int x = (int) (tile.getLayoutX() / (650/gridSize));
-        int y = (int) (tile.getLayoutY() / (650/gridSize * (Math.sqrt(3)/2)));
+        int x = (int) (tile.getLayoutX()* gridSize/ 650);
+        int y = (int) (tile.getLayoutY() * gridSize / (Math.sqrt(3)*325));
         int etat = this.moteur.getEtat(new int[]{y, x-y/2%gridSize});
         if (selectedColor != null){
             etat = Arrays.asList(this.colors).indexOf(selectedColor);
