@@ -83,9 +83,11 @@ public class Grid {
     public void randomize(int alphabetSize) {
         for (int i = 0; i < grid.length; i++) {
             int etat = (int) (Math.random() * alphabetSize);
+            /*
             if (etat == 2 || etat == 3 || etat == 0) {
                 etat = 1;
             }
+            */
             grid[i] = etat;
         }
     }
