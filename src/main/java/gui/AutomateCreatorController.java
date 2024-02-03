@@ -40,7 +40,7 @@ public class AutomateCreatorController implements Initializable{
     @FXML
     private Pane pane_neighbors;
 
-    private Map<ArrayList<Integer>,Double> neighbors = new HashMap<>();
+    private Map<ArrayList<Integer>,Double> neighbors = new LinkedHashMap<>();
 
     @FXML
     private CheckBox is_hexa;
@@ -95,6 +95,7 @@ public class AutomateCreatorController implements Initializable{
 
         btn_save.setOnAction(event -> {
             try {
+                save();
                 Main.getMoteur().getAutomate().toJson("rules/" + tf_filename.getText() + ".json");
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -113,15 +114,16 @@ public class AutomateCreatorController implements Initializable{
             newWeights.add(entry.getValue());
         }
         int[][] voisinage = newNeighbors.stream().map(l -> l.stream().mapToInt(i -> i).toArray()).toArray(int[][]::new);
-        Main.getMoteur().getAutomate().setVoisinage(voisinage);
         System.out.println(Arrays.deepToString(voisinage));
+        System.out.println(newWeights);
         System.out.println(Arrays.deepToString(Main.getMoteur().getAutomate().getVoisinage()));
+        Main.getMoteur().getAutomate().setVoisinage(voisinage);
         double sum = newWeights.stream().mapToDouble(Double::doubleValue).sum();
         for (int i = 0; i < newWeights.size(); i++) {
             newWeights.set(i, newWeights.get(i) / sum * (newNeighbors.size()-1));
         }
-        Main.getMoteur().getAutomate().setVoisinage(voisinage);
         if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {
+            System.out.println(sumRule.getWeightNeighbour());
             sumRule.setWeightNeighbour(newWeights);
         }
         if (Main.getMoteur().getAutomate().getRegle() instanceof AvgRule avgRule) {
@@ -164,7 +166,7 @@ public class AutomateCreatorController implements Initializable{
                             int y = (int) (tf.getLayoutY() - 90) / 40;
                             if (!newValue.booleanValue()) {
                                 try {
-                                    neighbors.put(new ArrayList<>(Arrays.asList(y, x)), Double.parseDouble(tf.getText()));
+                                    neighbors.put(new ArrayList<>(Arrays.asList(x, y)), Double.parseDouble(tf.getText()));
                                 } catch (NumberFormatException e) {
                                     tf.setText("");
                                 }
@@ -202,9 +204,9 @@ public class AutomateCreatorController implements Initializable{
                         int x = (int) (cb.getLayoutX() - 90) / 40;
                         int y = (int) (cb.getLayoutY() - 90) / 40;
                         if (cb.isSelected()) {
-                            neighbors.put(new ArrayList<>(Arrays.asList(y, x)), 1.0);
+                            neighbors.put(new ArrayList<>(Arrays.asList(x, y)), 1.0);
                         } else {
-                            neighbors.remove(new ArrayList<>(Arrays.asList(y, x)));
+                            neighbors.remove(new ArrayList<>(Arrays.asList(x, y)));
                         }
                         System.out.println(neighbors);
                     });
