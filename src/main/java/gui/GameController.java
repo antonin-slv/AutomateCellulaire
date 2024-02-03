@@ -213,7 +213,7 @@ public class GameController implements Initializable {
     public void initPane(){
         pane.getChildren().clear();
 
-        int cellSize = 650/gridSize;
+        double cellSize = 650.0/gridSize;
 
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
@@ -258,8 +258,8 @@ public class GameController implements Initializable {
 
     private void changeStateRectangle(javafx.scene.input.MouseEvent event){
         Rectangle eventSource = (Rectangle) event.getSource();
-        double col = eventSource.getX()/((double) 650 /gridSize);
-        double row = eventSource.getY()/((double) 650 /gridSize);
+        double col =  eventSource.getX() * gridSize /(650.0);
+        double row =  eventSource.getY() * gridSize/(650.0 ) ;
         int etat = Main.getMoteur().getEtat(new int[]{(int) col, (int) row});
         if (selectedColor != null){
             etat = Arrays.asList(colors).indexOf(selectedColor);
