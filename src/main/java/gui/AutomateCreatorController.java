@@ -4,9 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import core.*;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

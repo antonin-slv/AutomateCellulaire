@@ -135,6 +135,8 @@ public class GameController implements Initializable {
 
         btn_retour.setOnAction(event -> {
             System.out.println("Retour au menu principal");
+            gameRunning.set(false);
+            timeLine.pause();
             try {
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("javafx/menu.fxml")));
                 Scene scene = new Scene(root);
