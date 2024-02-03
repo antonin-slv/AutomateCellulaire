@@ -38,7 +38,7 @@ public class AutomateCreatorController implements Initializable{
     @FXML
     private Pane pane_neighbors;
 
-    private Map<ArrayList<Integer>,Double> neighbors = new LinkedHashMap<>();
+    private final Map<ArrayList<Integer>,Double> neighbors = new LinkedHashMap<>();
 
     @FXML
     private CheckBox is_hexa;
@@ -64,7 +64,7 @@ public class AutomateCreatorController implements Initializable{
 
                         Main.setHexa(is_hexa.isSelected());
 
-                        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("javafx/simulation.fxml"));
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("javafx/simulation.fxml")));
                         Scene scene = new Scene(root);
                         Main.getStage().setScene(scene);
 
@@ -117,9 +117,7 @@ public class AutomateCreatorController implements Initializable{
         System.out.println(Arrays.deepToString(Main.getMoteur().getAutomate().getVoisinage()));
         Main.getMoteur().getAutomate().setVoisinage(voisinage);
         double sum = newWeights.stream().mapToDouble(Double::doubleValue).sum();
-        for (int i = 0; i < newWeights.size(); i++) {
-            newWeights.set(i, newWeights.get(i) / sum * (newNeighbors.size()-1));
-        }
+        newWeights.replaceAll(aDouble -> aDouble / sum * (newNeighbors.size() - 1));
         if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {
             System.out.println(sumRule.getWeightNeighbour());
             sumRule.setWeightNeighbour(newWeights);
@@ -157,17 +155,14 @@ public class AutomateCreatorController implements Initializable{
                     if (neighbors.containsKey(new ArrayList<>(Arrays.asList(j-2, i-2)))) {
                         tf.setText(neighbors.get(new ArrayList<>(Arrays.asList(j-2, i-2))).toString());
                     }
-                    tf.focusedProperty().addListener(new ChangeListener<Boolean>() {
-                        @Override
-                        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                            int x = (int) (tf.getLayoutX() - 90) / 40;
-                            int y = (int) (tf.getLayoutY() - 90) / 40;
-                            if (!newValue.booleanValue()) {
-                                try {
-                                    neighbors.put(new ArrayList<>(Arrays.asList(x, y)), Double.parseDouble(tf.getText()));
-                                } catch (NumberFormatException e) {
-                                    tf.setText("");
-                                }
+                    tf.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                        int x = (int) (tf.getLayoutX() - 90) / 40;
+                        int y = (int) (tf.getLayoutY() - 90) / 40;
+                        if (!newValue) {
+                            try {
+                                neighbors.put(new ArrayList<>(Arrays.asList(y, x)), Double.parseDouble(tf.getText()));
+                            } catch (NumberFormatException e) {
+                                tf.setText("");
                             }
                         }
                     });
@@ -177,8 +172,8 @@ public class AutomateCreatorController implements Initializable{
         } else {
             List<List<Integer>> oldNeighbors = Arrays.stream(Main.getMoteur().getAutomate().getVoisinage()).map(l -> Arrays.stream(l).boxed().toList()).toList();
             neighbors.clear();
-            for (int i = 0; i < oldNeighbors.size(); i++) {
-                neighbors.put(new ArrayList<>(oldNeighbors.get(i)), 1.0);
+            for (List<Integer> oldNeighbor : oldNeighbors) {
+                neighbors.put(new ArrayList<>(oldNeighbor), 1.0);
             }
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
@@ -202,9 +197,9 @@ public class AutomateCreatorController implements Initializable{
                         int x = (int) (cb.getLayoutX() - 90) / 40;
                         int y = (int) (cb.getLayoutY() - 90) / 40;
                         if (cb.isSelected()) {
-                            neighbors.put(new ArrayList<>(Arrays.asList(x, y)), 1.0);
+                            neighbors.put(new ArrayList<>(Arrays.asList(y, x)), 1.0);
                         } else {
-                            neighbors.remove(new ArrayList<>(Arrays.asList(x, y)));
+                            neighbors.remove(new ArrayList<>(Arrays.asList(y, x)));
                         }
                         System.out.println(neighbors);
                     });
@@ -217,6 +212,7 @@ public class AutomateCreatorController implements Initializable{
     private String[] getRules() {
         File folder = new File("rules");
         File[] listOfFiles = folder.listFiles();
+        assert listOfFiles != null;
         String[] rules = new String[listOfFiles.length];
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) rules[i] = listOfFiles[i].getName();

@@ -3,56 +3,43 @@ package gui;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import core.Grid;
 import core.Main;
-import core.Moteur;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import lombok.Setter;
-import org.w3c.dom.css.Rect;
 
-import javax.swing.event.ChangeListener;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 public class GameController implements Initializable {
 
     @Setter
     private int gridSize = 150;
-    private Rectangle[][] cells = new Rectangle[gridSize][gridSize];
-    private Polygon[][] hexaCells = new Polygon[gridSize][gridSize];
+    private final Rectangle[][] cells = new Rectangle[gridSize][gridSize];
+    private final Polygon[][] hexaCells = new Polygon[gridSize][gridSize];
     @Setter
     private static String[] colors;
     @Setter
@@ -105,15 +92,12 @@ public class GameController implements Initializable {
         this.gameRunning.set(false);
         initializeTimeline(gameSpeed);
 
-        cmb_colors.getItems().addAll(Arrays.asList(this.alphabet));
+        cmb_colors.getItems().addAll(Arrays.asList(alphabet));
         cmb_colors.getSelectionModel().selectFirst();
         EventHandler<ActionEvent> event_cmb =
-                new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent e)
-                    {
-                        String selected = cmb_colors.getValue();
-                        selectedColor = colors[Arrays.asList(alphabet).indexOf(selected)];
-                    }
+                e -> {
+                    String selected = cmb_colors.getValue();
+                    selectedColor = colors[Arrays.asList(alphabet).indexOf(selected)];
                 };
 
         cmb_colors.setOnAction(event_cmb);
@@ -132,9 +116,9 @@ public class GameController implements Initializable {
             }
         });
 
-        btn_play.setOnAction(event -> {
-            this.play();
-        });
+        btn_play.setOnAction(event ->
+            this.play()
+        );
 
         btn_pause.setOnAction(event -> {
             gameRunning.set(false);
@@ -152,7 +136,7 @@ public class GameController implements Initializable {
         btn_retour.setOnAction(event -> {
             System.out.println("Retour au menu principal");
             try {
-                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("javafx/menu.fxml"));
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("javafx/menu.fxml")));
                 Scene scene = new Scene(root);
                 Main.getStage().setScene(scene);
             } catch (Exception e) {
@@ -197,25 +181,25 @@ public class GameController implements Initializable {
             JsonArray colors = json.get("colors").getAsJsonArray();
 
             JsonArray alphabet = json.get("alphabet").getAsJsonArray();
-            this.alphabet = alphabet.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
+            GameController.alphabet = alphabet.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
 
             if (alphabet.size() == 1){
 
                 int colorNumber = Integer.parseInt(colors.get(0).getAsString());
-                this.colors = new String[colorNumber];
+                GameController.colors = new String[colorNumber];
 
                 for (int i = 0; i < colorNumber; i++) {
                     //int hex = (int) (Math.random() * 256 * 256 * 256);
-                    int r = (int) (colorNumber - i) * 255 / colorNumber;
+                    int r = (colorNumber - i) * 255 / colorNumber;
                     int b = i * 255 / colorNumber;
                     int g = (int) (Math.random() * 255); // * colorNumber / colorNumber;
                     int hex = (r << 16) + (g << 8) + b;
                     String hexStr = Integer.toHexString(hex);
                     hexStr = "0".repeat(6 - hexStr.length()) + hexStr;
-                    this.colors[i] = String.format("#" + hexStr);
+                    GameController.colors[i] = String.format("#" + hexStr);
                 }
             } else
-                this.colors = colors.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
+                GameController.colors = colors.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
 
         }
     }
@@ -235,22 +219,17 @@ public class GameController implements Initializable {
                 cellRect.setHeight(cellSize);
                 cellRect.setWidth(cellSize);
                 int etat = Main.getMoteur().getEtat(new int[]{i, j});
-                if (etat >= this.colors.length){
+                if (etat >= colors.length){
                     if (alphabet.length == 1){
-                        cellRect.setFill(Color.web(this.colors[etat%colors.length]));
+                        cellRect.setFill(Color.web(colors[etat%colors.length]));
                     }
                     else
                         throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
                 else {
-                    cellRect.setFill(Color.web(this.colors[etat]));
+                    cellRect.setFill(Color.web(colors[etat]));
                 }
 
-                /*
-                cellRect.setStroke(Color.web("#F6F6F6"));
-                cellRect.setStrokeType(StrokeType.INSIDE);
-                cellRect.setStrokeWidth(0.2);
-                */
                 cellRect.setSmooth(true);
                 cellRect.setX(j*cellSize);
                 cellRect.setY(i*cellSize);
@@ -261,30 +240,27 @@ public class GameController implements Initializable {
         }
     }
     private void displayPane(){
-
-        int cellSize = 650/gridSize;
-
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 int etat = Main.getMoteur().getEtat(new int[]{i, j});
                 if  (alphabet.length == 1){
                     etat = etat%colors.length;
                 }
-                if (etat >= this.colors.length) {
+                if (etat >= colors.length) {
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
-                cells[i][j].setFill(Color.web(this.colors[etat]));
+                cells[i][j].setFill(Color.web(colors[etat]));
             }
         }
     }
 
     private void changeStateRectangle(javafx.scene.input.MouseEvent event){
         Rectangle eventSource = (Rectangle) event.getSource();
-        double col = eventSource.getX()/(650/gridSize);
-        double row = eventSource.getY()/(650/gridSize);
+        double col = eventSource.getX()/((double) 650 /gridSize);
+        double row = eventSource.getY()/((double) 650 /gridSize);
         int etat = Main.getMoteur().getEtat(new int[]{(int) col, (int) row});
         if (selectedColor != null){
-            etat = Arrays.asList(this.colors).indexOf(selectedColor);
+            etat = Arrays.asList(colors).indexOf(selectedColor);
         }
         Main.getMoteur().setEtat(new int[]{(int) row, (int) col}, etat);
         displayPane();
@@ -305,19 +281,17 @@ public class GameController implements Initializable {
                     tile.setLayoutX(i*cellSize);
                 }
                 tile.setLayoutY(j*(cellSize-dy)+cellSize/2);
-                tile.getPoints().addAll(new Double[]{
-                        0.0, 0.0 - cellSize/2*INVcos30,
+                tile.getPoints().addAll(0.0, 0.0 - cellSize/2*INVcos30,
                         0.0 - cellSize/2, 0.0-cellSize/4*INVcos30,
                         0.0 - cellSize/2, 0.0+cellSize/4*INVcos30,
                         0.0, 0.0 + cellSize/2*INVcos30,
                         0.0 + cellSize/2, 0.0+cellSize/4*INVcos30,
-                        0.0 + cellSize/2, 0.0-cellSize/4*INVcos30
-                });
+                        0.0 + cellSize/2, 0.0-cellSize/4*INVcos30);
                 int etat = Main.getMoteur().getEtat(new int[]{j, i-j/2%gridSize});
-                if (etat >= this.colors.length){
+                if (etat >= colors.length){
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
-                tile.setFill(Color.web(this.colors[etat]));
+                tile.setFill(Color.web(colors[etat]));
                 tile.setStroke(Color.web("#F6F6F6"));
                 tile.setStrokeType(StrokeType.INSIDE);
                 tile.setStrokeWidth(0.2);
@@ -329,15 +303,13 @@ public class GameController implements Initializable {
         }
     }
     private void displayPaneHexa(){
-        int cellSize = 650/gridSize;
-
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 int etat = Main.getMoteur().getEtat(new int[]{i, j});
-                if (etat >= this.colors.length){
+                if (etat >= colors.length){
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
-                hexaCells[i][j].setFill(Color.web(this.colors[etat]));
+                hexaCells[i][j].setFill(Color.web(colors[etat]));
             }
         }
     }
@@ -348,7 +320,7 @@ public class GameController implements Initializable {
         int y = (int) (tile.getLayoutY() * gridSize / (Math.sqrt(3)*325));
         int etat = Main.getMoteur().getEtat(new int[]{y, x-y/2%gridSize});
         if (selectedColor != null){
-            etat = Arrays.asList(this.colors).indexOf(selectedColor);
+            etat = Arrays.asList(colors).indexOf(selectedColor);
         }
         Main.getMoteur().setEtat(new int[]{y, x}, etat);
         displayPaneHexa();
