@@ -1,11 +1,15 @@
 package rules;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+@Getter
+@Setter
 @AllArgsConstructor
 public class SumRule implements GameRule {
     private List<Map<String, List<Double>>> tab;

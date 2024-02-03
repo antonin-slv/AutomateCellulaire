@@ -6,10 +6,12 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.util.Duration;
+import lombok.Getter;
 
 import java.io.IOException;
 
 public class Moteur {
+    @Getter
     private final Automate automate;
     private final Grid grid;
 

@@ -1,5 +1,6 @@
 package gui;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import core.*;
@@ -18,6 +19,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import rules.AvgRule;
+import rules.SumRule;
 
 import java.io.*;
 import java.net.URL;
@@ -40,8 +43,13 @@ public class AutomateCreatorController implements Initializable{
     private Map<ArrayList<Integer>,Double> neighbors = new HashMap<>();
 
     @FXML
-    CheckBox is_hexa;
+    private CheckBox is_hexa;
 
+    @FXML
+    private TextField tf_filename;
+
+    @FXML
+    private Button btn_load;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -50,13 +58,18 @@ public class AutomateCreatorController implements Initializable{
         cb_select_rule.getSelectionModel().select(0);
 
         btn_play.setOnAction(event -> {
-                    try {
-                        /*
+                    try (BufferedReader reader = new BufferedReader(new FileReader("rules/" + cb_select_rule.getValue()))) {
+                        JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
+                        GameController.setAlphabet(json.get("alphabet").getAsJsonArray().asList().stream().map(JsonElement::getAsString).toArray(String[]::new));
+                        GameController.setColors(json.get("colors").getAsJsonArray().asList().stream().map(JsonElement::getAsString).toArray(String[]::new));
+
+                        Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), 150));
+                        Main.setHexa(is_hexa.isSelected());
+
                         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("javafx/simulation.fxml"));
                         Scene scene = new Scene(root);
                         Main.getStage().setScene(scene);
-                        */
-                        System.out.println(cb_select_rule.getValue());
+
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.exit(1);
@@ -64,9 +77,46 @@ public class AutomateCreatorController implements Initializable{
                 }
         );
 
+        btn_load.setOnAction(event -> {
+            try {
+                Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), 150));
+                Main.setHexa(is_hexa.isSelected());
+                displayNeighbors();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        });
+
         is_hexa.setOnAction(event -> {
             neighbors.clear();
             displayNeighbors();
+        });
+
+        btn_save.setOnAction(event -> {
+            List<List<Integer>> newNeighbors = new ArrayList<>();
+            List<Double> newWeights = new ArrayList<>();
+            for (var entry : neighbors.entrySet()) {
+               newNeighbors.add(entry.getKey());
+               newWeights.add(entry.getValue());
+            }
+            int[][] voisinage = newNeighbors.stream().map(l -> l.stream().mapToInt(i -> i).toArray()).toArray(int[][]::new);
+            double sum = newWeights.stream().mapToDouble(Double::doubleValue).sum();
+            for (int i = 0; i < newWeights.size(); i++) {
+                newWeights.set(i, newWeights.get(i) / sum * (newNeighbors.size()-1));
+            }
+            Main.getMoteur().getAutomate().setVoisinage(voisinage);
+            if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {
+                sumRule.setWeightNeighbour(newWeights);
+            }
+            if (Main.getMoteur().getAutomate().getRegle() instanceof AvgRule avgRule) {
+                avgRule.setWeightNeighbour(newWeights);
+            }
+            try {
+                Main.getMoteur().getAutomate().toJson("rules/" + tf_filename.getText() + ".json");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         displayNeighbors();
@@ -74,39 +124,84 @@ public class AutomateCreatorController implements Initializable{
     }
 
     private void displayNeighbors() {
-        pane_neighbors.getChildren().clear();
         int size = 5;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (is_hexa.isSelected()){
-                    if (i == 0 && j == 0) continue;
-                    if (i == 1 && j == 0) continue;
-                    if (i == 0 && j == 1) continue;
-                    if (i == 4 && j == 4) continue;
-                    if (i == 3 && j == 4) continue;
-                    if (i == 4 && j == 3) continue;
-                }
-                TextField tf = new TextField();
-                tf.setLayoutX(10 + i * 40);
-                tf.setLayoutY(10 + j * 40);
-                tf.setPrefWidth(40);
-                tf.setPrefHeight(40);
-                tf.focusedProperty().addListener(new ChangeListener<Boolean>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                        int x = (int) (tf.getLayoutX() - 90) / 40;
-                        int y = (int) (tf.getLayoutY() - 90) / 40;
-                        if (!newValue.booleanValue()) {
-                            try {
-                                neighbors.put(new ArrayList<>(Arrays.asList(x, y)), Double.parseDouble(tf.getText()));
-                            } catch (NumberFormatException e) {
-                                tf.setText("");
-                            }
-                            System.out.println(neighbors);
-                        }
+        pane_neighbors.getChildren().clear();
+        if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {
+            List<List<Integer>> oldNeighbors = Arrays.stream(Main.getMoteur().getAutomate().getVoisinage()).map(l -> Arrays.stream(l).boxed().toList()).toList();
+            List<Double> oldWeights = sumRule.getWeightNeighbour();
+            neighbors.clear();
+            for (int i = 0; i < oldNeighbors.size(); i++) {
+                neighbors.put(new ArrayList<>(oldNeighbors.get(i)), oldWeights.get(i));
+            }
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (is_hexa.isSelected()){
+                        if (i == 0 && j == 0) continue;
+                        if (i == 1 && j == 0) continue;
+                        if (i == 0 && j == 1) continue;
+                        if (i == 4 && j == 4) continue;
+                        if (i == 3 && j == 4) continue;
+                        if (i == 4 && j == 3) continue;
                     }
-                });
-                pane_neighbors.getChildren().add(tf);
+                    TextField tf = new TextField();
+                    tf.setLayoutX(10 + i * 40);
+                    tf.setLayoutY(10 + j * 40);
+                    tf.setPrefWidth(40);
+                    tf.setPrefHeight(40);
+                    if (neighbors.containsKey(new ArrayList<>(Arrays.asList(j-2, i-2)))) {
+                        tf.setText(neighbors.get(new ArrayList<>(Arrays.asList(j-2, i-2))).toString());
+                    }
+                    tf.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                        @Override
+                        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                            int x = (int) (tf.getLayoutX() - 90) / 40;
+                            int y = (int) (tf.getLayoutY() - 90) / 40;
+                            if (!newValue.booleanValue()) {
+                                try {
+                                    neighbors.put(new ArrayList<>(Arrays.asList(y, x)), Double.parseDouble(tf.getText()));
+                                } catch (NumberFormatException e) {
+                                    tf.setText("");
+                                }
+                                System.out.println(neighbors);
+                            }
+                        }
+                    });
+                    pane_neighbors.getChildren().add(tf);
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (is_hexa.isSelected()){
+                        if (i == 0 && j == 0) continue;
+                        if (i == 1 && j == 0) continue;
+                        if (i == 0 && j == 1) continue;
+                        if (i == 4 && j == 4) continue;
+                        if (i == 3 && j == 4) continue;
+                        if (i == 4 && j == 3) continue;
+                    }
+                    TextField tf = new TextField();
+                    tf.setLayoutX(10 + i * 40);
+                    tf.setLayoutY(10 + j * 40);
+                    tf.setPrefWidth(40);
+                    tf.setPrefHeight(40);
+                    tf.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                        @Override
+                        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                            int x = (int) (tf.getLayoutX() - 90) / 40;
+                            int y = (int) (tf.getLayoutY() - 90) / 40;
+                            if (!newValue.booleanValue()) {
+                                try {
+                                    neighbors.put(new ArrayList<>(Arrays.asList(x, y)), Double.parseDouble(tf.getText()));
+                                } catch (NumberFormatException e) {
+                                    tf.setText("");
+                                }
+                                System.out.println(neighbors);
+                            }
+                        }
+                    });
+                    pane_neighbors.getChildren().add(tf);
+                }
             }
         }
     }

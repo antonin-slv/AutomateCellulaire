@@ -33,6 +33,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
+import lombok.Setter;
 import org.w3c.dom.css.Rect;
 
 import javax.swing.event.ChangeListener;
@@ -48,13 +49,14 @@ import java.util.stream.Stream;
 
 public class GameController implements Initializable {
 
-    Moteur moteur ;
-    private String rulesPath;
+    @Setter
     private int gridSize = 150;
     private Rectangle[][] cells = new Rectangle[gridSize][gridSize];
     private Polygon[][] hexaCells = new Polygon[gridSize][gridSize];
-    private String[] colors;
-    private String[] alphabet;
+    @Setter
+    private static String[] colors;
+    @Setter
+    private static String[] alphabet;
     private String selectedColor;
 
     @FXML
@@ -88,23 +90,9 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("config.json"))) {
-            JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
-            this.rulesPath = json.get("rule").getAsString();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            URL rulesPath = Main.class.getClassLoader().getResource("rules/"+this.rulesPath);
-            this.moteur = new Moteur("rules/"+this.rulesPath, gridSize);
-            paramsFromJson(rulesPath.getPath());
-            this.moteur.randomizeGrid();
-        }catch (Exception e){
-            e.printStackTrace();
-            System.exit(1);
-        }
+        System.out.println("GameController initialize");
+
+        Main.getMoteur().randomizeGrid();
 
         speedSlider.setMin(50);
         speedSlider.setMax(500);
@@ -131,12 +119,19 @@ public class GameController implements Initializable {
                 };
 
         cmb_colors.setOnAction(event_cmb);
-        initPaneHexa();
-        //initPane();
+        if (Main.isHexa()) {
+            initPaneHexa();
+        } else {
+            initPane();
+        }
 
         btn_update_once.setOnAction(event -> {
-            this.moteur.update();
-            displayPaneHexa();
+            Main.getMoteur().update();
+            if (Main.isHexa()) {
+                displayPaneHexa();
+            } else {
+                displayPane();
+            }
         });
 
         btn_play.setOnAction(event -> {
@@ -150,7 +145,7 @@ public class GameController implements Initializable {
 
         btn_save.setOnAction(event -> {
             try {
-                this.moteur.saveGrid(null);
+                Main.getMoteur().saveGrid(null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -180,8 +175,12 @@ public class GameController implements Initializable {
         KeyFrame keyFrame = new KeyFrame(Duration.millis(gameSpeed), e -> {
             //This is the stuff that will be done each interval.
             //Generate the next game board state.
-            moteur.update();
-            displayPaneHexa();
+            Main.getMoteur().update();
+            if (Main.isHexa()) {
+                displayPaneHexa();
+            } else {
+                displayPane();
+            }
             //Update the generation.
             //generation.set(generation.get() + 1);
         });
@@ -237,7 +236,7 @@ public class GameController implements Initializable {
                 Rectangle cellRect = new Rectangle();
                 cellRect.setHeight(cellSize);
                 cellRect.setWidth(cellSize);
-                int etat = this.moteur.getEtat(new int[]{i, j});
+                int etat = Main.getMoteur().getEtat(new int[]{i, j});
                 if (etat >= this.colors.length){
                     if (alphabet.length == 1){
                         cellRect.setFill(Color.web(this.colors[etat%colors.length]));
@@ -269,7 +268,7 @@ public class GameController implements Initializable {
 
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                int etat = this.moteur.getEtat(new int[]{i, j});
+                int etat = Main.getMoteur().getEtat(new int[]{i, j});
                 if  (alphabet.length == 1){
                     etat = etat%colors.length;
                 }
@@ -285,11 +284,11 @@ public class GameController implements Initializable {
         Rectangle eventSource = (Rectangle) event.getSource();
         double col = eventSource.getX()/(650/gridSize);
         double row = eventSource.getY()/(650/gridSize);
-        int etat = this.moteur.getEtat(new int[]{(int) col, (int) row});
+        int etat = Main.getMoteur().getEtat(new int[]{(int) col, (int) row});
         if (selectedColor != null){
             etat = Arrays.asList(this.colors).indexOf(selectedColor);
         }
-        this.moteur.setEtat(new int[]{(int) row, (int) col}, etat);
+        Main.getMoteur().setEtat(new int[]{(int) row, (int) col}, etat);
         displayPane();
     }
     private void initPaneHexa(){
@@ -316,7 +315,7 @@ public class GameController implements Initializable {
                         0.0 + cellSize/2, 0.0+cellSize/4*INVcos30,
                         0.0 + cellSize/2, 0.0-cellSize/4*INVcos30
                 });
-                int etat = this.moteur.getEtat(new int[]{j, i-j/2%gridSize});
+                int etat = Main.getMoteur().getEtat(new int[]{j, i-j/2%gridSize});
                 if (etat >= this.colors.length){
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
@@ -336,7 +335,7 @@ public class GameController implements Initializable {
 
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                int etat = this.moteur.getEtat(new int[]{i, j});
+                int etat = Main.getMoteur().getEtat(new int[]{i, j});
                 if (etat >= this.colors.length){
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
@@ -349,11 +348,11 @@ public class GameController implements Initializable {
         Polygon tile = (Polygon) event.getSource();
         int x = (int) (tile.getLayoutX()* gridSize/ 650);
         int y = (int) (tile.getLayoutY() * gridSize / (Math.sqrt(3)*325));
-        int etat = this.moteur.getEtat(new int[]{y, x-y/2%gridSize});
+        int etat = Main.getMoteur().getEtat(new int[]{y, x-y/2%gridSize});
         if (selectedColor != null){
             etat = Arrays.asList(this.colors).indexOf(selectedColor);
         }
-        this.moteur.setEtat(new int[]{y, x}, etat);
+        Main.getMoteur().setEtat(new int[]{y, x}, etat);
         displayPaneHexa();
     }
 }

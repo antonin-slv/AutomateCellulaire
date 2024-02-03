@@ -10,5 +10,7 @@
       <Button fx:id="btn_play" layoutX="248.0" layoutY="350.0" mnemonicParsing="false" text="PLAY" />
       <Pane fx:id="pane_neighbors" layoutX="386.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
       <CheckBox fx:id="is_hexa" layoutX="296.0" layoutY="85.0" mnemonicParsing="false" text="CheckBox" />
+      <TextField fx:id="tf_filename" layoutX="386.0" layoutY="350.0" />
+      <Button fx:id="btn_load" layoutX="173.0" layoutY="350.0" mnemonicParsing="false" text="LOAD" />
    </children>
 </AnchorPane>

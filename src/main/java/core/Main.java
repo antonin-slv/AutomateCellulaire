@@ -15,6 +15,7 @@ import rules.RuleDeserializer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -26,16 +27,19 @@ public class Main extends Application {
     @Getter
     private static Moteur moteur;
 
+    @Setter
+    @Getter
+    private static boolean isHexa = false;
+
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(new TypeToken<GameRule>() {}.getType(), new RuleDeserializer())
+            .setPrettyPrinting()
             .create();
 
     public static void main(String[] args) throws IOException {
-
-//        URL rulesPath = Main.class.getClassLoader().getResource("rules/Major.json");
-//        URL gridPath = Main.class.getClassLoader().getResource("grids/grid1.json");
-//        Moteur moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), 10);
+          URL rulesPath = Main.class.getClassLoader().getResource("rules/JDLV.json");
+          moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), 150);
 //        moteur.randomizeGrid();
 //        moteur.print();
 //        moteur.update();
@@ -56,4 +60,5 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
 }
