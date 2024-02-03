@@ -158,7 +158,7 @@ public class MapCreatorController implements Initializable {
         }
     }
     public void initPane(){
-
+        pane.getChildren().clear();
         this.cells = new Rectangle[this.grid.getSize()][this.grid.getSize()];
         this.pane.getChildren().clear();
         int gridSize = this.grid.getSize();
@@ -208,6 +208,7 @@ public class MapCreatorController implements Initializable {
         displayPane();
     }
     private void initPaneHexa(){
+        pane.getChildren().clear();
         this.hexaCells = new Polygon[this.grid.getSize()][this.grid.getSize()];
         int gridSize = this.grid.getSize();
         double cos30 = Math.sqrt(3)/2;

@@ -58,5 +58,8 @@ public class Main extends Application {
     public static void setHexa(boolean hexa){
         moteur.getAutomate().setHexa(hexa);
     }
+    public static String getRulesPath(){
+        return moteur.getRulesPath();
+    }
 
 }

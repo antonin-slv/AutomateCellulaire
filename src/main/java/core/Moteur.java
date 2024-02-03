@@ -10,10 +10,13 @@ public class Moteur {
     private final Automate automate;
     @Setter
     private Grid grid;
+    @Getter
+    private String rulesPath;
 
 
 
     public Moteur(String rulesPath,int size) throws IOException {
+        this.rulesPath = rulesPath;
         this.automate = Automate.fromJson(rulesPath);
         this.grid = new Grid(automate.getDimension(), size);
     }

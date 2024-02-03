@@ -45,16 +45,24 @@ public class AutomateCreatorController implements Initializable{
 
     @FXML
     private Button btn_load;
+
+    private String path;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
 
         cb_select_rule.getItems().addAll(getRules());
-        cb_select_rule.getSelectionModel().select(0);
+        cb_select_rule.setOnAction(event -> {
+            path = "rules/" + cb_select_rule.getValue();
+        });
+        path = Main.getRulesPath();
+        is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
+
+        cb_select_rule.getSelectionModel().select(cb_select_rule.getItems().indexOf(path.split("/")[1]));
 
         btn_play.setOnAction(event -> {
                     save();
-                    try (BufferedReader reader = new BufferedReader(new FileReader("rules/" + cb_select_rule.getValue()))) {
+                    try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
                         JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
                         GameController.setAlphabet(json.get("alphabet").getAsJsonArray().asList().stream().map(JsonElement::getAsString).toArray(String[]::new));
                         GameController.setColors(json.get("colors").getAsJsonArray().asList().stream().map(JsonElement::getAsString).toArray(String[]::new));
@@ -77,8 +85,8 @@ public class AutomateCreatorController implements Initializable{
                 Grid grid = Main.getMoteur().getGrid();
                 Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), 150));
                 Main.getMoteur().setGrid(grid);
+                is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
 
-                Main.setHexa(is_hexa.isSelected());
                 displayNeighbors();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -87,6 +95,7 @@ public class AutomateCreatorController implements Initializable{
         });
 
         is_hexa.setOnAction(event -> {
+            Main.setHexa(is_hexa.isSelected());
             neighbors.clear();
             displayNeighbors();
         });
