@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
@@ -36,7 +37,7 @@ public class MenuController implements Initializable {
 
         btn_start.setOnAction(event -> {
                     try {
-                        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("javafx/simulation.fxml"));
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("javafx/simulation.fxml")));
                         Scene scene = new Scene(root);
                         Main.getStage().setScene(scene);
                     } catch (Exception e) {
@@ -48,7 +49,7 @@ public class MenuController implements Initializable {
 
         btn_modify_automate.setOnAction(event -> {
                     try {
-                        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("javafx/automateCreator.fxml"));
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("javafx/automateCreator.fxml")));
                         Scene scene = new Scene(root);
                         Main.getStage().setScene(scene);
                     } catch (Exception e) {
@@ -60,7 +61,7 @@ public class MenuController implements Initializable {
 
         btn_modify_map.setOnAction(event -> {
                     try {
-                        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("javafx/mapCreator.fxml"));
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("javafx/mapCreator.fxml")));
                         Scene scene = new Scene(root);
                         Main.getStage().setScene(scene);
                     } catch (Exception e) {
@@ -72,7 +73,8 @@ public class MenuController implements Initializable {
 
         lbl_info_automate.setText(Main.getMoteur() == null ? "No rules loaded" : Main.getMoteur().getRules());
 
-//        lbl_info_map.setText();
+        lbl_info_map.setText(Main.getMoteur() == null ? "No map loaded" :  "dim : " + Main.getMoteur().getGrid().getDim() + "\nsize : " + Main.getMoteur().getGrid().getSize());
+
     }
 
 }

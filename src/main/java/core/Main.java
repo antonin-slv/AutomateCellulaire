@@ -38,8 +38,8 @@ public class Main extends Application {
             .create();
 
     public static void main(String[] args) throws IOException {
-          URL rulesPath = Main.class.getClassLoader().getResource("rules/RealWoodFire.json");
-          moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), 150);
+          URL rulesPath = Main.class.getClassLoader().getResource("rules/JDLV.json");
+          moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), 20);
 //        moteur.randomizeGrid();
 //        moteur.print();
 //        moteur.update();

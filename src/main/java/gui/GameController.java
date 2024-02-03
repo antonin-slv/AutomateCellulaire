@@ -92,8 +92,6 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("GameController initialize");
 
-        Main.getMoteur().randomizeGrid();
-
         speedSlider.setMin(50);
         speedSlider.setMax(500);
         speedSlider.setValue(500 - gameSpeed + 50);

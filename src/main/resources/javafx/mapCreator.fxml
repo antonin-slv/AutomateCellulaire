@@ -40,50 +40,41 @@
                             <HBox alignment="CENTER" layoutX="10.0" layoutY="44.0" prefHeight="49.0" prefWidth="249.0">
                                 <children>
                                     <Button fx:id="btn_save" mnemonicParsing="false" text="Save as" />
-                           <TextField fx:id="fild_save" />
+                                    <TextField fx:id="fild_save" />
                                 </children>
                                 <VBox.margin>
                                     <Insets />
                                 </VBox.margin>
                             </HBox>
-                     <HBox layoutX="10.0" layoutY="446.0" prefHeight="82.0" prefWidth="249.0">
-                        <children>
-                           <Label alignment="TOP_LEFT" prefWidth="80.0" text="New:">
-                              <font>
-                                 <Font size="18.0" />
-                              </font>
-                              <HBox.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                              </HBox.margin>
-                           </Label>
-                           <VBox prefHeight="426.0" prefWidth="162.0">
-                              <children>
-                                 <HBox prefHeight="25.0" prefWidth="161.0">
-                                    <children>
-                                       <TextField fx:id="fild_size_x" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="60.0" promptText="size x" />
-                                       <Label prefHeight="63.0" prefWidth="1.0" text="X">
-                                          <HBox.margin>
-                                             <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                                          </HBox.margin>
-                                       </Label>
-                                       <TextField fx:id="fild_size_y" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="60.0" promptText="size y">
-                                          <HBox.margin>
-                                             <Insets />
-                                          </HBox.margin></TextField>
-                                    </children>
-                                    <VBox.margin>
-                                       <Insets top="10.0" />
-                                    </VBox.margin>
-                                 </HBox>
-                                 <Button fx:id="btn_new" mnemonicParsing="false" text="apply">
-                                    <VBox.margin>
-                                       <Insets top="10.0" />
-                                    </VBox.margin>
-                                 </Button>
-                              </children>
-                           </VBox>
-                        </children>
-                     </HBox>
+                            <HBox layoutX="10.0" layoutY="446.0" prefHeight="82.0" prefWidth="249.0">
+                                <children>
+                                    <Label alignment="TOP_LEFT" prefWidth="80.0" text="New:">
+                                        <font>
+                                            <Font size="18.0" />
+                                        </font>
+                                        <HBox.margin>
+                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                        </HBox.margin>
+                                    </Label>
+                                    <VBox prefHeight="426.0" prefWidth="162.0">
+                                        <children>
+                                            <HBox prefHeight="25.0" prefWidth="161.0">
+                                                <children>
+                                                    <TextField fx:id="fild_size" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="size" />
+                                                </children>
+                                                <VBox.margin>
+                                                    <Insets top="10.0" />
+                                                </VBox.margin>
+                                            </HBox>
+                                            <Button fx:id="btn_new" mnemonicParsing="false" text="apply">
+                                                <VBox.margin>
+                                                    <Insets top="10.0" />
+                                                </VBox.margin>
+                                            </Button>
+                                        </children>
+                                    </VBox>
+                                </children>
+                            </HBox>
                             <HBox layoutX="10.0" layoutY="195.0" prefHeight="97.0" prefWidth="249.0">
                                 <children>
                                     <Label alignment="TOP_LEFT" prefHeight="27.0" prefWidth="80.0" text="Draw :">
@@ -110,7 +101,7 @@
                                     </VBox>
                                 </children>
                             </HBox>
-                            <HBox layoutX="10.0" layoutY="215.0" prefHeight="124.0" prefWidth="249.0">
+                            <HBox layoutX="10.0" layoutY="215.0" prefHeight="85.0" prefWidth="249.0">
                                 <children>
                                     <Label alignment="TOP_LEFT" prefWidth="80.0" text="Replace :">
                                         <font>
@@ -122,26 +113,37 @@
                                     </Label>
                                     <VBox prefHeight="426.0" prefWidth="162.0">
                                         <children>
-                                            <ComboBox fx:id="cb_replace1" prefWidth="150.0">
-                                                <VBox.margin>
-                                                    <Insets top="10.0" />
-                                                </VBox.margin>
-                                            </ComboBox>
-                                            <ComboBox fx:id="cb_replace2" layoutX="10.0" layoutY="20.0" prefWidth="150.0">
-                                                <VBox.margin>
-                                                    <Insets top="10.0" />
-                                                </VBox.margin>
-                                            </ComboBox>
-                                 <Button fx:id="btn_replace" mnemonicParsing="false" text="apply">
+                                 <HBox prefHeight="25.0" prefWidth="161.0">
+                                    <children>
+                                       <TextField fx:id="fild_replace_1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="60.0" promptText="Type 1" />
+                                       <Label prefHeight="63.0" prefWidth="14.0" text="-&gt;">
+                                          <HBox.margin>
+                                             <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                          </HBox.margin>
+                                       </Label>
+                                       <TextField fx:id="fild_replace_2" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="60.0" promptText="Type 2">
+                                          <HBox.margin>
+                                             <Insets />
+                                          </HBox.margin>
+                                       </TextField>
+                                    </children>
+                                    <opaqueInsets>
+                                       <Insets />
+                                    </opaqueInsets>
                                     <VBox.margin>
                                        <Insets top="10.0" />
                                     </VBox.margin>
-                                 </Button>
+                                 </HBox>
+                                            <Button fx:id="btn_replace" mnemonicParsing="false" text="apply">
+                                                <VBox.margin>
+                                                    <Insets top="10.0" />
+                                                </VBox.margin>
+                                            </Button>
                                         </children>
                                     </VBox>
                                 </children>
                             </HBox>
-                            <HBox layoutX="10.0" layoutY="312.0" prefHeight="82.0" prefWidth="249.0">
+                            <HBox layoutX="10.0" layoutY="312.0" prefHeight="155.0" prefWidth="249.0">
                                 <children>
                                     <Label alignment="TOP_LEFT" text="Random :">
                                         <font>
@@ -152,18 +154,19 @@
                                         </HBox.margin>
                                     </Label>
                                     <VBox prefHeight="426.0" prefWidth="162.0">
-                              <children>
-                                 <TextField fx:id="fild_save1" maxWidth="-Infinity" prefWidth="150.0" promptText="how many colors">
-                                    <VBox.margin>
-                                       <Insets top="10.0" />
-                                    </VBox.margin>
-                                 </TextField>
-                                 <Button fx:id="btn_random" mnemonicParsing="false" text="apply">
-                                    <VBox.margin>
-                                       <Insets top="10.0" />
-                                    </VBox.margin>
-                                 </Button>
-                              </children></VBox>
+                                        <children>
+                                            <TextField fx:id="fild_random" maxWidth="-Infinity" prefWidth="150.0" promptText="how many colors">
+                                                <VBox.margin>
+                                                    <Insets top="10.0" />
+                                                </VBox.margin>
+                                            </TextField>
+                                            <Button fx:id="btn_random" mnemonicParsing="false" text="apply">
+                                                <VBox.margin>
+                                                    <Insets top="10.0" />
+                                                </VBox.margin>
+                                            </Button>
+                                        </children>
+                                    </VBox>
                                 </children>
                             </HBox>
                             <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="249.0">

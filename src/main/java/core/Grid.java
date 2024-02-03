@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.*;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 @Getter
@@ -26,6 +27,7 @@ public class Grid {
         this.dim = dim;
         this.size = size;
         this.grid = new int[(int) Math.pow(size, dim)];
+        Arrays.fill(this.grid, 0);
     }
 
     public Grid(int dim, int size, int[] grid) {
@@ -82,13 +84,7 @@ public class Grid {
 
     public void randomize(int alphabetSize) {
         for (int i = 0; i < grid.length; i++) {
-            int etat = (int) (Math.random() * alphabetSize);
-            /*
-            if (etat == 2 || etat == 3 || etat == 0) {
-                etat = 1;
-            }
-            */
-            grid[i] = etat;
+            grid[i] = (int) (Math.random() * alphabetSize);
         }
     }
     public void continusRandomize(int max) {
@@ -215,6 +211,13 @@ public class Grid {
         }
         System.out.println();
 
+    }
+
+    public void replace(int value, int newValue){
+        for (int i = 0; i < this.grid.length; i++) {
+            if(this.grid[i] == value)
+                this.grid[i] = newValue;
+        }
     }
 }
 

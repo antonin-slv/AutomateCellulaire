@@ -8,7 +8,10 @@ import java.io.IOException;
 @Setter
 public class Moteur {
     private final Automate automate;
-    private final Grid grid;
+    @Setter
+    private Grid grid;
+
+
 
     public Moteur(String rulesPath,int size) throws IOException {
         this.automate = Automate.fromJson(rulesPath);
@@ -19,6 +22,7 @@ public class Moteur {
         this.automate = Automate.fromJson(rulesPath);
         this.grid = Grid.fromJson(gridPath);
     }
+
     public void initGrid(int[][] tab){
         for (int[] ints : tab) {
             this.grid.setCase(ints[0], ints[1]);

@@ -43,7 +43,7 @@
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="280.0">
                            <children>
                               <Label text="Map :" />
-                              <Label fx:id="lbl_info_map" prefHeight="20.0" text="lbl_info_map">
+                              <Label fx:id="lbl_info_map" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="45.0" prefWidth="67.0" text="lbl_info_map">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin></Label>
