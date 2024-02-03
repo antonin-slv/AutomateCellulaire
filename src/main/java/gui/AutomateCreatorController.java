@@ -94,6 +94,8 @@ public class AutomateCreatorController implements Initializable{
         btn_save.setOnAction(event -> {
             try {
                 save();
+                File directory = new File("rules");
+                directory.mkdirs();
                 Main.getMoteur().getAutomate().toJson("rules/" + tf_filename.getText() + ".json");
             } catch (IOException e) {
                 throw new RuntimeException(e);

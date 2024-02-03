@@ -1,7 +1,6 @@
 {
   "dimension" : 2,
   "alphabet": ["void", "forest", "fire", "dead"],
-  "isHexa" : true,
   "colors": ["#FFFFFF", "#107C10", "#FF0000", "#000000"],
   "voisinage": [[0,0],[-1,0],[-1,1],[0,1],[1,0],[1,-1],[0,-1]],
   "regle": {
