@@ -1,17 +1,12 @@
 package core;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.util.Duration;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
-
+@Getter
+@Setter
 public class Moteur {
-    @Getter
     private final Automate automate;
     private final Grid grid;
 

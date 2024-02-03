@@ -58,7 +58,17 @@ public class MenuController implements Initializable {
                 }
         );
 
-        btn_modify_map.setOnAction(event -> System.out.println("LOAD MAP!"));
+        btn_modify_map.setOnAction(event -> {
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("javafx/mapCreator.fxml"));
+                        Scene scene = new Scene(root);
+                        Main.getStage().setScene(scene);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                }
+        );
 
         lbl_info_automate.setText(Main.getMoteur() == null ? "No rules loaded" : Main.getMoteur().getRules());
 
