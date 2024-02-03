@@ -32,8 +32,7 @@ public class Main extends Application {
             .create();
 
     public static void main(String[] args) throws IOException {
-          URL rulesPath = Main.class.getClassLoader().getResource("rules/JDLV.json");
-          moteur = new Moteur(Objects.requireNonNull(rulesPath).getPath(), 20);
+          moteur = new Moteur("rules/JDLV.json", 20);
 
           launch(); // lancer javafx
     }
