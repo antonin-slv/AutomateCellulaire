@@ -133,6 +133,7 @@ public class AutomateCreatorController implements Initializable{
         );
 
         btn_load.setOnAction(event -> {
+
             try {
                 Grid oldGrid = Main.getMoteur().getGrid();
                 int oldDimentions = oldGrid.getDim();
