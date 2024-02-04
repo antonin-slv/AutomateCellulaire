@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * use Map( arrangement => nextValue) containing all possibilities of neighborhood to determine the next state of the cell
  * !!! arrangement must be in the same order as the declaration of the neighbours
  * plus, the alphabet size must be 9 or less otherwise, the rule will be unpredictable or crash.
- * In fact we guarantee nothing beyond 2 states
+ * In facts, we guarantee nothing beyond 2 states
  * @see rules.GameRule
  */
 @Setter

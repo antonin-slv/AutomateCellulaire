@@ -2,11 +2,11 @@ package rules;
 
 
 /**
- * Interface that represents a rule of a cellular Automate
+ * Interface that represents a rule of a cellular automaton
  * <br />
  * A rule is a mainly a function.
  * It is used to determine the next state of a cell based on the state of its neighborhood.
- * States are represented by integers, that are indexes of their names in the alphabet of the Automate
+ * States are represented by integers, that are indexes of their names in the alphabet of the automaton
  * @see core.Automate
  */
 @FunctionalInterface

@@ -13,9 +13,9 @@ import java.util.List;
 
 
 /**
- * Class that represents a Cellular Automate
+ * Class that represents a Cellular automaton
  * <br />
- * An Automate is defined by:
+ * An automaton is defined by:
  * <ul>
  *     <li>Its dimension</li>
  *     <li>The neighborhood of each cell</li>
@@ -28,7 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Automate {
     /**
-     * boolean that indicates if the Automate is hexagonal
+     * boolean that indicates if the automaton is hexagonal
      */
     @Getter
     @Setter
@@ -41,14 +41,14 @@ public class Automate {
     private int dimension;
 
     /**
-     * List of the names of each state of the Automate
-     * if it is a continuous Automate, the list contains only the max value of the Automate
+     * List of the names of each state of the automaton
+     * if it is a continuous automaton, the list contains only the max value of the automaton
      */
     @Setter
     private List<String> alphabet;
     /**
-     * List of the colors of each state of the Automate
-     * if it is a continuous Automate, the list contains only the number of colors used
+     * List of the colors of each state of the automaton
+     * if it is a continuous automaton, the list contains only the number of colors used
      */
     @Setter
     private List<String> colors;
@@ -60,16 +60,16 @@ public class Automate {
     private int[][] voisinage;
 
     /**
-     * Rule of the Automate
+     * Rule of the automaton
      */
     @Getter
     private GameRule regle;
 
 
     /**
-     * Function that creates an Automate object from a json file containing its definition
-     * @param rulesPath path of the json file containing the definition of the Automate
-     * @return Automate The given Automate
+     * Function that creates an automaton object from a json file containing its definition
+     * @param rulesPath path of the json file containing the definition of the automaton
+     * @return automaton The given automaton
      *
      * @throws IOException if there is an error while reading the file
      */
@@ -80,7 +80,7 @@ public class Automate {
     }
 
     /**
-     * Function that saves the configuration of the Automate in a json file
+     * Function that saves the configuration of the automaton in a json file
      *
      * @param rulesPath path of the json file where the configuration will be saved
      * @throws IOException if there is an error while writing the file

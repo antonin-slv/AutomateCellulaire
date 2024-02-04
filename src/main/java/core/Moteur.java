@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * This class is the Engine of the program
  * <br />
- *  It is the link between Automate and Grids
+ *  It is the link between automaton and Grids
  * @see Automate
  * @see Grid
  */
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class Moteur {
 
     /**
-     * Automate used by the engine
+     * automaton used by the engine
      * @see Automate
      */
     private final Automate automate;
@@ -29,7 +29,7 @@ public class Moteur {
     private Grid grid;
 
     /**
-     * Path of the json file containing the definition of the Automate
+     * Path of the json file containing the definition of the automaton
      */
     @Getter
     private String rulesPath;
@@ -37,7 +37,7 @@ public class Moteur {
 
     /**
      * Constructor of the Moteur class
-     * @param rulesPath path of the json file containing the definition of the Automate
+     * @param rulesPath path of the json file containing the definition of the automaton
      * @param size size of the grid (max(index)+1 for a given coordinate)
      * @throws IOException if there is an error while reading the file
      */
@@ -49,7 +49,7 @@ public class Moteur {
 
     /**
      * Constructor of the Moteur class
-     * @param rulesPath path of the json file containing the definition of the Automate
+     * @param rulesPath path of the json file containing the definition of the automaton
      * @param gridPath path of the json file containing the declaration of the Grid
      * @throws IOException if there is an error while reading a file
      */
@@ -78,7 +78,7 @@ public class Moteur {
     }
 
     /**
-     * Function that updates the grid according to the rules of the Automate
+     * Function that updates the grid according to the rules of the automaton
      */
     public void update() {
 
@@ -109,8 +109,8 @@ public class Moteur {
     }
 
     /**
-     * Function that returns the rules of the Automate
-     * @return rules of the Automate in a String
+     * Function that returns the rules of the automaton
+     * @return rules of the automaton in a String
      */
     public String getRules(){
         return this.automate.getRegle().toString();

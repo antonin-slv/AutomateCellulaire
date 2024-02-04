@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * Class that represents a Grid.
  * <br />
  * This class has a 1D array that can be accessed as an N-D array.
- * It stores the states of the cells for an Automate.
+ * It stores the states of the cells for an automaton.
  * Those states are represented by integers.
  * <br />
  * the access method for out of bounds (index>=size) neighbors is cyclic by default
@@ -130,9 +130,9 @@ public class Grid {
     /**
      * Function that randomizes the states of the cells
      * <br />
-     * do not use for Continus rules
+     * do not use for continuous  rules
      *
-     * @param alphabetSize size of the alphabet of the Automate
+     * @param alphabetSize size of the alphabet of the automaton
      */
     public void randomize(int alphabetSize) {
         for (int i = 0; i < tabGrid.length; i++) {
