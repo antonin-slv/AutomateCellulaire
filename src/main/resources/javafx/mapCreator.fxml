@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="650.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MapCreatorController">
+<VBox prefHeight="650.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MapCreatorController">
     <HBox prefHeight="653.0" prefWidth="800.0">
         <Pane fx:id="pane" prefHeight="650.0" prefWidth="650.0" />
         <HBox prefHeight="650.0" prefWidth="250.0">
@@ -26,15 +31,30 @@
                             </HBox.margin>
                         </Label>
                 </HBox>
-                <HBox alignment="CENTER" prefHeight="49.0" prefWidth="249.0">
+                <HBox alignment="CENTER" prefHeight="0.0" prefWidth="249.0">
                         <Button fx:id="btn_load" mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="Load" />
-                        <ComboBox fx:id="cb_load" prefWidth="150.0" />
+                        <ComboBox fx:id="cb_load" prefWidth="150.0">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin></ComboBox>
                 </HBox>
-                <HBox alignment="CENTER" layoutX="10.0" layoutY="44.0" prefHeight="49.0" prefWidth="249.0">
+            <VBox alignment="CENTER" prefHeight="10.0" prefWidth="249.0">
+               <children>
+                  <Label fx:id="lbl_load_alert" alignment="TOP_LEFT" prefHeight="10.0" prefWidth="184.0" text="/!\ Try to load Json of wrong dimension" textFill="RED">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="44.0" prefHeight="0.0" prefWidth="249.0">
                         <Button fx:id="btn_save" mnemonicParsing="false" text="Save as" />
-                        <TextField fx:id="fild_save" />
+                        <TextField fx:id="fild_save" prefHeight="0.0" prefWidth="150.0">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin></TextField>
                     <VBox.margin>
-                        <Insets />
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                     </VBox.margin>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="446.0" prefHeight="82.0" prefWidth="249.0">
@@ -48,7 +68,7 @@
                         </Label>
                         <VBox prefHeight="426.0" prefWidth="162.0">
                                 <HBox prefHeight="25.0" prefWidth="161.0">
-                                        <TextField fx:id="fild_size" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="size" />
+                                        <TextField fx:id="fild_size" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="140.0" promptText="size" />
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>
@@ -79,12 +99,12 @@
                   </children>
                </VBox>
                         <VBox prefHeight="426.0" prefWidth="162.0">
-                                <ComboBox fx:id="cb_colors" prefWidth="150.0">
+                                <ComboBox fx:id="cb_colors" prefWidth="140.0">
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>
                                 </ComboBox>
-                                <ComboBox fx:id="cb_pen" layoutX="10.0" layoutY="20.0" prefWidth="150.0">
+                                <ComboBox fx:id="cb_pen" layoutX="10.0" layoutY="20.0" prefWidth="140.0">
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>

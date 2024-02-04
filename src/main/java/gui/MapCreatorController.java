@@ -53,6 +53,10 @@ public class MapCreatorController implements Initializable {
     /** ComboBox to select the grid to load */
     @FXML
     private ComboBox<String> cb_load;
+    /** alert when load a wrong dimension file */
+    @FXML
+    private Label lbl_load_alert;
+    public static boolean bad_load = false;
     /** Button to save the grid */
     @FXML
     private Button btn_save;
@@ -71,7 +75,6 @@ public class MapCreatorController implements Initializable {
     /** ComboBox to select the pen size */
     @FXML
     private ComboBox<String> cb_pen;
-
     /** TextField to write the state to be replaced */
     @FXML
     private Label lbl_pen;
@@ -103,12 +106,13 @@ public class MapCreatorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         this.grid = Main.getMoteur().getGrid();
-
+        bad_load = false;
         cb_load.getItems().addAll(getMaps());
         cb_pen.getItems().addAll("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20");
         cb_pen.getSelectionModel().select(0);
         cb_pen.setVisible(!Main.isHexa());
         lbl_pen.setVisible(!Main.isHexa());
+        lbl_load_alert.setVisible(false);
 
         cb_colors.getItems().addAll(colors);
         cb_colors.getSelectionModel().select(0);
@@ -170,6 +174,7 @@ public class MapCreatorController implements Initializable {
                         return;
                     try {
                         this.grid = Grid.fromJson("save/" + cb_load.getValue());
+                        lbl_load_alert.setVisible(bad_load);
                         if (Main.getDimension() == 1) {
                             int[] newGrid = new int[this.grid.getSize()];
                             for (int i = 0; i < this.grid.getSize(); i++) {
@@ -177,6 +182,7 @@ public class MapCreatorController implements Initializable {
                             }
                             this.grid = new Grid(1, this.grid.getSize(), newGrid);
                         }
+
                         if (Main.isHexa()) {
                             initPaneHexa();
                         } else {
