@@ -250,18 +250,22 @@ public class GameController implements Initializable {
      */
     public void initializeColorsForContinue()
     {
-            int colorNumber = Integer.parseInt(colors[0]);
+            //verification of the initialisations of colors
+        int colorNumber = colors.length;
+        if (colors.length <= 1) {
+            colorNumber = Integer.parseInt(colors[0]);
             colors = new String[colorNumber];
+        }
 
-            for (int i = 0; i < colorNumber; i++) {
-                int r = (colorNumber - i) * 255 / colorNumber;
-                int b = i * 255 / colorNumber;
-                int g = (int) (Math.random() * 255); // * colorNumber / colorNumber;
-                int hex = (r << 16) + (g << 8) + b;
-                String hexStr = Integer.toHexString(hex);
-                hexStr = "0".repeat(6 - hexStr.length()) + hexStr;
-                colors[i] = String.format("#" + hexStr);
-            }
+        for (int i = 0; i < colorNumber; i++) {
+            int r = (colorNumber - i) * 255 / colorNumber;
+            int b = i * 255 / colorNumber;
+            int g = (int) (Math.random() * 255); // * colorNumber / colorNumber;
+            int hex = (r << 16) + (g << 8) + b;
+            String hexStr = Integer.toHexString(hex);
+            hexStr = "0".repeat(6 - hexStr.length()) + hexStr;
+            colors[i] = String.format("#" + hexStr);
+        }
     }
 
     /**
