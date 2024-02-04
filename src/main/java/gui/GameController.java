@@ -338,12 +338,23 @@ public class GameController implements Initializable {
         String[] id = eventSource.getId().split(" ");
         int col =  Integer.parseInt(id[1]);
         int row =  Integer.parseInt(id[0]);
-        int etat = Main.getMoteur().getEtat(new int[]{col, row});
+        int etat;
+        if (Main.getDimension() == 1){
+            if (row != generation%gridSize)
+                return;
+            etat = Main.getMoteur().getEtat(new int[]{col});
+        } else {
+            etat = Main.getMoteur().getEtat(new int[]{row, col});
+        }
         if (selectedColor != null){
             etat = Arrays.asList(colors).indexOf(selectedColor);
             eventSource.setFill(Color.web(selectedColor));
         }
-        Main.getMoteur().setEtat(new int[]{row, col}, etat);
+        if (Main.getDimension() == 1){
+            Main.getMoteur().setEtat(new int[]{col}, etat);
+        } else {
+            Main.getMoteur().setEtat(new int[]{row, col}, etat);
+        }
     }
     private void initPaneHexa(){
         double cos30 = Math.sqrt(3)/2;
