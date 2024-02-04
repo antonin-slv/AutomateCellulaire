@@ -19,36 +19,80 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * The automaton creator controller.
+ * It allows to create and modify an automaton.
+ * Takes differents shapes given the dimension and display type of the grid
+ * Let load and save the automaton with json files
+ * @see javafx.fxml.Initializable
+ */
 public class AutomateCreatorController implements Initializable{
 
-    @FXML
-    private ComboBox<String> cb_select_rule;
-
+    /** button to save the automaton
+     * @see Button
+     * */
     @FXML
     private Button btn_save;
-
+    /** button to go back to the menu, where you can launch simulation
+     * @see Button
+     * */
     @FXML
     private Button btn_play;
 
+    /** zone where the neighbours are shown in non 1D case
+     * @see Pane
+     * */
     @FXML
     private Pane pane_neighbors;
 
+    /** zone where the tab is shown in 1D case
+     * @see Pane
+     * */
     @FXML
     private Pane pane_tab;
 
+    /** Map of neighbors and their weights (when non 1D)
+     * */
     private final Map<ArrayList<Integer>,Double> neighbors = new LinkedHashMap<>();
+    /** Map of rules when 1D */
     private Map<String, Integer> tab = new HashMap<>();
 
+    /** checkbox to select hexa or non hexa mode
+     * @see CheckBox
+     * */
     @FXML
     private CheckBox is_hexa;
 
+    /** textfield to write the name of the file to save
+     * @see TextField
+     * */
     @FXML
     private TextField tf_filename;
 
+    /** button to load an selected automaton in cb_select_rule
+     * @see Button
+     * */
     @FXML
     private Button btn_load;
-
+    /** combobox to select the automaton that will be loaded
+     * @see ComboBox
+     * */
+    @FXML
+    private ComboBox<String> cb_select_rule;
+    /** path for rules */
     private String path;
+
+
+    /**
+     * Function that initialize the controller
+     *
+     * initialize UI components, and set their actions
+     *
+     * @param url the url of the fxml file
+     * @param rb the resource bundle
+     * @see java.net.URL
+     * @see java.util.ResourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

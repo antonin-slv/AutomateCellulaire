@@ -31,53 +31,100 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+
+/**
+ * The game controller class.
+ * This class is the controls the game view.
+ * It is used to display the Cellular automaton and to interact with it.
+ * It also contains the game loop.
+ * @see javafx.fxml.Initializable
+ */
 public class GameController implements Initializable {
 
+    /** the size of the grid */
     @Setter
     private int gridSize;
+    /** the number of iterations of the rule */
     private int generation = 0;
+    /**
+     * square used to display the grid
+     * not set if the grid is hexagonal
+     * @see javafx.scene.shape.Rectangle
+     */
     private Rectangle[][] cells;
+    /**
+     * hexagon used to display the grid
+     * not set if the grid is square
+     * @see javafx.scene.shape.Polygon
+     */
     private Polygon[][] hexaCells;
 
+    /** colors used to represent each state
+     *  in continuous case, there is less colors than states
+     * */
     @Setter
     private static String[] colors;
+    /** name of each state of cells (or alphabet[0] == "maxValue")*/
     @Setter
     private static String[] alphabet;
 
+    /**
+     * Function that tells if the game is ready to start
+     * @return true if the colors and the alphabet are set
+     */
     public static boolean is_ready() {
         return (colors != null && alphabet != null);
     }
-    private String selectedColor;
 
+    /** selected color (used to change the cells state) */
+    private String selectedColor;
+    /** pane used to display the grid */
     @FXML
     private Pane pane;
-
+    /** label used to display the generation number*/
     @FXML
     private Label lbl_generation;
-
+    /** button used to update the grid once */
     @FXML
     private Button btn_update_once;
-
+    /** button used to play the game */
     @FXML
     private Button btn_play;
-
+    /** button used to pause the game */
     @FXML
     private Button btn_pause;
-
+    /** button used to return to main menu */
     @FXML
     private Button btn_retour;
 
+    /** combo box used to select the color */
     @FXML
     private ComboBox<String> cmb_colors;
 
+    /** slider used to change the speed of the game */
     @FXML
     private Slider speedSlider;
 
+    /** speed of the game */
     public int gameSpeed = 100;
 
     private Timeline timeLine;
+    /** boolean to true if the game is running */
     private BooleanProperty gameRunning;
 
+    /**
+     * Function that initializes the game controller.
+     * it :
+     * <ul>
+     *     <li>set the size of the grid</li>
+     *     <li>set the colors of the grid</li>
+     *     <li>set the functions associated to each element of the view</li>
+     *     <li>prepare execution</li>
+     *     //TODO : il fait quoi ?
+     * </ul>
+     * @param url (unused)
+     * @param rb (unused)
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("GameController initialize");
@@ -164,6 +211,7 @@ public class GameController implements Initializable {
         });
     }
 
+
     public void initializeTimeline(int gameSpeed) {
 
         this.gameSpeed = gameSpeed;
@@ -197,6 +245,10 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Function that initializes the colors for the continuous case
+     * it sets the colors to be used to represent the states of the cells because colors aren't define previously in that case.
+     */
     public void initializeColorsForContinue()
     {
             int colorNumber = Integer.parseInt(colors[0]);
@@ -213,12 +265,17 @@ public class GameController implements Initializable {
             }
     }
 
-
+    /**
+     * Function that starts the game
+     */
     public void play() {
         gameRunning.set(true);
         timeLine.play();
     }
 
+    /**
+     * initialize cells to be displayed for 1D grid.
+     */
     public void initPane1D(){
         pane.getChildren().clear();
 
@@ -258,6 +315,9 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * display cells for 1D grid.
+     */
     private void displayPane1D(){
         for (int i = 0; i < gridSize; i++) {
             int etat = Main.getMoteur().getEtat(new int[]{i});
@@ -271,6 +331,9 @@ public class GameController implements Initializable {
             cells[generation%gridSize][i].setFill(Color.web(colors[etat]));
         }
     }
+    /**
+     * initialize cells to be displayed for non hexagonal 2D grid.
+     */
     public void initPane(){
         pane.getChildren().clear();
 
@@ -304,8 +367,11 @@ public class GameController implements Initializable {
             }
         }
     }
+    /**
+     * display cells for non hexagonal 2D grid.
+     */
     private void displayPane(){
-        //vmax is used in Continus case
+        //vmax is used in continuous case
         int vmax = 0;
         if  (alphabet.length == 1)
             vmax = Integer.parseInt(alphabet[0]);
@@ -315,12 +381,12 @@ public class GameController implements Initializable {
                 if  (alphabet.length == 1){
 
                     //etat = (int) ( etat * (Math.atan(etat-moyenne) + Math.PI/2  ) * colors.length / Math.PI) %colors.length;
-                    if(etat < vmax * 2 / 5)
+                    if(etat < vmax * 0.4)
                         etat /= 2;
-                    else if(etat < 3 * vmax / 5)
+                    else if(etat < vmax *0.6)
                         etat = (int) (etat * 3 - vmax);
                     else
-                        etat = (int) (etat /2 + vmax * 2.5 / 5);
+                        etat = (int) ((etat + vmax)/2);
 
                     etat = etat%colors.length;
                 }
@@ -333,6 +399,10 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * function associated to click action on a square cell.
+     * @param event the event (click on a Rectangle whose id is "row col")
+     */
     private void changeStateRectangle(javafx.scene.input.MouseEvent event){
         Rectangle eventSource = (Rectangle) event.getSource();
         String[] id = eventSource.getId().split(" ");
@@ -356,6 +426,9 @@ public class GameController implements Initializable {
             Main.getMoteur().setEtat(new int[]{row, col}, etat);
         }
     }
+    /**
+     * initialize cells to be displayed for hexagonal grid.
+     */
     private void initPaneHexa(){
         double cos30 = Math.sqrt(3)/2;
         double INVcos30 = 1/cos30;
@@ -394,6 +467,9 @@ public class GameController implements Initializable {
             }
         }
     }
+    /**
+     * display cells for hexagonal grid.
+     */
     private void displayPaneHexa(){
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
@@ -410,6 +486,10 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * function associated to click action on a hexagonal cell.
+     * @param event the event (click on a Polygon whose id is "row col")
+     */
     private void changeStatePolygon(javafx.scene.input.MouseEvent event){
         Polygon tile = (Polygon) event.getSource();
         String[] id = tile.getId().split(" ");
