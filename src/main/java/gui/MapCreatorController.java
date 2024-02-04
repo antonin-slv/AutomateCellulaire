@@ -145,8 +145,6 @@ public class MapCreatorController implements Initializable {
                                 initPane();
                             }
                         }
-
-                        display();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
