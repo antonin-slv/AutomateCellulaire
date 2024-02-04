@@ -81,8 +81,6 @@ public class AutomateCreatorController implements Initializable{
     private ComboBox<String> cb_select_rule;
     /** path for rules */
     private String path;
-
-
     /**
      * Function that initialize the controller
      *
@@ -98,9 +96,7 @@ public class AutomateCreatorController implements Initializable{
 
 
         cb_select_rule.getItems().addAll(getRules());
-        cb_select_rule.setOnAction(event -> {
-            path = "rules/" + cb_select_rule.getValue();
-        });
+        cb_select_rule.setOnAction(event -> path = "rules/" + cb_select_rule.getValue());
         path = Main.getRulesPath();
         is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
         if (Main.getDimension() == 1) {

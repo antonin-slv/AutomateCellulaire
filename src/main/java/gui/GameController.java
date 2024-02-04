@@ -96,9 +96,6 @@ public class GameController implements Initializable {
     /** button used to return to main menu */
     @FXML
     private Button btn_retour;
-    /** button used to save the grid */
-    @FXML
-    private Button btn_save;
     /** combo box used to select the color */
     @FXML
     private ComboBox<String> cmb_colors;
@@ -173,14 +170,6 @@ public class GameController implements Initializable {
                 initPane();
             }
         }
-
-        btn_save.setOnAction(event -> {
-            try {
-                Main.getMoteur().getGrid().toJson(null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
 
         btn_update_once.setOnAction(event -> {
             Main.getMoteur().update();

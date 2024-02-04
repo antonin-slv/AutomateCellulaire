@@ -61,14 +61,23 @@
                         </VBox>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="195.0" prefHeight="97.0" prefWidth="249.0">
-                        <Label alignment="TOP_LEFT" prefHeight="27.0" prefWidth="80.0" text="Draw :">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                            </HBox.margin>
-                        </Label>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                              <Label alignment="TOP_LEFT" prefHeight="0.0" prefWidth="79.0" text="Draw :">
+                                  <font>
+                                      <Font size="18.0" />
+                                  </font>
+                        <VBox.margin>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </VBox.margin>
+                              </Label>
+                     <Label fx:id="lbl_pen" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="83.0" text="pen size :">
+                        <VBox.margin>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </VBox.margin>
+                     </Label>
+                  </children>
+               </VBox>
                         <VBox prefHeight="426.0" prefWidth="162.0">
                                 <ComboBox fx:id="cb_colors" prefWidth="150.0">
                                     <VBox.margin>

@@ -6,10 +6,10 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AutomateCreatorController">
       <ComboBox fx:id="cb_select_rule" layoutX="101.0" layoutY="114.0" prefWidth="150.0" />
-      <Button fx:id="btn_save" layoutX="22.0" layoutY="73.0" mnemonicParsing="false" prefWidth="60.0" text="SAVE" />
+      <Button fx:id="btn_save" layoutX="22.0" layoutY="73.0" mnemonicParsing="false" prefWidth="60.0" text="SAVE as" />
       <Button fx:id="btn_play" layoutX="535.0" layoutY="350.0" mnemonicParsing="false" text="Back" />
       <Pane fx:id="pane_neighbors" layoutX="386.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
-      <CheckBox fx:id="is_hexa" layoutX="293.0" layoutY="77.0" mnemonicParsing="false" text="isHexa?" />
+      <CheckBox fx:id="is_hexa" layoutX="293.0" layoutY="77.0" mnemonicParsing="false" text="Hexa Mode" />
       <TextField fx:id="tf_filename" layoutX="101.0" layoutY="73.0" />
       <Button fx:id="btn_load" layoutX="22.0" layoutY="114.0" mnemonicParsing="false" prefWidth="60.0" text="LOAD" />
    <Label layoutX="22.0" layoutY="24.0" text="Create Your Automate :">

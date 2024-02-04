@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -73,6 +74,8 @@ public class MapCreatorController implements Initializable {
 
     /** TextField to write the state to be replaced */
     @FXML
+    private Label lbl_pen;
+    @FXML
     private TextField fild_replace_1;
     /** TextField to write the state to replace with */
     @FXML
@@ -104,6 +107,8 @@ public class MapCreatorController implements Initializable {
         cb_load.getItems().addAll(getMaps());
         cb_pen.getItems().addAll("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20");
         cb_pen.getSelectionModel().select(0);
+        cb_pen.setVisible(!Main.isHexa());
+        lbl_pen.setVisible(!Main.isHexa());
 
         cb_colors.getItems().addAll(colors);
         cb_colors.getSelectionModel().select(0);
