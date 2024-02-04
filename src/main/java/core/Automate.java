@@ -62,6 +62,7 @@ public class Automate {
     /**
      * Rule of the Automate
      */
+    @Getter
     private GameRule regle;
 
 

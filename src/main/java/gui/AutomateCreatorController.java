@@ -9,13 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import rules.AvgRule;
 import rules.SumRule;
+import rules.TabRule;
 
 import java.io.*;
 import java.net.URL;
@@ -35,7 +33,11 @@ public class AutomateCreatorController implements Initializable{
     @FXML
     private Pane pane_neighbors;
 
+    @FXML
+    private Pane pane_tab;
+
     private final Map<ArrayList<Integer>,Double> neighbors = new LinkedHashMap<>();
+    private Map<String, Integer> tab = new HashMap<>();
 
     @FXML
     private CheckBox is_hexa;
@@ -57,6 +59,16 @@ public class AutomateCreatorController implements Initializable{
         });
         path = Main.getRulesPath();
         is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
+        if (Main.getDimension() == 1) {
+            is_hexa.setVisible(false);
+            is_hexa.setSelected(false);
+            tab.clear();
+            if (Main.getMoteur().getAutomate().getRegle() instanceof TabRule tabRule) tab = tabRule.getTab();
+            displayTab();
+        }
+        else
+            is_hexa.setVisible(true);
+
 
         cb_select_rule.getSelectionModel().select(cb_select_rule.getItems().indexOf(path.split("/")[1]));
 
@@ -84,8 +96,10 @@ public class AutomateCreatorController implements Initializable{
             try {
                 Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), Main.getMoteur().getGrid().getSize()));
                 if (Main.getDimension() == 1) {
+                    if (Main.getMoteur().getAutomate().getRegle() instanceof TabRule tabRule) tab = tabRule.getTab();
                     is_hexa.setVisible(false);
-                    pane_neighbors.getChildren().clear();
+                    is_hexa.setSelected(false);
+                    displayTab();
                 } else {
                     is_hexa.setVisible(true);
                     is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
@@ -113,31 +127,69 @@ public class AutomateCreatorController implements Initializable{
                 throw new RuntimeException(e);
             }
         });
-
-        displayNeighbors();
+        if (Main.getDimension() != 1) displayNeighbors();
 
     }
 
     private void save() {
-        List<List<Integer>> newNeighbors = new ArrayList<>();
-        List<Double> newWeights = new ArrayList<>();
-        for (var entry : neighbors.entrySet()) {
-            newNeighbors.add(entry.getKey());
-            newWeights.add(entry.getValue());
+        if (Main.getDimension() == 1) {
+            if (Main.getMoteur().getAutomate().getRegle() instanceof TabRule tabRule) {
+                tabRule.setTab(tab);
+            }
+        } else {
+            List<List<Integer>> newNeighbors = new ArrayList<>();
+            List<Double> newWeights = new ArrayList<>();
+            for (var entry : neighbors.entrySet()) {
+                newNeighbors.add(entry.getKey());
+                newWeights.add(entry.getValue());
+            }
+            int[][] voisinage = newNeighbors.stream().map(l -> l.stream().mapToInt(i -> i).toArray()).toArray(int[][]::new);
+            System.out.println(Arrays.deepToString(voisinage));
+            System.out.println(newWeights);
+            System.out.println(Arrays.deepToString(Main.getMoteur().getAutomate().getVoisinage()));
+            Main.getMoteur().getAutomate().setVoisinage(voisinage);
+            double sum = newWeights.stream().mapToDouble(Double::doubleValue).sum();
+            newWeights.replaceAll(aDouble -> aDouble / sum * (newNeighbors.size() - 1));
+            if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {
+                System.out.println(sumRule.getWeightNeighbour());
+                sumRule.setWeightNeighbour(newWeights);
+            }
+            if (Main.getMoteur().getAutomate().getRegle() instanceof AvgRule avgRule) {
+                avgRule.setWeightNeighbour(newWeights);
+            }
         }
-        int[][] voisinage = newNeighbors.stream().map(l -> l.stream().mapToInt(i -> i).toArray()).toArray(int[][]::new);
-        System.out.println(Arrays.deepToString(voisinage));
-        System.out.println(newWeights);
-        System.out.println(Arrays.deepToString(Main.getMoteur().getAutomate().getVoisinage()));
-        if (Main.getDimension() != 1) Main.getMoteur().getAutomate().setVoisinage(voisinage);
-        double sum = newWeights.stream().mapToDouble(Double::doubleValue).sum();
-        newWeights.replaceAll(aDouble -> aDouble / sum * (newNeighbors.size() - 1));
-        if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {
-            System.out.println(sumRule.getWeightNeighbour());
-            sumRule.setWeightNeighbour(newWeights);
-        }
-        if (Main.getMoteur().getAutomate().getRegle() instanceof AvgRule avgRule) {
-            avgRule.setWeightNeighbour(newWeights);
+    }
+
+    private void displayTab() {
+        int size = 5;
+        pane_tab.getChildren().clear();
+        pane_neighbors.getChildren().clear();
+        int i = 0;
+        System.out.println(tab);
+        for (var k : tab.keySet()) {
+            CheckBox cb = new CheckBox();
+            Label lb = new Label(k);
+            lb.setLayoutX(10 + i * 40);
+            lb.setLayoutY(10);
+            cb.setLayoutX(10 + i * 40);
+            cb.setLayoutY(30);
+            cb.setPrefWidth(40);
+            cb.setPrefHeight(40);
+            i++;
+            if (tab.get(k) == 1) {
+                cb.setSelected(true);
+            } else {
+                cb.setSelected(false);
+            }
+            cb.setOnAction (event -> {
+                if (cb.isSelected()) {
+                    tab.put(k, 1);
+                } else {
+                    tab.put(k, 0);
+                }
+            });
+            pane_tab.getChildren().add(cb);
+            pane_tab.getChildren().add(lb);
         }
     }
 
