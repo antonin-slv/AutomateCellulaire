@@ -199,14 +199,10 @@ public class AutomateCreatorController implements Initializable{
                 newWeights.add(entry.getValue());
             }
             int[][] voisinage = newNeighbors.stream().map(l -> l.stream().mapToInt(i -> i).toArray()).toArray(int[][]::new);
-            System.out.println(Arrays.deepToString(voisinage));
-            System.out.println(newWeights);
-            System.out.println(Arrays.deepToString(Main.getMoteur().getAutomate().getVoisinage()));
             Main.getMoteur().getAutomate().setVoisinage(voisinage);
             double sum = newWeights.stream().mapToDouble(Double::doubleValue).sum();
             newWeights.replaceAll(aDouble -> aDouble / sum * (newNeighbors.size() - 1));
             if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {
-                System.out.println(sumRule.getWeightNeighbour());
                 sumRule.setWeightNeighbour(newWeights);
             }
             if (Main.getMoteur().getAutomate().getRegle() instanceof AvgRule avgRule) {
@@ -250,7 +246,6 @@ public class AutomateCreatorController implements Initializable{
         pane_tab.getChildren().add(sp_regle);
         pane_tab.getChildren().add(btn_regle);
         int i = 0;
-        System.out.println(tab);
         for (var k : tab.keySet()) {
             CheckBox cb = new CheckBox();
             Label lb = new Label(k);
@@ -325,7 +320,11 @@ public class AutomateCreatorController implements Initializable{
                         int y = (int) (tf.getLayoutY() - 90) / 40;
                         if (!newValue) {
                             try {
-                                neighbors.put(new ArrayList<>(Arrays.asList(y, x)), Double.parseDouble(tf.getText()));
+                                if (tf.getText().equals("")) {
+                                    neighbors.remove(new ArrayList<>(Arrays.asList(y, x)));
+                                } else {
+                                    neighbors.put(new ArrayList<>(Arrays.asList(y, x)), Double.parseDouble(tf.getText()));
+                                }
                             } catch (NumberFormatException e) {
                                 tf.setText("");
                             }
@@ -366,7 +365,6 @@ public class AutomateCreatorController implements Initializable{
                         } else {
                             neighbors.remove(new ArrayList<>(Arrays.asList(y, x)));
                         }
-                        System.out.println(neighbors);
                     });
                     pane_neighbors.getChildren().add(cb);
                 }

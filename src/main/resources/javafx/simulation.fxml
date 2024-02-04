@@ -63,7 +63,12 @@
                            <Insets left="5.0" right="5.0" />
                         </padding>
                      </VBox>
-                     <VBox alignment="BOTTOM_RIGHT" layoutX="10.0" layoutY="321.0" prefHeight="208.0" prefWidth="251.0">
+                     <HBox alignment="CENTER" prefHeight="167.0" prefWidth="250.0">
+                        <children>
+                           <Pane fx:id="pane_counter" prefHeight="128.0" prefWidth="200.0" />
+                        </children>
+                     </HBox>
+                     <VBox alignment="BOTTOM_RIGHT" layoutX="10.0" layoutY="321.0" prefHeight="66.0" prefWidth="210.0">
                         <children>
                                 <Button fx:id="btn_retour" mnemonicParsing="false" text="Back to Menu" />
                         </children>

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * This class is the Engine of the program
@@ -29,11 +30,16 @@ public class Moteur {
     private Grid grid;
 
     /**
+     * HashMap that contains the number of occurrence of each state in the grid
+     */
+    @Getter
+    private HashMap<Integer,Integer> counter = new HashMap<>();
+
+    /**
      * Path of the json file containing the definition of the automaton
      */
     @Getter
     private String rulesPath;
-
 
     /**
      * Constructor of the Moteur class
@@ -82,6 +88,8 @@ public class Moteur {
      */
     public void update() {
 
+        this.counter.clear();
+
         //grid_temp est la grille temporaire qui va être remplie
         Grid grid_temp = new Grid(this.grid.getDim(), this.grid.getSize());
 
@@ -92,6 +100,7 @@ public class Moteur {
         for(int i = 0 ; i < grid_temp.getLenGrid(); i++){
             int[] etatVoisinage = this.grid.getEtatVoisinage(voisin, i);
             int newEtat = this.automate.applyRule(etatVoisinage);
+            if (this.automate.getAlphabet().size() != 1) this.counter.merge(newEtat, 1, Integer::sum);
             grid_temp.setCase(i, newEtat);
         }
 
@@ -132,5 +141,4 @@ public class Moteur {
     public void print() {
         this.grid.print2D();
     }
-
 }

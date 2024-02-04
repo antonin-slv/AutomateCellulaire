@@ -102,6 +102,10 @@ public class GameController implements Initializable {
     @FXML
     private Slider speedSlider;
 
+    /** pane used to display the counter */
+    @FXML
+    private Pane pane_counter;
+
     /** speed of the game */
     public int gameSpeed = 100;
 
@@ -173,6 +177,7 @@ public class GameController implements Initializable {
             Main.getMoteur().update();
             generation++;
             lbl_generation.setText("Generation : " + generation);
+            displayCounter();
             if (Main.isHexa()) {
                 displayPaneHex();
             } else {
@@ -208,6 +213,18 @@ public class GameController implements Initializable {
         });
     }
 
+    private void displayCounter() {
+        if (Main.getMoteur().getAutomate().getAlphabet().size() == 1) return;
+        pane_counter.getChildren().clear();
+        int i = 0;
+        for (var entry : Main.getMoteur().getCounter().entrySet()) {
+            Label label = new Label(Main.getMoteur().getAutomate().getAlphabet().get(entry.getKey()) + " : " + entry.getValue());
+            label.setLayoutX(0);
+            label.setLayoutY(i * 20);
+            pane_counter.getChildren().add(label);
+            i++;
+        }
+    }
 
     public void initializeTimeline(int gameSpeed) {
 
@@ -223,6 +240,7 @@ public class GameController implements Initializable {
             Main.getMoteur().update();
             generation++;
             lbl_generation.setText("Generation : " + generation);
+            displayCounter();
             if (Main.isHexa()) {
                 displayPaneHex();
             } else {
