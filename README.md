@@ -53,11 +53,6 @@ On donne un numéro à chaque règle de transition, celui-ci correspond à son �
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |  0  |  0  |  0  |  1  |  1  |  1  |  1  |  0  |
 
-### Règle de majorité
-
-L'automate de la règle de majorité est de dimension quelconque et chaque cellule peut prendre des états différents.
-La règle de transition est la suivante : une cellule prend la valeur majoritaire chez ses voisins.
-
 ### Jeu de la vie
 
 Le jeu de la vie est un automate cellulaire bidimensionnel dans lequel chaque cellule peut prendre deux états différents : morte ou vivante.
@@ -79,13 +74,17 @@ Les règles de transition sont les suivantes :
 Nous avons également ajouté un paramètre de probabilité pour la propagation du feu ainsi que pour l'apparition spontanée de feux.
 Les voisins ont différents poids ce qui permet par exemple de simuler un vent qui propage le feu.
 
-### Automate de continuité
+### Average - vagues de chaleur
 
-L'automate de continuité est un automate cellulaire bidimensionnel dans lequel chaque cellule peut prendre des états différents.
-Les règles de transition sont les suivantes :
-- Jsp c'est Antonin qui s'en occupe
+Average est un automate cellulaire à dimension quelconque avec un nombre quelconque d'états.
+Une cellule y prend la valeur moyenne de ses voisins.
 
-//TODO (Antonin help)
+### Règle de majorité
+
+L'automate de la règle de majorité est de dimension quelconque et chaque cellule peut prendre des états différents.
+La règle de transition est la suivante : une cellule prend la valeur majoritaire chez ses voisins.
+
+
 
 ## Mode d'emploi
 
@@ -104,8 +103,15 @@ Dans ce fichier, vous devez définir les paramètres suivants :
 >- *dimension* : la dimension de l'automate
 >- *alphabet* : la liste des états possibles pour chaque cellule
 >- *colors* : la liste des couleurs associées à chaque état
->- *voisinage* : la liste des coordonnées des voisins de chaque cellule
->- *regle* : un tableau contenant les règles de transition pour chaque état possible
+>- *voisinage* : la liste des coordonnées des voisins de chaque cellule, de forme [ y , x ]
+>- *regle* : un tableau contenant les règles de transition pour chaque état possible<br/><br/>
+>Note : Il faut respecter certaines consignes en fonction du type d'automate sélectionné :
+>- *Hexagonal* :  Pour que l'affichage soit en accord avec les voisins directs, veillez à supprimer celui en haut à gauche et en bas à droite.
+>- *Average*&*Majority* : Ce sont des règles "continues". Ne pas définir de couleur, mais le nombre de couleurs utilisées ["col1", "col2", ...] => ["nbCol"]. Il en va de même pour les états.
+>- *somme* : Ne pas hésiter à prendre exemple sur le Jeu de la vie.<br/>
+Il faut définir le poids de chaque voisin -> "weightNeighbour": [poidVoisin1, ...,poidVoisin N]<br/>
+Même chose pour le poids des types -> "weightType": [poidType1, ...,poidTypeN]<br/>
+Vous devez également écrire la probabilité qu'une sous-règle donne un état (la somme doit faire 1) -> "min:max": [proba1, ...,probaN]<br/>
 
 Dans la fenêtre de modification de map `Modify map`, vous pouvez :
 - `Load`: charger une grille existante
@@ -124,6 +130,7 @@ Lors d'une simulation `Start`, vous avez la possibilité de réaliser différent
 - `Set cell's states`: permet de changer l'état d'une cellule en choisissant l'état dans le menu déroulant et en cliquant sur la cellule
 - `Save`: sauvegarde la grille actuelle
 - `Back to menu`: retourne au menu principal
+
 
 ## Auteurs
 - **BLANCHÉ Thomas**
