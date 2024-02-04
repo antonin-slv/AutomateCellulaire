@@ -92,7 +92,6 @@ public class Grid {
             int dim = json.get("dim").getAsInt();
 
             if (dim != Main.getDimension()) {
-                System.out.print("Impossible de charger la map : mauvaise dimention. aucun changement apliqué");
                 MapCreatorController.bad_load = true;
                 return Main.getMoteur().getGrid();
             }
