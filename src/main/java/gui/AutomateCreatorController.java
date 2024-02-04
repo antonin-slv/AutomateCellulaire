@@ -138,6 +138,8 @@ public class AutomateCreatorController implements Initializable{
 
         btn_load.setOnAction(event -> {
             try {
+                Grid oldGrid = Main.getMoteur().getGrid();
+                int oldDimentions = oldGrid.getDim();
                 Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), Main.getMoteur().getGrid().getSize()));
                 if (Main.getDimension() == 1) {
                     if (Main.getMoteur().getAutomate().getRegle() instanceof TabRule tabRule) tab = tabRule.getTab();
@@ -148,6 +150,9 @@ public class AutomateCreatorController implements Initializable{
                     is_hexa.setVisible(true);
                     is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
                     displayNeighbors();
+                }
+                if (oldDimentions == Main.getMoteur().getGrid().getDim()) {
+                    Main.getMoteur().setGrid(oldGrid);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
