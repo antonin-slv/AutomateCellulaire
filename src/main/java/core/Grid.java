@@ -217,7 +217,8 @@ public class Grid {
      */
     public int coordToInt(int[] coords) {
         int index = 0;
-        for (int i = 0; i < coords.length; i++) {
+        int power = 1;
+        for (int i = coords.length - 1; i >= 0 ; i--) {
             if (coords[i] < 0 || coords[i] >= this.size) {
                 if(this.cycle){
                     coords[i] = (coords[i] + this.size) % this.size;
@@ -226,7 +227,8 @@ public class Grid {
                     return -1;
                 }
             }
-            index += (int) (coords[i] * Math.pow(this.size,coords.length - 1 - i));
+            index += coords[i] * power;
+            power *= this.size;
         }
         return index;
     }
