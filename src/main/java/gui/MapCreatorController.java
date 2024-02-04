@@ -166,6 +166,8 @@ public class MapCreatorController implements Initializable {
         );
 
         btn_load.setOnAction(event -> {
+                    if(cb_load.getValue() == null)
+                        return;
                     try {
                         this.grid = Grid.fromJson("save/" + cb_load.getValue());
                         if (Main.getDimension() == 1) {
@@ -191,6 +193,8 @@ public class MapCreatorController implements Initializable {
         );
 
         btn_save.setOnAction(event -> {
+                    if(fild_save.getText() == null)
+                        return;
                     try {
                         this.grid.toJson(fild_save.getText());
                     } catch (IOException e) {
