@@ -232,10 +232,21 @@ public class GameController implements Initializable {
         }
     }
     private void displayPane(){
+        //vmax is used in Continus case
+        float vmax = Integer.parseInt(alphabet[0]);
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 int etat = Main.getMoteur().getEtat(new int[]{i, j});
                 if  (alphabet.length == 1){
+
+                    //etat = (int) ( etat * (Math.atan(etat-moyenne) + Math.PI/2  ) * colors.length / Math.PI) %colors.length;
+                    if(etat < vmax * 2 / 5)
+                        etat /= 2;
+                    else if(etat < 3 * vmax / 5)
+                        etat = (int) (etat * 3 - vmax);
+                    else
+                        etat = (int) (etat /2 + vmax * 2.5 / 5);
+
                     etat = etat%colors.length;
                 }
                 else if (etat >= colors.length) {

@@ -4,38 +4,82 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+
+/**
+ * This class is the Engine of the program
+ * <br />
+ *  It is the link between Automate and Grids
+ * @see Automate
+ * @see Grid
+ */
 @Getter
 @Setter
 public class Moteur {
+
+    /**
+     * Automate used by the engine
+     * @see Automate
+     */
     private final Automate automate;
+    /**
+     * Grid used by the engine
+     * @see Grid
+     */
     @Setter
     private Grid grid;
+
+    /**
+     * Path of the json file containing the definition of the Automate
+     */
     @Getter
     private String rulesPath;
 
 
-
+    /**
+     * Constructor of the Moteur class
+     * @param rulesPath path of the json file containing the definition of the Automate
+     * @param size size of the grid (max(index)+1 for a given coordinate)
+     * @throws IOException if there is an error while reading the file
+     */
     public Moteur(String rulesPath,int size) throws IOException {
         this.rulesPath = rulesPath;
         this.automate = Automate.fromJson(rulesPath);
         this.grid = new Grid(automate.getDimension(), size);
     }
 
+    /**
+     * Constructor of the Moteur class
+     * @param rulesPath path of the json file containing the definition of the Automate
+     * @param gridPath path of the json file containing the declaration of the Grid
+     * @throws IOException if there is an error while reading a file
+     */
     public Moteur(String rulesPath, String gridPath) throws IOException {
         this.automate = Automate.fromJson(rulesPath);
         this.grid = Grid.fromJson(gridPath);
     }
 
+    /**
+     * Function that initializes the grid with the given tab
+     * @param tab Arrray of (index,value) where index is in the 1D array of state of the grid
+     */
     public void initGrid(int[][] tab){
         for (int[] ints : tab) {
             this.grid.setCase(ints[0], ints[1]);
         }
     }
 
+    /**
+     * Saves the state of the grid in a json file
+     * @param saveName name of the file where the grid will be saved
+     * @throws IOException if there is an error while writing the file
+     */
     public void saveGrid(String saveName) throws IOException {
         this.grid.toJson(saveName);
     }
 
+    /**
+     * Function that updates the grid according to the rules of the Automate
+     */
     public void update() {
 
         //grid_temp est la grille temporaire qui va être remplie
@@ -54,31 +98,37 @@ public class Moteur {
         this.grid.setTabGrid(grid_temp.getTabGrid());
     }
 
-    public void randomizeGrid() {
-        int alphabetSize = this.automate.getAlphabet().size();
-        if (alphabetSize == 0) {
-            throw new UnsupportedOperationException("L'alphabet de l'automate est vide");
-        }
-        if (alphabetSize == 1) {
-            //si l'alphabet est de taille 1, il continent le nombre max d'états
-            this.grid.continuousRandomize(Integer.parseInt(this.automate.getAlphabet().get(0)));
-        }
-        else
-            this.grid.randomize(alphabetSize);
-    }
 
+    /**
+     * Function that returns the state of a cell
+     * @param coords coordinates of the cell (N-uplet)
+     * @return state of the cell
+     */
     public int getEtat(int[] coords){
         return this.grid.getCase(coords);
     }
 
+    /**
+     * Function that returns the rules of the Automate
+     * @return rules of the Automate in a String
+     */
     public String getRules(){
         return this.automate.getRegle().toString();
     }
 
+
+    /**
+     * Function that sets the state of a cell
+     * @param coords coordinates of the cell (N-uplet)
+     * @param value new state of the cell
+     */
     public void setEtat(int[] coords, int value){
         this.grid.setCase(coords, value);
     }
 
+    /**
+     * Function that print the grid in the console
+     */
     public void print() {
         this.grid.print2D();
     }
