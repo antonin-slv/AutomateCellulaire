@@ -434,28 +434,34 @@ public class GameController implements Initializable {
         double INVcos30 = 1/cos30;
         double cellSize = 650.0/gridSize;
         double dy = cellSize*(1-cos30);
-
-
+        int decala = -1;
         for (int i = 0; i < gridSize; i++) {
+            if (i%2 == 0) {
+                decala++;
+            }
             for (int j = 0; j < gridSize; j++) {
                 Polygon tile = new Polygon();
-                if (j%2 == 1) {
-                    tile.setLayoutX(i*cellSize+cellSize/2);
+                if (i%2 == 1) {
+                    tile.setLayoutX(j*cellSize+cellSize/2);
                 } else {
-                    tile.setLayoutX(i*cellSize);
+                    tile.setLayoutX(j*cellSize);
                 }
-                tile.setLayoutY(j*(cellSize-dy)+cellSize/2);
+                tile.setLayoutY(i*(cellSize-dy)+cellSize/2);
                 tile.getPoints().addAll(0.0, 0.0 - cellSize/2*INVcos30,
                         0.0 - cellSize/2, 0.0-cellSize/4*INVcos30,
                         0.0 - cellSize/2, 0.0+cellSize/4*INVcos30,
                         0.0, 0.0 + cellSize/2*INVcos30,
                         0.0 + cellSize/2, 0.0+cellSize/4*INVcos30,
                         0.0 + cellSize/2, 0.0-cellSize/4*INVcos30);
-                int etat = Main.getMoteur().getEtat(new int[]{j, i-j/2%gridSize});
+                int etat = Main.getMoteur().getEtat(new int[]{i, j-i/2%gridSize});
                 if (etat >= colors.length){
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
-                tile.setId(j+" "+i);
+                if (j-decala < 0) {
+                    tile.setId(j+(gridSize-decala)+" "+i);
+                } else {
+                    tile.setId((j-decala)+" "+i);
+                }
                 tile.setFill(Color.web(colors[etat]));
                 tile.setStroke(Color.web("#F6F6F6"));
                 tile.setStrokeType(StrokeType.INSIDE);
@@ -473,15 +479,19 @@ public class GameController implements Initializable {
     private void displayPaneHexa(){
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                int etat = Main.getMoteur().getEtat(new int[]{i, j});
+                Polygon tile = hexaCells[j][i];
+                String[] id = tile.getId().split(" ");
+                int x = Integer.parseInt(id[1]);
+                int y = Integer.parseInt(id[0]);
+                int etat = Main.getMoteur().getEtat(new int[]{y, x});
                 if  (alphabet.length == 1){
                     etat = etat%colors.length;
                 }
                 else if (etat >= colors.length) {
-                    Main.getMoteur().setEtat(new int[]{i, j},0);
+                    Main.getMoteur().setEtat(new int[]{y, x},0);
                     etat = 0;
                 }
-                hexaCells[i][j].setFill(Color.web(colors[etat]));
+                hexaCells[j][i].setFill(Color.web(colors[etat]));
             }
         }
     }
@@ -495,7 +505,7 @@ public class GameController implements Initializable {
         String[] id = tile.getId().split(" ");
         int x = Integer.parseInt(id[1]);
         int y = Integer.parseInt(id[0]);
-        int etat = Main.getMoteur().getEtat(new int[]{y,(x-y/2%gridSize)});
+        int etat = Main.getMoteur().getEtat(new int[]{y,x});
         if (selectedColor != null){
             etat = Arrays.asList(colors).indexOf(selectedColor);
             tile.setFill(Color.web(selectedColor));

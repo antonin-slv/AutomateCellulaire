@@ -62,7 +62,7 @@ public class Main extends Application {
 
      */
     public static void main(String[] args) throws IOException {
-          moteur = new Moteur("rules/JDLV.json", 20);
+          moteur = new Moteur("rules/JDLV.json", 10);
 
           launch(); // lancer javafx
     }
