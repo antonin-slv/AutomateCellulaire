@@ -133,10 +133,11 @@ public class AutomateCreatorController implements Initializable{
         );
 
         btn_load.setOnAction(event -> {
-
+            if(cb_select_rule.getValue() == null)
+                return;
             try {
                 Grid oldGrid = Main.getMoteur().getGrid();
-                int oldDimentions = oldGrid.getDim();
+                int oldDimension = oldGrid.getDim();
                 Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), Main.getMoteur().getGrid().getSize()));
                 if (Main.getDimension() == 1) {
                     if (Main.getMoteur().getAutomate().getRegle() instanceof TabRule tabRule) tab = tabRule.getTab();
@@ -148,7 +149,7 @@ public class AutomateCreatorController implements Initializable{
                     is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
                     displayNeighbors();
                 }
-                if (oldDimentions == Main.getMoteur().getGrid().getDim()) {
+                if (oldDimension == Main.getMoteur().getGrid().getDim()) {
                     Main.getMoteur().setGrid(oldGrid);
                 }
             } catch (Exception e) {
@@ -164,6 +165,8 @@ public class AutomateCreatorController implements Initializable{
         });
 
         btn_save.setOnAction(event -> {
+            if(tf_filename.getText() == null)
+                return;
             try {
                 save();
                 File directory = new File("rules");
