@@ -137,11 +137,8 @@ public class GameController implements Initializable {
         });
 
         btn_save.setOnAction(event -> {
-            try {
-                Main.getMoteur().saveGrid(null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            System.out.println("La sauvegarde de la grille se fait dans le menu principal !!! ");
+
         });
 
         btn_retour.setOnAction(event -> {
