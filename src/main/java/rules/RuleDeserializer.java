@@ -31,7 +31,6 @@ public class RuleDeserializer implements JsonDeserializer<GameRule>, JsonSeriali
             case "table" -> TabRule.class;
             case "majority" -> MajRule.class;
             case "average" -> AvgRule.class;
-            case "direction" -> DirRule.class;
             default -> throw new UnsupportedOperationException("Unknown rule `" + name + "`");
         };
 
@@ -58,8 +57,6 @@ public class RuleDeserializer implements JsonDeserializer<GameRule>, JsonSeriali
             root.addProperty("name", "majority");
         } else if (src instanceof AvgRule) {
             root.addProperty("name", "average");
-        } else if (src instanceof DirRule) {
-            root.addProperty("name", "direction");
         } else {
             throw new UnsupportedOperationException("Unknown rule `" + src.getClass().getSimpleName() + "`");
         }

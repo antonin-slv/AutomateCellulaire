@@ -3,6 +3,7 @@
   "alphabet": ["void", "forest", "fire", "dead"],
   "colors": ["#FFFFFF", "#107C10", "#FF0000", "#000000"],
   "voisinage": [[0,0],[-1,0],[-1,1],[0,1],[1,0],[1,-1],[0,-1]],
+  "isHexa": true,
   "regle": {
     "name": "somme",
     "tab": [
