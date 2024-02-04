@@ -82,12 +82,15 @@ public class AutomateCreatorController implements Initializable{
 
         btn_load.setOnAction(event -> {
             try {
-                Grid grid = Main.getMoteur().getGrid();
-                Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), 150));
-                Main.getMoteur().setGrid(grid);
-                is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
-
-                displayNeighbors();
+                Main.setMoteur(new Moteur("rules/" + cb_select_rule.getValue(), Main.getMoteur().getGrid().getSize()));
+                if (Main.getDimension() == 1) {
+                    is_hexa.setVisible(false);
+                    pane_neighbors.getChildren().clear();
+                } else {
+                    is_hexa.setVisible(true);
+                    is_hexa.setSelected(Main.getMoteur().getAutomate().isHexa());
+                    displayNeighbors();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -126,7 +129,7 @@ public class AutomateCreatorController implements Initializable{
         System.out.println(Arrays.deepToString(voisinage));
         System.out.println(newWeights);
         System.out.println(Arrays.deepToString(Main.getMoteur().getAutomate().getVoisinage()));
-        Main.getMoteur().getAutomate().setVoisinage(voisinage);
+        if (Main.getDimension() != 1) Main.getMoteur().getAutomate().setVoisinage(voisinage);
         double sum = newWeights.stream().mapToDouble(Double::doubleValue).sum();
         newWeights.replaceAll(aDouble -> aDouble / sum * (newNeighbors.size() - 1));
         if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {

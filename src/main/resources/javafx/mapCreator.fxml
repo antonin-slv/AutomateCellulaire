@@ -5,61 +5,57 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="650.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MapCreatorController">
+<VBox prefHeight="650.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MapCreatorController">
     <HBox prefHeight="653.0" prefWidth="800.0">
-        <Pane fx:id="pane" prefHeight="650.0" prefWidth="650.0"/>
+        <Pane fx:id="pane" prefHeight="650.0" prefWidth="650.0" />
         <HBox prefHeight="650.0" prefWidth="250.0">
             <VBox prefHeight="650.0">
                 <HBox alignment="CENTER" prefHeight="45.0" prefWidth="249.0">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <VBox.margin>
-                        <Insets/>
+                        <Insets />
                     </VBox.margin>
                         <Label alignment="TOP_LEFT" text="Modify :">
                             <font>
-                                <Font size="18.0"/>
+                                <Font size="18.0" />
                             </font>
                             <HBox.margin>
-                                <Insets bottom="20.0" top="30.0"/>
+                                <Insets bottom="20.0" top="30.0" />
                             </HBox.margin>
                         </Label>
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="49.0" prefWidth="249.0">
-                        <Button fx:id="btn_load" mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0"
-                                text="Load"/>
-                        <ComboBox fx:id="cb_load" prefWidth="150.0"/>
+                        <Button fx:id="btn_load" mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="Load" />
+                        <ComboBox fx:id="cb_load" prefWidth="150.0" />
                 </HBox>
                 <HBox alignment="CENTER" layoutX="10.0" layoutY="44.0" prefHeight="49.0" prefWidth="249.0">
-                        <Button fx:id="btn_save" mnemonicParsing="false" text="Save as"/>
-                        <TextField fx:id="fild_save"/>
+                        <Button fx:id="btn_save" mnemonicParsing="false" text="Save as" />
+                        <TextField fx:id="fild_save" />
                     <VBox.margin>
-                        <Insets/>
+                        <Insets />
                     </VBox.margin>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="446.0" prefHeight="82.0" prefWidth="249.0">
                         <Label alignment="TOP_LEFT" prefWidth="80.0" text="New:">
                             <font>
-                                <Font size="18.0"/>
+                                <Font size="18.0" />
                             </font>
                             <HBox.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </HBox.margin>
                         </Label>
                         <VBox prefHeight="426.0" prefWidth="162.0">
                                 <HBox prefHeight="25.0" prefWidth="161.0">
-                                        <TextField fx:id="fild_size" maxHeight="-Infinity" maxWidth="-Infinity"
-                                                   minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
-                                                   prefWidth="150.0" promptText="size"/>
+                                        <TextField fx:id="fild_size" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" promptText="size" />
                                     <VBox.margin>
-                                        <Insets top="10.0"/>
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </HBox>
                                 <Button fx:id="btn_new" mnemonicParsing="false" text="apply">
                                     <VBox.margin>
-                                        <Insets top="10.0"/>
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </Button>
                         </VBox>
@@ -67,21 +63,21 @@
                 <HBox layoutX="10.0" layoutY="195.0" prefHeight="97.0" prefWidth="249.0">
                         <Label alignment="TOP_LEFT" prefHeight="27.0" prefWidth="80.0" text="Draw :">
                             <font>
-                                <Font size="18.0"/>
+                                <Font size="18.0" />
                             </font>
                             <HBox.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </HBox.margin>
                         </Label>
                         <VBox prefHeight="426.0" prefWidth="162.0">
                                 <ComboBox fx:id="cb_colors" prefWidth="150.0">
                                     <VBox.margin>
-                                        <Insets top="10.0"/>
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </ComboBox>
                                 <ComboBox fx:id="cb_pen" layoutX="10.0" layoutY="20.0" prefWidth="150.0">
                                     <VBox.margin>
-                                        <Insets top="10.0"/>
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </ComboBox>
                         </VBox>
@@ -89,76 +85,69 @@
                 <HBox layoutX="10.0" layoutY="215.0" prefHeight="85.0" prefWidth="249.0">
                         <Label alignment="TOP_LEFT" prefWidth="80.0" text="Replace :">
                             <font>
-                                <Font size="18.0"/>
+                                <Font size="18.0" />
                             </font>
                             <HBox.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </HBox.margin>
                         </Label>
                         <VBox prefHeight="426.0" prefWidth="162.0">
                                 <HBox prefHeight="25.0" prefWidth="161.0">
-                                    <TextField fx:id="fild_replace_1" maxHeight="-Infinity" maxWidth="-Infinity"
-                                               minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
-                                               prefWidth="60.0" promptText="Type 1"/>
+                                    <TextField fx:id="fild_replace_1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="60.0" promptText="Type 1" />
                                     <Label prefHeight="63.0" prefWidth="14.0" text="-&gt;">
                                         <HBox.margin>
-                                            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+                                            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                         </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="fild_replace_2" layoutX="10.0" layoutY="10.0"
-                                               maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                                               minWidth="-Infinity" prefHeight="25.0" prefWidth="60.0"
-                                               promptText="Type 2">
+                                    <TextField fx:id="fild_replace_2" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="60.0" promptText="Type 2">
                                         <HBox.margin>
-                                            <Insets/>
+                                            <Insets />
                                         </HBox.margin>
                                     </TextField>
                                     <opaqueInsets>
-                                        <Insets/>
+                                        <Insets />
                                     </opaqueInsets>
                                     <VBox.margin>
-                                        <Insets top="10.0"/>
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </HBox>
                                 <Button fx:id="btn_replace" mnemonicParsing="false" text="apply">
                                     <VBox.margin>
-                                        <Insets top="10.0"/>
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </Button>
                         </VBox>
                 </HBox>
-                <HBox layoutX="10.0" layoutY="312.0" prefHeight="155.0" prefWidth="249.0">
+                <HBox layoutX="10.0" layoutY="312.0" prefHeight="163.0" prefWidth="249.0">
                     <Label alignment="TOP_LEFT" text="Random :">
                         <font>
-                            <Font size="18.0"/>
+                            <Font size="18.0" />
                         </font>
                         <HBox.margin>
-                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </HBox.margin>
                     </Label>
-                    <VBox prefHeight="426.0" prefWidth="162.0">
-                        <TextField fx:id="fild_random" maxWidth="-Infinity" prefWidth="150.0"
-                                   promptText="how many colors">
+                    <VBox prefHeight="135.0" prefWidth="162.0">
+                        <TextField fx:id="fild_random" maxWidth="-Infinity" prefWidth="150.0" promptText="how many colors">
                             <VBox.margin>
-                                <Insets top="10.0"/>
+                                <Insets top="10.0" />
                             </VBox.margin>
                         </TextField>
                         <Button fx:id="btn_random" mnemonicParsing="false" text="apply">
                             <VBox.margin>
-                                <Insets top="10.0"/>
+                                <Insets top="10.0" />
                             </VBox.margin>
                         </Button>
                     </VBox>
                 </HBox>
                 <HBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="249.0">
-                    <Button fx:id="btn_back" alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false"
-                            text="Back">
+                    <Button fx:id="btn_back" alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" text="Back">
                         <HBox.margin>
-                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                         </HBox.margin>
                     </Button>
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                 </HBox>
             </VBox>

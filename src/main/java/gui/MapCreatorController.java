@@ -80,11 +80,19 @@ public class MapCreatorController implements Initializable {
         fild_random.setText("2");
 
         btn_new.setOnAction(event -> {
-                    this.grid = new Grid(2, Integer.parseInt(fild_size.getText()));
+                    if (Main.getDimension() == 1) {
+                        this.grid = new Grid(1, Integer.parseInt(fild_size.getText()));
+                    } else {
+                        this.grid = new Grid(2, Integer.parseInt(fild_size.getText()));
+                    }
                     if (Main.isHexa()) {
                         initPaneHexa();
                     } else {
-                        initPane();
+                        if (Main.getDimension() == 1) {
+                            initPane1D();
+                        } else {
+                            initPane();
+                        }
                     }
 
                     display();
@@ -121,10 +129,21 @@ public class MapCreatorController implements Initializable {
         btn_load.setOnAction(event -> {
                     try {
                         this.grid = Grid.fromJson("save/" + cb_load.getValue());
+                        if (Main.getDimension() == 1) {
+                            int[] newGrid = new int[this.grid.getSize()];
+                            for (int i = 0; i < this.grid.getSize(); i++) {
+                                newGrid[i] = this.grid.getCase(new int[]{0, i});
+                            }
+                            this.grid = new Grid(1, this.grid.getSize(), newGrid);
+                        }
                         if (Main.isHexa()) {
                             initPaneHexa();
                         } else {
-                            initPane();
+                            if (Main.getDimension() == 1) {
+                                initPane1D();
+                            } else {
+                                initPane();
+                            }
                         }
 
                         display();
@@ -146,7 +165,11 @@ public class MapCreatorController implements Initializable {
         if (Main.isHexa()) {
             initPaneHexa();
         } else {
-            initPane();
+            if (Main.getDimension() == 1) {
+                initPane1D();
+            } else {
+                initPane();
+            }
         }
 
         display();
@@ -156,7 +179,11 @@ public class MapCreatorController implements Initializable {
         if (Main.isHexa()) {
             displayPaneHexa();
         } else {
-            displayPane();
+            if (Main.getDimension() == 1) {
+                displayPane1D();
+            } else {
+                displayPane();
+            }
         }
     }
     public void initPane(){
@@ -188,6 +215,36 @@ public class MapCreatorController implements Initializable {
             }
         }
     }
+
+    public void initPane1D(){
+        pane.getChildren().clear();
+        this.cells = new Rectangle[this.grid.getSize()][this.grid.getSize()];
+        this.pane.getChildren().clear();
+        int gridSize = this.grid.getSize();
+
+        int cellSize = 650/gridSize;
+
+        for (int i = 0; i < gridSize; i++) {
+            Rectangle cellRect = new Rectangle();
+            cellRect.setHeight(cellSize);
+            cellRect.setWidth(cellSize);
+            System.out.println(Arrays.toString(this.grid.getTabGrid()));
+            System.out.println(this.grid.getCase(new int[]{0, i}));
+            int stat = this.grid.getCase(new int[]{0, i});
+
+            if (stat >= this.colors.size())
+                cellRect.setFill(Color.web("#F0F0F0"));
+            else
+                cellRect.setFill(Color.web(this.colors.get(stat)));
+
+            cellRect.setSmooth(true);
+            cellRect.setX(i*cellSize);
+            cellRect.setY(0);
+            cellRect.setOnMouseClicked(this::changeStateRectangle);
+            pane.getChildren().add(cellRect);
+            this.cells[i][0] = cellRect;
+        }
+    }
     private void displayPane(){
         int gridSize = this.grid.getSize();
         for (int i = 0; i < gridSize; i++) {
@@ -198,6 +255,17 @@ public class MapCreatorController implements Initializable {
                 else
                     cells[i][j].setFill(Color.web(this.colors.get(etat)));
             }
+        }
+    }
+
+    private void displayPane1D(){
+        int gridSize = this.grid.getSize();
+        for (int i = 0; i < gridSize; i++) {
+            int etat = this.grid.getCase(new int[]{0, i});
+            if (etat >= this.colors.size())
+                cells[i][0].setFill(Color.web("#F0F0F0"));
+            else
+                cells[i][0].setFill(Color.web(this.colors.get(etat)));
         }
     }
     private void changeStateRectangle(javafx.scene.input.MouseEvent event){
@@ -211,9 +279,7 @@ public class MapCreatorController implements Initializable {
         for(int i = -pen_size; i <= pen_size; i++)
             for(int j = -pen_size; j <= pen_size; j++)
                 this.grid.setCase(new int[]{(int) row+i, (int) col+j}, etat);
-
-
-        displayPane();
+        display();
     }
     private void initPaneHexa(){
         pane.getChildren().clear();

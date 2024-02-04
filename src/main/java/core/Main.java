@@ -62,4 +62,8 @@ public class Main extends Application {
         return moteur.getRulesPath();
     }
 
+    public static int getDimension(){
+        return moteur.getAutomate().getDimension();
+    }
+
 }

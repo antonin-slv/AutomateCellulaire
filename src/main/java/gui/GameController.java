@@ -1,5 +1,6 @@
 package gui;
 
+import core.Grid;
 import core.Main;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -33,6 +35,7 @@ public class GameController implements Initializable {
 
     @Setter
     private int gridSize;
+    private int generation = 0;
     private Rectangle[][] cells;
     private Polygon[][] hexaCells;
 
@@ -48,6 +51,9 @@ public class GameController implements Initializable {
 
     @FXML
     private Pane pane;
+
+    @FXML
+    private Label lbl_generation;
 
     @FXML
     private Button btn_update_once;
@@ -112,15 +118,25 @@ public class GameController implements Initializable {
             initPaneHexa();
         } else {
             this.cells = new Rectangle[gridSize][gridSize];
-            initPane();
+            if (Main.getDimension() == 1) {
+                initPane1D();
+            } else {
+                initPane();
+            }
         }
 
         btn_update_once.setOnAction(event -> {
             Main.getMoteur().update();
+            generation++;
+            lbl_generation.setText("Generation : " + generation);
             if (Main.isHexa()) {
                 displayPaneHexa();
             } else {
-                displayPane();
+                if (Main.getDimension() == 1) {
+                    displayPane1D();
+                } else {
+                    displayPane();
+                }
             }
         });
 
@@ -155,18 +171,22 @@ public class GameController implements Initializable {
         if(timeLine != null) {
             timeLine.stop();
         }
-        //Set up a new KeyFrame with he desired game speed interval.
+        //Set up a new KeyFrame with the desired game speed interval.
         KeyFrame keyFrame = new KeyFrame(Duration.millis(gameSpeed), e -> {
             //This is the stuff that will be done each interval.
             //Generate the next game board state.
             Main.getMoteur().update();
+            generation++;
+            lbl_generation.setText("Generation : " + generation);
             if (Main.isHexa()) {
                 displayPaneHexa();
             } else {
-                displayPane();
+                if (Main.getDimension() == 1) {
+                    displayPane1D();
+                } else {
+                    displayPane();
+                }
             }
-            //Update the generation.
-            //generation.set(generation.get() + 1);
         });
         //Attach the keyframe to the Timeline.
         timeLine = new Timeline(keyFrame);
@@ -197,6 +217,59 @@ public class GameController implements Initializable {
     public void play() {
         gameRunning.set(true);
         timeLine.play();
+    }
+
+    public void initPane1D(){
+        pane.getChildren().clear();
+
+        double cellSize = 650.0/gridSize;
+
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                Rectangle cellRect = new Rectangle();
+                cellRect.setHeight(cellSize);
+                cellRect.setWidth(cellSize);
+                int etat;
+                if (i == 0) {
+                    etat = Main.getMoteur().getEtat(new int[]{0, j});
+                } else {
+                    etat = 0;
+                }
+                if (etat >= colors.length || etat < 0){
+                    if (alphabet.length == 1){
+                        cellRect.setFill(Color.web(colors[etat%colors.length]));
+                    }
+                    else{
+                        Main.getMoteur().setEtat(new int[]{i, j},0);
+                        cellRect.setFill(Color.web(colors[0]));
+                    }
+                }
+                else {
+                    cellRect.setFill(Color.web(colors[etat]));
+                }
+                cellRect.setId(i+" "+j);
+                cellRect.setSmooth(true);
+                cellRect.setX(j*cellSize);
+                cellRect.setY(i*cellSize);
+                cellRect.setOnMouseClicked(this::changeStateRectangle);
+                pane.getChildren().add(cellRect);
+                this.cells[i][j] = cellRect;
+            }
+        }
+    }
+
+    private void displayPane1D(){
+        for (int i = 0; i < gridSize; i++) {
+            int etat = Main.getMoteur().getEtat(new int[]{i});
+            if  (alphabet.length == 1){
+                etat = etat%colors.length;
+            }
+            else if (etat >= colors.length) {
+                Main.getMoteur().setEtat(new int[]{i},0);
+                etat = 0;
+            }
+            cells[generation%gridSize][i].setFill(Color.web(colors[etat]));
+        }
     }
     public void initPane(){
         pane.getChildren().clear();

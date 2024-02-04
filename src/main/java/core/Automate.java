@@ -19,6 +19,7 @@ public class Automate {
     @Setter
     private boolean isHexa=false;
 
+    @Getter
     private int dimension;
     @Setter
     private List<String> alphabet;

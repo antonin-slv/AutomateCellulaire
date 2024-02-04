@@ -24,7 +24,7 @@ public class Grid {
     ///cycle : true si la grille est cyclique, false sinon
     private final boolean cycle = true;
 
-    private final Random rand = new Random();
+    private final transient Random rand = new Random();
 
     public Grid(int dim, int size) {
         this.dim = dim;
@@ -45,7 +45,7 @@ public class Grid {
             JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
             int dim = json.get("dim").getAsInt();
             int size = json.get("size").getAsInt();
-            JsonArray grid = json.get("grid").getAsJsonArray();
+            JsonArray grid = json.get("tabGrid").getAsJsonArray();
 
             Stream<JsonElement> stream = grid.asList().stream();
 
@@ -125,7 +125,6 @@ public class Grid {
 
         int[] position = intToCoord(pos);
         int[][] coordsVoisinage = new int[coordsVoisinageRelatif.length][coordsVoisinageRelatif[0].length];
-
         for (int i = 0; i < coordsVoisinageRelatif.length; i++) {
             for (int j = 0; j < coordsVoisinageRelatif[i].length; j++) {
                 coordsVoisinage[i][j] = position[j] + coordsVoisinageRelatif[i][j];

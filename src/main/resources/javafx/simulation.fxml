@@ -11,7 +11,7 @@
          <Pane fx:id="pane" prefHeight="574.0" prefWidth="649.0" />
           <HBox prefHeight="650.0" prefWidth="250.0">
               <children>
-               <VBox alignment="BOTTOM_RIGHT" prefHeight="650.0">
+               <VBox prefHeight="650.0">
                   <children>
                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="273.0">
                         <children>
@@ -33,27 +33,29 @@
                            </Label>
                                 <Slider fx:id="speedSlider" prefHeight="14.0" prefWidth="171.0" />
                         </children></HBox>
-                     <VBox alignment="CENTER" prefHeight="167.0" prefWidth="250.0" spacing="10.0">
+                     <VBox alignment="CENTER" prefHeight="161.0" prefWidth="249.0" spacing="10.0">
                         <children>
                            <Label contentDisplay="CENTER" prefHeight="35.0" prefWidth="109.0" text="Set cell's states" textAlignment="CENTER">
                               <font>
                                  <Font size="16.0" />
                               </font></Label>
                            <ComboBox fx:id="cmb_colors" prefWidth="150.0" />
+                           <Button fx:id="btn_save" mnemonicParsing="false" text="Save" />
+                                <Button fx:id="btn_retour" mnemonicParsing="false" text="Back to Menu" />
                         </children>
                         <padding>
                            <Insets left="5.0" right="5.0" />
                         </padding>
                      </VBox>
-                     <HBox alignment="BOTTOM_RIGHT" prefHeight="303.0" prefWidth="250.0">
+                     <VBox alignment="CENTER" prefHeight="101.0" prefWidth="250.0">
                         <children>
-                                <Button fx:id="btn_retour" mnemonicParsing="false" text="Back to Menu">
-                              <HBox.margin>
-                                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                              </HBox.margin>
-                           </Button>
+                           <Label fx:id="lbl_generation" contentDisplay="CENTER" text="Generation : 0">
+                              <font>
+                                 <Font size="20.0" />
+                              </font>
+                           </Label>
                         </children>
-                     </HBox>
+                     </VBox>
                   </children>
                   <opaqueInsets>
                      <Insets />
