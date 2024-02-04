@@ -13,11 +13,19 @@ Nous retrouvons notamment un automate 1D, un automate généralisant le jeu de l
 git clone https://github.com/antonin-slv/AutomateCellulaire.git
 ```
 
-- **Installez Gradle :** Si vous ne possédez pas Gradle sur votre machine, vous pouvez l'installer en suivant les instructions disponibles [ici](https://gradle.org/install/).
+- **Lancez le projet :** Pour lancer le projet, exécutez la commande suivante dans le dossier du projet :
+```bash
+./gradlew.bat run
+```
+ou bien celle-ci si vous êtes sur un système Linux :
+```bash
+./gradlew run 
+```
 
-- **Lancez le projet :** Pour lancer le projet, exécutez la classe `Main`.
-
-//TODO (parce que je ne sais pas comment faire)(eh oh pas cool de te moquer de moi comme ça copilot)
+- **Génération de la documentation :** Pour générer la documentation du projet, exécutez la commande suivante dans le dossier du projet :
+```bash
+./gradlew.bat javadoc
+```
 
 ## Organisation des fichiers
 Notre projet est divisé en plusieurs dossiers organisés de la manière suivante :
@@ -25,17 +33,14 @@ Notre projet est divisé en plusieurs dossiers organisés de la manière suivant
 - **AutomateCellulaire/src/main/java/core :** classes de base pour les automates cellulaires.
 - **AutomateCellulaire/src/main/java/gui :** classes Controller pour l'interface graphique.
 - **AutomateCellulaire/src/main/java/rules :** classes appliquant les règles de transition des automates.
-- **AutomateCellulaire/src/main/resources/grids :** fichiers de configuration des grilles d'automates.
 - **AutomateCellulaire/src/main/resources/javafx :** fichiers FXML pour l'affichage des fenêtres dans l'interface graphique.
 - **AutomateCellulaire/rules :** fichiers de configuration des automates.
 - **AutomateCellulaire/save :** fichiers de sauvegarde des grilles d'automates.
 - **AutomateCellulaire/gradle :** fichiers de configuration pour Gradle.
 - **AutomateCellulaire/build.gradle :** fichier pour la configuration du projet avec Gradle.
-- **AutomateCellulaire/gradleew :** jsp
-- **AutomateCellulaire/graldew.bat :** jsp
+- **AutomateCellulaire/gradlew :** fichier pour l'exécution du projet.
+- **AutomateCellulaire/graldew.bat :** fichier pour l'exécution du projet sur Windows.
 - **AutomateCellulaire/README.md :** fichier README du projet.
-
-//TODO (à vérifier si j'ai pas écrit de la merde surtout) 
 
 ## Automates implémentés
 
@@ -50,8 +55,8 @@ On donne un numéro à chaque règle de transition, celui-ci correspond à son �
 
 ### Règle de majorité
 
-L'automate de la règle de majorité est de dimension quelconque et chaque cellule peut prendre deux états différents : 0 ou 1.
-La règle de transition est la suivante : une cellule prend la valeur majoritaire de ses voisins.
+L'automate de la règle de majorité est de dimension quelconque et chaque cellule peut prendre des états différents.
+La règle de transition est la suivante : une cellule prend la valeur majoritaire chez ses voisins.
 
 ### Jeu de la vie
 
@@ -72,6 +77,7 @@ Les règles de transition sont les suivantes :
 - Une cellule en feu devient brûlée.
 
 Nous avons également ajouté un paramètre de probabilité pour la propagation du feu ainsi que pour l'apparition spontanée de feux.
+Les voisins ont différents poids ce qui permet par exemple de simuler un vent qui propage le feu.
 
 ### Automate de continuité
 
@@ -84,7 +90,7 @@ Les règles de transition sont les suivantes :
 ## Mode d'emploi
 
 Lorsque vous lancez le projet, vous arrivez sur le menu principal. 
-Vous devez tout d'abord charger un automate existant en cliquant sur le bouton `Select automate`.
+Vous devez tout d'abord charger un automate existant en cliquant sur le bouton `Modify automate`.
 
 Lorsque vous êtes dans le menu de création d'automate, vous pouvez :
 - `LOAD`: sélectionner un automate existant dans la liste déroulante et le charger
@@ -93,14 +99,15 @@ Lorsque vous êtes dans le menu de création d'automate, vous pouvez :
 - Grille de voisinage : définir les poids des voisins 
 - `Back`: retourner au menu principal
 
-Vous pouvez définir un nouvel automate en créant un fichier de configuration json dans le dossier `AutomateCellulaire/rules`.
+>Vous pouvez définir un nouvel automate en créant un fichier de configuration json dans le dossier `AutomateCellulaire/rules`.
 Dans ce fichier, vous devez définir les paramètres suivants :
-- *dimension* : la dimension de l'automate
-- *alphabet* : la liste des états possibles pour chaque cellule
-- *voisins* : la liste des coordonnées des voisins de chaque cellule
-- *regle* : un tableau contenant les règles de transition pour chaque état possible
+>- *dimension* : la dimension de l'automate
+>- *alphabet* : la liste des états possibles pour chaque cellule
+>- *colors* : la liste des couleurs associées à chaque état
+>- *voisinage* : la liste des coordonnées des voisins de chaque cellule
+>- *regle* : un tableau contenant les règles de transition pour chaque état possible
 
-Dans la fenêtre de modification de map, vous pouvez :
+Dans la fenêtre de modification de map `Modify map`, vous pouvez :
 - `Load`: charger une grille existante
 - `Save as`: sauvegarder la grille actuelle en lui donnant un nom
 - Input `New :`: modifier la taille de la grille puis cliquer sur `apply` pour valider
@@ -109,7 +116,7 @@ Dans la fenêtre de modification de map, vous pouvez :
 - Input `Random :`: choisir le nombre d'états différents puis cliquer sur `apply` pour générer une grille aléatoire
 - `Back`: retourner au menu principal
 
-Lors d'une simulation, vous avez la possibilité de réaliser différentes actions :
+Lors d'une simulation `Start`, vous avez la possibilité de réaliser différentes actions :
 - `Play`: lance la simulation
 - `Pause`: met en pause la simulation
 - `>`: avance d'une étape dans la simulation
@@ -117,8 +124,6 @@ Lors d'une simulation, vous avez la possibilité de réaliser différentes actio
 - `Set cell's states`: permet de changer l'état d'une cellule en choisissant l'état dans le menu déroulant et en cliquant sur la cellule
 - `Save`: sauvegarde la grille actuelle
 - `Back to menu`: retourne au menu principal
-
-//TODO (à compléter)
 
 ## Auteurs
 - **BLANCHÉ Thomas**
