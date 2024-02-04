@@ -437,9 +437,8 @@ public class GameController implements Initializable {
         double dy = cellSize*(1-cos30);
         int decal = -1;
         for (int i = 0; i < gridSize; i++) {
-            if (i%2 == 0) {
-                decal++;
-            }
+            if (i%2 == 0) decal++;
+
             for (int j = 0; j < gridSize; j++) {
                 Polygon tile = new Polygon();
                 if (i%2 == 1) {
@@ -454,8 +453,8 @@ public class GameController implements Initializable {
                         0.0, 0.0 + cellSize/2*INVcos30,
                         0.0 + cellSize/2, 0.0+cellSize/4*INVcos30,
                         0.0 + cellSize/2, 0.0-cellSize/4*INVcos30);
-                int etat = Main.getMoteur().getEtat(new int[]{i, j-i/2%gridSize});
-                if (etat >= colors.length){
+                int stat = Main.getMoteur().getEtat(new int[]{i, j-i/2%gridSize});
+                if (stat >= colors.length){
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
                 if (j-decal < 0) {
@@ -463,7 +462,7 @@ public class GameController implements Initializable {
                 } else {
                     tile.setId((j-decal)+" "+i);
                 }
-                tile.setFill(Color.web(colors[etat]));
+                tile.setFill(Color.web(colors[stat]));
                 tile.setStroke(Color.web("#F6F6F6"));
                 tile.setStrokeType(StrokeType.INSIDE);
                 tile.setStrokeWidth(0.2);
