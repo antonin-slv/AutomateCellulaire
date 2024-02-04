@@ -68,6 +68,8 @@ public class MapCreatorController implements Initializable {
         this.grid = Main.getMoteur().getGrid();
 
         cb_load.getItems().addAll(getMaps());
+        cb_pen.getItems().addAll("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20");
+        cb_pen.getSelectionModel().select(0);
 
         cb_colors.getItems().addAll(colors);
         cb_colors.getSelectionModel().select(0);
@@ -204,7 +206,13 @@ public class MapCreatorController implements Initializable {
         double col = eventSource.getX()/(650/gridSize);
         double row = eventSource.getY()/(650/gridSize);
         int etat = this.colors.indexOf(cb_colors.getValue());
-        this.grid.setCase(new int[]{(int) row, (int) col}, etat);
+
+        int pen_size = Integer.parseInt(cb_pen.getValue()) - 1;
+        for(int i = -pen_size; i <= pen_size; i++)
+            for(int j = -pen_size; j <= pen_size; j++)
+                this.grid.setCase(new int[]{(int) row+i, (int) col+j}, etat);
+
+
         displayPane();
     }
     private void initPaneHexa(){

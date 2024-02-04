@@ -62,9 +62,6 @@ public class GameController implements Initializable {
     private Button btn_retour;
 
     @FXML
-    private Button btn_save;
-
-    @FXML
     private ComboBox<String> cmb_colors;
 
     @FXML
@@ -134,11 +131,6 @@ public class GameController implements Initializable {
         btn_pause.setOnAction(event -> {
             gameRunning.set(false);
             timeLine.pause();
-        });
-
-        btn_save.setOnAction(event -> {
-            System.out.println("La sauvegarde de la grille se fait dans le menu principal !!! ");
-
         });
 
         btn_retour.setOnAction(event -> {
