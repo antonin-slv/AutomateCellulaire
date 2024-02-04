@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.io.*;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.stream.Stream;
 
 @Getter
@@ -17,23 +18,25 @@ public class Grid {
     ///dim : dimension de la grille (1D, 2D, 3D, ...)
     private final int dim;
     ///grid : tableau des états des cellules
-    private int[] grid;
+    private int[] tabGrid;
     ///size : taille de la grille (taille d'un côté)
     private final int size;
     ///cycle : true si la grille est cyclique, false sinon
-    private final transient boolean cycle = true;
+    private final boolean cycle = true;
+
+    private final Random rand = new Random();
 
     public Grid(int dim, int size) {
         this.dim = dim;
         this.size = size;
-        this.grid = new int[(int) Math.pow(size, dim)];
-        Arrays.fill(this.grid, 0);
+        this.tabGrid = new int[(int) Math.pow(size, dim)];
+        Arrays.fill(this.tabGrid, 0);
     }
 
-    public Grid(int dim, int size, int[] grid) {
+    public Grid(int dim, int size, int[] tabGrid) {
         this.dim = dim;
         this.size = size;
-        this.grid = grid;
+        this.tabGrid = tabGrid;
     }
 
 
@@ -83,13 +86,13 @@ public class Grid {
     }
 
     public void randomize(int alphabetSize) {
-        for (int i = 0; i < grid.length; i++) {
-            grid[i] = (int) (Math.random() * alphabetSize);
+        for (int i = 0; i < tabGrid.length; i++) {
+            tabGrid[i] = rand.nextInt(alphabetSize);
         }
     }
-    public void continusRandomize(int max) {
-        for (int i = 0; i < grid.length; i++) {
-            grid[i] = (int) (Math.random() * max);
+    public void continuousRandomize(int max) {
+        for (int i = 0; i < tabGrid.length; i++) {
+            tabGrid[i] = rand.nextInt(max);
         }
     }
     public int getCase(int[] coords) {
@@ -97,20 +100,20 @@ public class Grid {
         if(index == -1)
             return 0;
         
-        return grid[index];
+        return tabGrid[index];
     }
 
     public void setCase(int[] coords, int value) {
         int index = coordToInt(coords);
-        grid[index] = value;
+        tabGrid[index] = value;
     }
 
     public void setCase(int index, int value) {
-        grid[index] = value;
+        tabGrid[index] = value;
     }
 
     public int getLenGrid(){
-        return this.grid.length;
+        return this.tabGrid.length;
     }
 
     /**
@@ -148,7 +151,7 @@ public class Grid {
                     return -1;
                 }
             }
-            index += (int) (coords[i] * Math.pow(this.size,coords.length -1 -i));
+            index += (int) (coords[i] * Math.pow(this.size,coords.length - 1 - i));
         }
         return index;
     }
@@ -167,15 +170,15 @@ public class Grid {
 
     public void print2D() {
         if(this.dim == 2) {
-            for (int i = 0; i < grid.length; i++) {
-            System.out.print(grid[i] + " ");
+            for (int i = 0; i < tabGrid.length; i++) {
+            System.out.print(tabGrid[i] + " ");
             if((i + 1) % size == 0)
                 System.out.println();
             }
         }
         else if(this.dim == 1) {
 
-            for (int j : grid) {
+            for (int j : tabGrid) {
                 if (j == 0){
                     System.out.print(" ");
                 }
@@ -202,10 +205,10 @@ public class Grid {
                 System.out.print(" ");
 
             for(int j = this.size - (i/2) ; j < this.size; j++){
-                System.out.print(this.grid[i * this.size + j] + " ");
+                System.out.print(this.tabGrid[i * this.size + j] + " ");
             }
             for (int j = 0; j < this.size - (i/2) ;j++){
-                System.out.print(this.grid[i * this.size + j] + " ");
+                System.out.print(this.tabGrid[i * this.size + j] + " ");
             }
             System.out.println();
         }
@@ -214,16 +217,16 @@ public class Grid {
     }
 
     public void replace(int value, int newValue){
-        for (int i = 0; i < this.grid.length; i++) {
-            if(this.grid[i] == value)
-                this.grid[i] = newValue;
+        for (int i = 0; i < this.tabGrid.length; i++) {
+            if(this.tabGrid[i] == value)
+                this.tabGrid[i] = newValue;
         }
     }
 
     public void setGridMaxEtat(int max){
-        for (int i = 0; i < this.grid.length; i++) {
-            if(this.grid[i] >= max)
-                this.grid[i] = (int) (Math.random() * max);
+        for (int i = 0; i < this.tabGrid.length; i++) {
+            if(this.tabGrid[i] >= max)
+                this.tabGrid[i] = this.rand.nextInt(max);
         }
     }
 }

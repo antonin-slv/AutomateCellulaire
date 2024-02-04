@@ -1,7 +1,7 @@
 {
   "dimension" : 2,
-  "alphabet": ["Mort", "Vivant"],
-  "colors": ["#FFFFFF", "#000000"],
+  "alphabet": ["100"],
+  "colors": ["100"],
   "voisinage": [[0,0],[-1,0],[-1,1],[0,1],[1,0],[1,-1],[0,-1]],
   "regle": {
     "name": "majority"

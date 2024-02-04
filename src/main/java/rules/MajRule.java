@@ -12,12 +12,9 @@ public class MajRule implements GameRule {
         HashMap<Integer,Integer> tab = new HashMap<>();
 
         for (int voisin : voisinage) {
-            if (voisin >= alphabetSize)//si on a pas de règle pour cet état, on crash !
-                throw new UnsupportedOperationException("état non défini");
 
             tab.merge(voisin, 1, Integer::sum);
         }
-        int retour = tab.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(-1);
         return tab.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(-1);
     }
 }

@@ -51,7 +51,7 @@ public class Moteur {
             grid_temp.setCase(i, newEtat);
         }
 
-        this.grid.setGrid(grid_temp.getGrid());
+        this.grid.setTabGrid(grid_temp.getTabGrid());
     }
 
     public void randomizeGrid() {
@@ -61,7 +61,7 @@ public class Moteur {
         }
         if (alphabetSize == 1) {
             //si l'alphabet est de taille 1, il continent le nombre max d'états
-            this.grid.continusRandomize(Integer.parseInt(this.automate.getAlphabet().get(0)));
+            this.grid.continuousRandomize(Integer.parseInt(this.automate.getAlphabet().get(0)));
         }
         else
             this.grid.randomize(alphabetSize);
