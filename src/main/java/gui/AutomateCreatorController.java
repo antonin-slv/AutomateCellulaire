@@ -164,6 +164,32 @@ public class AutomateCreatorController implements Initializable{
         int size = 5;
         pane_tab.getChildren().clear();
         pane_neighbors.getChildren().clear();
+        Label lb_regle = new Label("Rule number :");
+        lb_regle.setLayoutX(10);
+        lb_regle.setLayoutY(70);
+        Spinner<Integer> sp_regle = new Spinner<>();
+        sp_regle.setLayoutX(100);
+        sp_regle.setLayoutY(70);
+        sp_regle.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 255, 0));
+        sp_regle.setEditable(true);
+        sp_regle.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                sp_regle.getEditor().setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        Button btn_regle = new Button("Set");
+        btn_regle.setLayoutX(10);
+        btn_regle.setLayoutY(100);
+        btn_regle.setOnAction(event -> {
+            int value = sp_regle.getValue();
+            for (int i = 7; i >= 0; i--) {
+                tab.put(String.format("%3s", Integer.toBinaryString(i)).replaceAll(" ", "0"), value >> i & 1);
+            }
+            displayTab();
+        });
+        pane_tab.getChildren().add(lb_regle);
+        pane_tab.getChildren().add(sp_regle);
+        pane_tab.getChildren().add(btn_regle);
         int i = 0;
         System.out.println(tab);
         for (var k : tab.keySet()) {
