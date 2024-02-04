@@ -1,8 +1,5 @@
 package gui;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import core.Main;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -26,8 +23,6 @@ import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import lombok.Setter;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -40,6 +35,7 @@ public class GameController implements Initializable {
     private int gridSize;
     private Rectangle[][] cells;
     private Polygon[][] hexaCells;
+
     @Setter
     private static String[] colors;
     @Setter
@@ -84,7 +80,13 @@ public class GameController implements Initializable {
         System.out.println("GameController initialize");
 
         this.gridSize = Main.getMoteur().getGrid().getSize();
-        Main.getMoteur().getGrid().setGridMaxEtat(alphabet.length);
+        if (alphabet.length == 1) {
+            Main.getMoteur().getGrid().setGridMaxEtat(Integer.parseInt(alphabet[0]));
+            initializeColorsForContinue();
+        }
+        else {
+            Main.getMoteur().getGrid().setGridMaxEtat(alphabet.length);
+        }
         speedSlider.setMin(50);
         speedSlider.setMax(500);
         speedSlider.setValue(500 - gameSpeed + 50);
@@ -107,6 +109,7 @@ public class GameController implements Initializable {
                 };
 
         cmb_colors.setOnAction(event_cmb);
+
         if (Main.isHexa()) {
             this.hexaCells = new Polygon[gridSize][gridSize];
             initPaneHexa();
@@ -185,35 +188,21 @@ public class GameController implements Initializable {
         }
     }
 
-    public void paramsFromJson(String rulesPath) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(rulesPath))) {
-            JsonObject json = Main.GSON.fromJson(reader, JsonObject.class);
-            JsonArray colors = json.get("colors").getAsJsonArray();
+    public void initializeColorsForContinue()
+    {
+            int colorNumber = Integer.parseInt(colors[0]);
+            colors = new String[colorNumber];
 
-            JsonArray alphabet = json.get("alphabet").getAsJsonArray();
-            GameController.alphabet = alphabet.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
-
-            if (alphabet.size() == 1){
-
-                int colorNumber = Integer.parseInt(colors.get(0).getAsString());
-                GameController.colors = new String[colorNumber];
-
-                for (int i = 0; i < colorNumber; i++) {
-                    //int hex = (int) (Math.random() * 256 * 256 * 256);
-                    int r = (colorNumber - i) * 255 / colorNumber;
-                    int b = i * 255 / colorNumber;
-                    int g = (int) (Math.random() * 255); // * colorNumber / colorNumber;
-                    int hex = (r << 16) + (g << 8) + b;
-                    String hexStr = Integer.toHexString(hex);
-                    hexStr = "0".repeat(6 - hexStr.length()) + hexStr;
-                    GameController.colors[i] = String.format("#" + hexStr);
-                }
-            } else
-                GameController.colors = colors.asList().stream().map(JsonElement::getAsString).toArray(String[]::new);
-
-        }
+            for (int i = 0; i < colorNumber; i++) {
+                int r = (colorNumber - i) * 255 / colorNumber;
+                int b = i * 255 / colorNumber;
+                int g = (int) (Math.random() * 255); // * colorNumber / colorNumber;
+                int hex = (r << 16) + (g << 8) + b;
+                String hexStr = Integer.toHexString(hex);
+                hexStr = "0".repeat(6 - hexStr.length()) + hexStr;
+                colors[i] = String.format("#" + hexStr);
+            }
     }
-
 
 
     public void play() {
@@ -231,16 +220,14 @@ public class GameController implements Initializable {
                 cellRect.setHeight(cellSize);
                 cellRect.setWidth(cellSize);
                 int etat = Main.getMoteur().getEtat(new int[]{i, j});
-                if (etat >= colors.length){
+                if (etat >= colors.length || etat < 0){
                     if (alphabet.length == 1){
                         cellRect.setFill(Color.web(colors[etat%colors.length]));
                     }
                     else{
                         Main.getMoteur().setEtat(new int[]{i, j},0);
                         cellRect.setFill(Color.web(colors[0]));
-
                     }
-
                 }
                 else {
                     cellRect.setFill(Color.web(colors[etat]));

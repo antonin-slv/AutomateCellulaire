@@ -141,9 +141,17 @@ public class AutomateCreatorController implements Initializable{
     private void displayNeighbors() {
         int size = 5;
         pane_neighbors.getChildren().clear();
-        if (Main.getMoteur().getAutomate().getRegle() instanceof SumRule sumRule) {
+
+        var rule = Main.getMoteur().getAutomate().getRegle();
+        if (rule instanceof AvgRule || rule instanceof SumRule) {
+
             List<List<Integer>> oldNeighbors = Arrays.stream(Main.getMoteur().getAutomate().getVoisinage()).map(l -> Arrays.stream(l).boxed().toList()).toList();
-            List<Double> oldWeights = sumRule.getWeightNeighbour();
+            List<Double> oldWeights;
+            if (rule instanceof AvgRule)
+                oldWeights = ((AvgRule) rule).getWeightNeighbour();
+            else
+                oldWeights = ((SumRule) rule).getWeightNeighbour();
+
             neighbors.clear();
             for (int i = 0; i < oldNeighbors.size(); i++) {
                 neighbors.put(new ArrayList<>(oldNeighbors.get(i)), oldWeights.get(i));

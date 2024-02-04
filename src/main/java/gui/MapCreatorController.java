@@ -276,6 +276,7 @@ public class MapCreatorController implements Initializable {
 
     private String[] getMaps() {
         File folder = new File("save");
+        folder.mkdirs();
         File[] listOfFiles = folder.listFiles();
         assert listOfFiles != null;
         String[] save = new String[listOfFiles.length];

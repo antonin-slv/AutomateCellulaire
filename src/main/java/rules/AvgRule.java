@@ -19,13 +19,14 @@ public class AvgRule implements GameRule {
     public int apply(int alphabetSize, int[] voisinage) {
         double average = 0.0;
         int i =0;
+        double pd2 = 0.0;
         for (int voisin : voisinage) {
-
+            pd2 += weightNeighbour.get(i);
             average += voisin * weightNeighbour.get(i);
             i++;
         }
 
-        average = average / poidTotal;
+        average = average / pd2;
 
         return (int) ((double)average);
 
