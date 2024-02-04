@@ -278,8 +278,6 @@ public class MapCreatorController implements Initializable {
             Rectangle cellRect = new Rectangle();
             cellRect.setHeight(cellSize);
             cellRect.setWidth(cellSize);
-            System.out.println(Arrays.toString(this.grid.getTabGrid()));
-            System.out.println(this.grid.getCase(new int[]{0, i}));
             int stat = this.grid.getCase(new int[]{0, i});
 
             if (stat >= this.colors.size())
@@ -288,7 +286,7 @@ public class MapCreatorController implements Initializable {
                 cellRect.setFill(Color.web(this.colors.get(stat)));
 
             cellRect.setSmooth(true);
-            cellRect.setX(i*cellSize);
+            cellRect.setX(i * cellSize);
             cellRect.setY(0);
             cellRect.setOnMouseClicked(this::changeStateRectangle);
             pane.getChildren().add(cellRect);
@@ -302,11 +300,11 @@ public class MapCreatorController implements Initializable {
         int gridSize = this.grid.getSize();
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                int etat = this.grid.getCase(new int[]{i, j});
-                if (etat >= this.colors.size())
+                int stat = this.grid.getCase(new int[]{i, j});
+                if (stat >= this.colors.size())
                     cells[i][j].setFill(Color.web("#F0F0F0"));
                 else
-                    cells[i][j].setFill(Color.web(this.colors.get(etat)));
+                    cells[i][j].setFill(Color.web(this.colors.get(stat)));
             }
         }
     }
@@ -317,11 +315,11 @@ public class MapCreatorController implements Initializable {
     private void displayPane1D(){
         int gridSize = this.grid.getSize();
         for (int i = 0; i < gridSize; i++) {
-            int etat = this.grid.getCase(new int[]{0, i});
-            if (etat >= this.colors.size())
+            int stat = this.grid.getCase(new int[]{0, i});
+            if (stat >= this.colors.size())
                 cells[i][0].setFill(Color.web("#F0F0F0"));
             else
-                cells[i][0].setFill(Color.web(this.colors.get(etat)));
+                cells[i][0].setFill(Color.web(this.colors.get(stat)));
         }
     }
 
@@ -332,14 +330,14 @@ public class MapCreatorController implements Initializable {
     private void changeStateRectangle(javafx.scene.input.MouseEvent event){
         int gridSize = this.grid.getSize();
         Rectangle eventSource = (Rectangle) event.getSource();
-        double col = eventSource.getX()/(650/gridSize);
-        double row = eventSource.getY()/(650/gridSize);
-        int etat = this.colors.indexOf(cb_colors.getValue());
+        double col = eventSource.getX()/((double) 650 /gridSize);
+        double row = eventSource.getY()/((double) 650 /gridSize);
+        int stat = this.colors.indexOf(cb_colors.getValue());
 
         int pen_size = Integer.parseInt(cb_pen.getValue()) - 1;
         for(int i = -pen_size; i <= pen_size; i++)
             for(int j = -pen_size; j <= pen_size; j++)
-                this.grid.setCase(new int[]{(int) row+i, (int) col+j}, etat);
+                this.grid.setCase(new int[]{(int) row+i, (int) col+j}, stat);
         display();
     }
 
@@ -355,9 +353,12 @@ public class MapCreatorController implements Initializable {
         double INVcos30 = 1/cos30;
         double cellSize = 650.0/gridSize;
         double dy = cellSize*(1-cos30);
-
+        int decal = -1;
 
         for (int i = 0; i < gridSize; i++) {
+            if(i%2 == 0)
+                decal++;
+
             for (int j = 0; j < gridSize; j++) {
                 Polygon tile = new Polygon();
                 if (j%2 == 1) {
@@ -366,20 +367,23 @@ public class MapCreatorController implements Initializable {
                     tile.setLayoutX(i*cellSize);
                 }
                 tile.setLayoutY(j*(cellSize-dy)+cellSize/2);
-                tile.getPoints().addAll(new Double[]{
-                        0.0, 0.0 - cellSize/2*INVcos30,
+                tile.getPoints().addAll(0.0, 0.0 - cellSize/2*INVcos30,
                         0.0 - cellSize/2, 0.0-cellSize/4*INVcos30,
                         0.0 - cellSize/2, 0.0+cellSize/4*INVcos30,
                         0.0, 0.0 + cellSize/2*INVcos30,
                         0.0 + cellSize/2, 0.0+cellSize/4*INVcos30,
-                        0.0 + cellSize/2, 0.0-cellSize/4*INVcos30
-                });
+                        0.0 + cellSize/2, 0.0-cellSize/4*INVcos30);
                 int etat = this.grid.getCase(new int[]{j, i-j/2%gridSize});
                 if (etat >= this.colors.size())
                     tile.setFill(Color.web("#F0F0F0"));
                 else
                     tile.setFill(Color.web(this.colors.get(etat)));
 
+                if (j-decal < 0) {
+                    tile.setId(j+(gridSize-decal)+" "+i);
+                } else {
+                    tile.setId((j-decal)+" "+i);
+                }
                 tile.setStroke(Color.web("#F6F6F6"));
                 tile.setStrokeType(StrokeType.INSIDE);
                 tile.setStrokeWidth(0.2);
@@ -399,7 +403,12 @@ public class MapCreatorController implements Initializable {
 
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                int etat = this.grid.getCase(new int[]{i, j});
+                Polygon tile = hexCells[j][i];
+                String[] id = tile.getId().split(" ");
+                int x = Integer.parseInt(id[1]);
+                int y = Integer.parseInt(id[0]);
+                int etat = this.grid.getCase(new int[]{y,x});
+
                 if (etat >= this.colors.size())
                     hexCells[i][j].setFill(Color.web("#F0F0F0"));
                 else
@@ -418,9 +427,9 @@ public class MapCreatorController implements Initializable {
         Polygon tile = (Polygon) event.getSource();
         int x = (int) (tile.getLayoutX()* gridSize/ 650);
         int y = (int) (tile.getLayoutY() * gridSize / (Math.sqrt(3)*325));
-        int etat = this.colors.indexOf(cb_colors.getValue());
+        int stat = this.colors.indexOf(cb_colors.getValue());
 
-        this.grid.setCase(new int[]{y, x}, etat);
+        this.grid.setCase(new int[]{y, x}, stat);
         displayPaneHexa();
     }
 

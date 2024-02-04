@@ -1,6 +1,5 @@
 package gui;
 
-import core.Grid;
 import core.Main;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -25,7 +24,6 @@ import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import lombok.Setter;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
@@ -176,7 +174,7 @@ public class GameController implements Initializable {
             generation++;
             lbl_generation.setText("Generation : " + generation);
             if (Main.isHexa()) {
-                displayPaneHexa();
+                displayPaneHex();
             } else {
                 if (Main.getDimension() == 1) {
                     displayPane1D();
@@ -226,7 +224,7 @@ public class GameController implements Initializable {
             generation++;
             lbl_generation.setText("Generation : " + generation);
             if (Main.isHexa()) {
-                displayPaneHexa();
+                displayPaneHex();
             } else {
                 if (Main.getDimension() == 1) {
                     displayPane1D();
@@ -383,9 +381,9 @@ public class GameController implements Initializable {
                     if(etat < vmax * 0.4)
                         etat /= 2;
                     else if(etat < vmax *0.6)
-                        etat = (int) (etat * 3 - vmax);
+                        etat = etat * 3 - vmax;
                     else
-                        etat = (int) ((etat + vmax)/2);
+                        etat = (etat + vmax)/2;
 
                     etat = etat%colors.length;
                 }
@@ -433,10 +431,10 @@ public class GameController implements Initializable {
         double INVcos30 = 1/cos30;
         double cellSize = 650.0/gridSize;
         double dy = cellSize*(1-cos30);
-        int decala = -1;
+        int decal = -1;
         for (int i = 0; i < gridSize; i++) {
             if (i%2 == 0) {
-                decala++;
+                decal++;
             }
             for (int j = 0; j < gridSize; j++) {
                 Polygon tile = new Polygon();
@@ -456,10 +454,10 @@ public class GameController implements Initializable {
                 if (etat >= colors.length){
                     throw new UnsupportedOperationException("La taille de la grille ne correspond pas à la dimension");
                 }
-                if (j-decala < 0) {
-                    tile.setId(j+(gridSize-decala)+" "+i);
+                if (j-decal < 0) {
+                    tile.setId(j+(gridSize-decal)+" "+i);
                 } else {
-                    tile.setId((j-decala)+" "+i);
+                    tile.setId((j-decal)+" "+i);
                 }
                 tile.setFill(Color.web(colors[etat]));
                 tile.setStroke(Color.web("#F6F6F6"));
@@ -475,22 +473,22 @@ public class GameController implements Initializable {
     /**
      * Update colors of the cells for hexagonal grid.
      */
-    private void displayPaneHexa(){
+    private void displayPaneHex(){
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 Polygon tile = hexaCells[j][i];
                 String[] id = tile.getId().split(" ");
                 int x = Integer.parseInt(id[1]);
                 int y = Integer.parseInt(id[0]);
-                int etat = Main.getMoteur().getEtat(new int[]{y, x});
+                int stat = Main.getMoteur().getEtat(new int[]{y, x});
                 if  (alphabet.length == 1){
-                    etat = etat%colors.length;
+                    stat = stat%colors.length;
                 }
-                else if (etat >= colors.length) {
+                else if (stat >= colors.length) {
                     Main.getMoteur().setEtat(new int[]{y, x},0);
-                    etat = 0;
+                    stat = 0;
                 }
-                hexaCells[j][i].setFill(Color.web(colors[etat]));
+                hexaCells[j][i].setFill(Color.web(colors[stat]));
             }
         }
     }
@@ -504,11 +502,11 @@ public class GameController implements Initializable {
         String[] id = tile.getId().split(" ");
         int x = Integer.parseInt(id[1]);
         int y = Integer.parseInt(id[0]);
-        int etat = Main.getMoteur().getEtat(new int[]{y,x});
+        int stat = Main.getMoteur().getEtat(new int[]{y,x});
         if (selectedColor != null){
-            etat = Arrays.asList(colors).indexOf(selectedColor);
+            stat = Arrays.asList(colors).indexOf(selectedColor);
             tile.setFill(Color.web(selectedColor));
         }
-        Main.getMoteur().setEtat(new int[]{y, x}, etat);
+        Main.getMoteur().setEtat(new int[]{y, x}, stat);
     }
 }
