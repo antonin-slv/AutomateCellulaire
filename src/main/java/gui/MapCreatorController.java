@@ -340,11 +340,11 @@ public class MapCreatorController implements Initializable {
 
     /**
      * Initialize the grid in the pane for 2D Hexagonal grids.
-     * It uses the hexaCells array to store the grid.
+     * It uses the hexCells array to store the grid.
      */
     private void initPaneHexa(){
         pane.getChildren().clear();
-        this.hexaCells = new Polygon[this.grid.getSize()][this.grid.getSize()];
+        this.hexCells = new Polygon[this.grid.getSize()][this.grid.getSize()];
         int gridSize = this.grid.getSize();
         double cos30 = Math.sqrt(3)/2;
         double INVcos30 = 1/cos30;
@@ -381,7 +381,7 @@ public class MapCreatorController implements Initializable {
                 tile.setSmooth(true);
                 tile.setOnMouseClicked(this::changeStatePolygon);
                 pane.getChildren().add(tile);
-                this.hexaCells[j][i] = tile;
+                this.hexCells[j][i] = tile;
             }
         }
     }
@@ -396,9 +396,9 @@ public class MapCreatorController implements Initializable {
             for (int j = 0; j < gridSize; j++) {
                 int etat = this.grid.getCase(new int[]{i, j});
                 if (etat >= this.colors.size())
-                    hexaCells[i][j].setFill(Color.web("#F0F0F0"));
+                    hexCells[i][j].setFill(Color.web("#F0F0F0"));
                 else
-                    hexaCells[i][j].setFill(Color.web(this.colors.get(etat)));
+                    hexCells[i][j].setFill(Color.web(this.colors.get(etat)));
             }
         }
     }
