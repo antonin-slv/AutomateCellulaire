@@ -306,7 +306,9 @@ public class GameController implements Initializable {
     }
     private void displayPane(){
         //vmax is used in Continus case
-        float vmax = Integer.parseInt(alphabet[0]);
+        int vmax = 0;
+        if  (alphabet.length == 1)
+            vmax = Integer.parseInt(alphabet[0]);
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 int etat = Main.getMoteur().getEtat(new int[]{i, j});
