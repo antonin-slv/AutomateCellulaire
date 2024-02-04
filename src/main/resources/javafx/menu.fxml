@@ -13,13 +13,25 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </StackPane.margin>
          <top>
-            <Label text="PROJET APO" BorderPane.alignment="CENTER">
+            <Label BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </BorderPane.margin>
                <font>
                   <Font size="42.0" />
-               </font></Label>
+               </font>
+               <graphic>
+                  <VBox alignment="CENTER" prefHeight="62.0" prefWidth="660.0">
+                     <children>
+                        <Label prefHeight="62.0" prefWidth="233.0" text="PROJET APO">
+                           <font>
+                              <Font size="42.0" />
+                           </font>
+                        </Label>
+                        <Label text="let's play with some awesome automates" />
+                     </children>
+                  </VBox>
+               </graphic></Label>
          </top>
          <bottom>
             <Label text="Powered by Nino, Tibouyou, Coara, Blova &amp; UKU" BorderPane.alignment="CENTER" />
