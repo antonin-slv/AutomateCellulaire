@@ -6,6 +6,7 @@ Nous retrouvons notamment un automate 1D, un automate généralisant le jeu de l
 
 > Les automates cellulaires sont des modèles mathématiques permettant de simuler l'évolution de cellules dans un espace donné. Chaque cellule évolue en fonction de son état initial et de l'état de ses voisins. Les automates cellulaires sont utilisés dans de nombreux domaines tels que l'informatique, la biologie, la physique ou encore la chimie.
 
+
 ## Installation et lancement
 
 - **Clonez le dépôt :** Clonez ce dépôt sur votre machine locale en utilisant la commande git suivante :
@@ -27,6 +28,7 @@ ou bien celle-ci si vous êtes sur un système Linux :
 ./gradlew.bat javadoc
 ```
 
+
 ## Organisation des fichiers
 Notre projet est divisé en plusieurs dossiers organisés de la manière suivante :
 - **AutomateCellulaire/src/main/java :** classes Java du projet.
@@ -41,6 +43,7 @@ Notre projet est divisé en plusieurs dossiers organisés de la manière suivant
 - **AutomateCellulaire/gradlew :** fichier pour l'exécution du projet.
 - **AutomateCellulaire/graldew.bat :** fichier pour l'exécution du projet sur Windows.
 - **AutomateCellulaire/README.md :** fichier README du projet.
+
 
 ## Automates implémentés
 
@@ -85,7 +88,6 @@ L'automate de la règle de majorité est de dimension quelconque et chaque cellu
 La règle de transition est la suivante : une cellule prend la valeur majoritaire chez ses voisins.
 
 
-
 ## Mode d'emploi
 
 Lorsque vous lancez le projet, vous arrivez sur le menu principal. 
@@ -98,13 +100,15 @@ Lorsque vous êtes dans le menu de création d'automate, vous pouvez :
 - Grille de voisinage : définir les poids des voisins 
 - `Back`: retourner au menu principal
 
->Vous pouvez définir un nouvel automate en créant un fichier de configuration json dans le dossier `AutomateCellulaire/rules`.
+Vous pouvez définir un nouvel automate en créant un fichier de configuration json dans le dossier `AutomateCellulaire/rules`.
 Dans ce fichier, vous devez définir les paramètres suivants :
->- *dimension* : la dimension de l'automate
->- *alphabet* : la liste des états possibles pour chaque cellule
->- *colors* : la liste des couleurs associées à chaque état
->- *voisinage* : la liste des coordonnées des voisins de chaque cellule, de forme [ y , x ]
->- *regle* : un tableau contenant les règles de transition pour chaque état possible<br/><br/>
+- *dimension* : la dimension de l'automate
+- *alphabet* : la liste des états possibles pour chaque cellule
+- *colors* : la liste des couleurs associées à chaque état
+- *voisinage* : la liste des coordonnées des voisins de chaque cellule, de forme [ y , x ]
+- *regle* : un tableau contenant les règles de transition pour chaque état possible
+
+
 >Note : Il faut respecter certaines consignes en fonction du type d'automate sélectionné :
 >- *Hexagonal* :  Pour que l'affichage soit en accord avec les voisins directs, veillez à supprimer celui en haut à gauche et en bas à droite.
 >- *Average*&*Majority* : Ce sont des règles "continues". Ne pas définir de couleur, mais le nombre de couleurs utilisées ["col1", "col2", ...] => ["nbCol"]. Il en va de même pour les états.
