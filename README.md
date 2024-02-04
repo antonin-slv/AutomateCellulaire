@@ -81,15 +81,42 @@ Les règles de transition sont les suivantes :
 
 //TODO (Antonin help)
 
-## Définition d'un nouvel automate
+## Mode d'emploi
 
-Pour définir un nouvel automate, il existe différentes options :
-- **Fichier de configuration :** Vous pouvez définir un nouvel automate en créant un fichier de configuration dans le dossier `AutomateCellulaire/rules`.
-    Dans ce fichier, vous devez définir les paramètres suivants :
-    - *dimension* : la dimension de l'automate
-    - *alphabet* : la liste des états possibles pour chaque cellule
-    - *voisins* : la liste des coordonnées des voisins de chaque cellule
-    - *regle* : un tableau contenant les règles de transition pour chaque état possible
+Lorsque vous lancez le projet, vous arrivez sur le menu principal. 
+Vous devez tout d'abord charger un automate existant en cliquant sur le bouton `Select automate`.
+
+Lorsque vous êtes dans le menu de création d'automate, vous pouvez :
+- `LOAD`: sélectionner un automate existant dans la liste déroulante et le charger
+- `SAVE`: sauvegarder l'automate actuel avec les modifications apportées en lui donnant un nom
+- `isHexa`: cocher cette case si vous souhaitez que l'automate soit hexagonal
+- Grille de voisinage : définir les poids des voisins 
+- `Back`: retourner au menu principal
+
+Vous pouvez définir un nouvel automate en créant un fichier de configuration json dans le dossier `AutomateCellulaire/rules`.
+Dans ce fichier, vous devez définir les paramètres suivants :
+- *dimension* : la dimension de l'automate
+- *alphabet* : la liste des états possibles pour chaque cellule
+- *voisins* : la liste des coordonnées des voisins de chaque cellule
+- *regle* : un tableau contenant les règles de transition pour chaque état possible
+
+Dans la fenêtre de modification de map, vous pouvez :
+- `Load`: charger une grille existante
+- `Save as`: sauvegarder la grille actuelle en lui donnant un nom
+- Input `New :`: modifier la taille de la grille puis cliquer sur `apply` pour valider
+- Input `Draw :`: choisir une couleur dans le menu déroulant puis choisir l'état correspondant et enfin cliquer sur une cellule pour la colorer
+- Input `Replace :`: choisir le premier état qui sera remplacé par le second état puis cliquer sur `apply` pour valider
+- Input `Random :`: choisir le nombre d'états différents puis cliquer sur `apply` pour générer une grille aléatoire
+- `Back`: retourner au menu principal
+
+Lors d'une simulation, vous avez la possibilité de réaliser différentes actions :
+- `Play`: lance la simulation
+- `Pause`: met en pause la simulation
+- `>`: avance d'une étape dans la simulation
+- Curseur `Speed`: permet de régler la vitesse de la simulation
+- `Set cell's states`: permet de changer l'état d'une cellule en choisissant l'état dans le menu déroulant et en cliquant sur la cellule
+- `Save`: sauvegarde la grille actuelle
+- `Back to menu`: retourne au menu principal
 
 //TODO (à compléter)
 
