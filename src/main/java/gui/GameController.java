@@ -121,7 +121,6 @@ public class GameController implements Initializable {
      *     <li>set the colors of the grid</li>
      *     <li>set the functions associated to each element of the view</li>
      *     <li>prepare execution</li>
-     *     //TODO : il fait quoi ?
      * </ul>
      * @param url (unused)
      * @param rb (unused)
