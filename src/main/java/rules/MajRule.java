@@ -30,4 +30,13 @@ public class MajRule implements GameRule {
         }
         return tab.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(-1);
     }
+
+    /**
+     * Function that returns the name of the rule
+     * @return the name of the rule
+     */
+    @Override
+    public String toString() {
+        return "MajRule";
+    }
 }

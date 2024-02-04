@@ -3,7 +3,6 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -28,12 +27,12 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="120.0" prefWidth="560.0">
+                  <HBox prefHeight="201.0" prefWidth="560.0">
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="280.0">
                            <children>
                               <Label text="Automate :" />
-                              <Label fx:id="lbl_info_automate" text="lbl_info_automate">
+                              <Label fx:id="lbl_info_automate" alignment="TOP_LEFT" prefHeight="51.0" prefWidth="104.0" text="lbl_info_automate">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin></Label>
@@ -45,7 +44,7 @@
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="280.0">
                            <children>
                               <Label text="Map :" />
-                              <Label fx:id="lbl_info_map" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="45.0" prefWidth="67.0" text="lbl_info_map">
+                              <Label fx:id="lbl_info_map" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="51.0" prefWidth="90.0" text="lbl_info_map">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin></Label>
@@ -55,6 +54,11 @@
                            </HBox.margin>
                         </VBox>
                      </children></HBox>
+                  <HBox alignment="BOTTOM_CENTER" prefHeight="0.0" prefWidth="560.0">
+                     <children>
+                        <Label fx:id="lbl_info" text="&lt;-- Select an Automate first" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="560.0">
                      <children>
                         <Button fx:id="btn_modify_automate" minHeight="40.0" minWidth="125.0" mnemonicParsing="false" text="Modify Automate" />
@@ -64,10 +68,7 @@
                            </HBox.margin>
                            <cursor>
                               <Cursor fx:constant="CROSSHAIR" />
-                           </cursor>
-                           <effect>
-                              <Glow />
-                           </effect></Button>
+                           </cursor></Button>
                         <Button fx:id="btn_modify_map" minHeight="40.0" minWidth="125.0" mnemonicParsing="false" text="Modify Map" />
                      </children></HBox>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="45.0" prefWidth="560.0">

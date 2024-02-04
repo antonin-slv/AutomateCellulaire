@@ -46,4 +46,13 @@ public class AvgRule implements GameRule {
         return (int) average;
 
     }
+
+    /**
+     * Function that returns the name of the rule
+     * @return the name of the rule
+     */
+    @Override
+    public String toString() {
+        return "AvgRule";
+    }
 }

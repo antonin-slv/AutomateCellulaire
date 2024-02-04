@@ -31,6 +31,8 @@ public class MenuController implements Initializable {
     private Label lbl_info_automate;
     @FXML
     private Label lbl_info_map;
+    @FXML
+    private Label lbl_info;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -38,6 +40,7 @@ public class MenuController implements Initializable {
         btn_exit.setOnAction(event -> System.exit(0));
 
         btn_start.setDisable(!is_ready());
+        lbl_info.setVisible(!is_ready());
 
         btn_start.setOnAction(event -> {
                     try {
@@ -75,9 +78,10 @@ public class MenuController implements Initializable {
                 }
         );
 
-        lbl_info_automate.setText(Main.getMoteur() == null ? "No rules loaded" : Main.getMoteur().getRules());
+        lbl_info_automate.setText(Main.getMoteur().getAutomate() == null ? "No rules loaded" : Main.getMoteur().getRules());
 
-        lbl_info_map.setText(Main.getMoteur() == null ? "No map loaded" :  "dim : " + Main.getMoteur().getGrid().getDim() + "\nsize : " + Main.getMoteur().getGrid().getSize());
+        lbl_info_map.setText(Main.getMoteur() == null ? "No map loaded" :  "dimension : " + Main.getMoteur().getGrid().getDim() + "\nsize : " + Main.getMoteur().getGrid().getSize() +" * "+ Main.getMoteur().getGrid().getSize()
+                + (Main.getMoteur().getGrid().isEmpty()? "\nEmpty" : "\nNot empty"));
 
     }
 

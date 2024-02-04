@@ -94,4 +94,13 @@ public class SumRule implements GameRule {
             return false;
         }
     }
+
+    /**
+     * Function that returns the name of the rule
+     * @return the name of the rule
+     */
+    @Override
+    public String toString() {
+        return "SumRule";
+    }
 }

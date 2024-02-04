@@ -152,7 +152,17 @@ public class Grid {
         
         return tabGrid[index];
     }
-
+    /**
+     * Function that say if the grid is empty
+     * @return true if the grid is empty, false otherwise
+     */
+    public boolean isEmpty(){
+        for (int i = 0; i < tabGrid.length; i++) {
+            if(tabGrid[i] != 0)
+                return false;
+        }
+        return true;
+    }
 
     /**
      * Function that set the state of a cell given its coordinates

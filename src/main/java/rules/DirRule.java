@@ -14,4 +14,13 @@ public class DirRule implements GameRule {
         return etat;
 
     }
+
+    /**
+     * Function that returns the name of the rule
+     * @return the name of the rule
+     */
+    @Override
+    public String toString() {
+        return "DirRule";
+    }
 }

@@ -39,4 +39,13 @@ public class TabRule implements GameRule {
 
         return tab.getOrDefault(key, -1);
     }
+
+    /**
+     * Function that returns the name of the rule
+     * @return the name of the rule
+     */
+    @Override
+    public String toString() {
+        return "TabRule";
+    }
 }
