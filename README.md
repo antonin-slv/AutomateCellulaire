@@ -17,6 +17,26 @@ git clone https://github.com/antonin-slv/AutomateCellulaire.git
 
 - **Lancez le projet :** Pour lancer le projet, exécutez la classe `Main`.
 
+//TODO (parce que je ne sais pas comment faire)(eh oh pas cool de te moquer de moi comme ça copilot)
+
+## Organisation des fichiers
+Notre projet est divisé en plusieurs dossiers organisés de la manière suivante :
+- **AutomateCellulaire/src/main/java :** classes Java du projet.
+- **AutomateCellulaire/src/main/java/core :** classes de base pour les automates cellulaires.
+- **AutomateCellulaire/src/main/java/gui :** classes Controller pour l'interface graphique.
+- **AutomateCellulaire/src/main/java/rules :** classes appliquant les règles de transition des automates.
+- **AutomateCellulaire/src/main/resources/grids :** fichiers de configuration des grilles d'automates.
+- **AutomateCellulaire/src/main/resources/javafx :** fichiers FXML pour l'affichage des fenêtres dans l'interface graphique.
+- **AutomateCellulaire/rules :** fichiers de configuration des automates.
+- **AutomateCellulaire/save :** fichiers de sauvegarde des grilles d'automates.
+- **AutomateCellulaire/gradle :** fichiers de configuration pour Gradle.
+- **AutomateCellulaire/build.gradle :** fichier pour la configuration du projet avec Gradle.
+- **AutomateCellulaire/gradleew :** jsp
+- **AutomateCellulaire/graldew.bat :** jsp
+- **AutomateCellulaire/README.md :** fichier README du projet.
+
+//TODO (à vérifier si j'ai pas écrit de la merde surtout) 
+
 ## Automates implémentés
 
 ### Automate 1D
@@ -51,16 +71,27 @@ Les règles de transition sont les suivantes :
 - Une cellule de forêt prend feu si elle a un voisin en feu.
 - Une cellule en feu devient brûlée.
 
+Nous avons également ajouté un paramètre de probabilité pour la propagation du feu ainsi que pour l'apparition spontanée de feux.
+
+### Automate de continuité
+
+L'automate de continuité est un automate cellulaire bidimensionnel dans lequel chaque cellule peut prendre des états différents.
+Les règles de transition sont les suivantes :
+- Jsp c'est Antonin qui s'en occupe
+
+//TODO (Antonin help)
+
 ## Définition d'un nouvel automate
 
 Pour définir un nouvel automate, il existe différentes options :
-- **Fichier de configuration :** Vous pouvez définir un nouvel automate en créant un fichier de configuration dans le dossier `AutomateCellulaire/src/main/resources/rules`.
+- **Fichier de configuration :** Vous pouvez définir un nouvel automate en créant un fichier de configuration dans le dossier `AutomateCellulaire/rules`.
     Dans ce fichier, vous devez définir les paramètres suivants :
     - *dimension* : la dimension de l'automate
     - *alphabet* : la liste des états possibles pour chaque cellule
     - *voisins* : la liste des coordonnées des voisins de chaque cellule
     - *regle* : un tableau contenant les règles de transition pour chaque état possible
 
+//TODO (à compléter)
 
 ## Auteurs
 - **BLANCHÉ Thomas**
