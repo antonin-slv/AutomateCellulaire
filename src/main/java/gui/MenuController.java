@@ -16,24 +16,40 @@ import java.util.ResourceBundle;
 
 import static gui.GameController.is_ready;
 
+/**
+ * Controller of the menu.
+ * It allows to start the simulation and to navigate to the map creator and the automaton creator.
+ */
 public class MenuController implements Initializable {
 
-
+    /** Button to start the simulation */
     @FXML
     private Button btn_start;
+    /** Button to go to the automaton Editor */
     @FXML
     private Button btn_modify_automate;
+    /** Button to go to the map Editor */
     @FXML
     private Button btn_modify_map;
+    /** Button to exit the application */
     @FXML
     private Button btn_exit;
+    /** Label that shows information about the automaton */
     @FXML
     private Label lbl_info_automate;
+    /** Label that shows information about the map */
     @FXML
     private Label lbl_info_map;
     @FXML
     private Label lbl_info;
 
+
+    /**
+     * Function that initialize the menu.
+     * It sets the action of the buttons and information about the automaton and the map engaged.
+     * @param url the url of the fxml file
+     * @param rb the resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

@@ -180,6 +180,12 @@ public class AutomateCreatorController implements Initializable{
 
     }
 
+    /**
+     * Function that doesn't save the automaton to a json file
+     * It saves the automaton in the Main object for the simulation that is to come.
+     * Then the simulation can be launched, or the automaton can be saved in a json file BY the function that calls this one
+     * @see Main
+     */
     private void save() {
         if (Main.getDimension() == 1) {
             if (Main.getMoteur().getAutomate().getRegle() instanceof TabRule tabRule) {
@@ -209,6 +215,10 @@ public class AutomateCreatorController implements Initializable{
         }
     }
 
+    /**
+     * Function that display the neighbours of the cell in 1D case (in the bottom of the window)
+     * It allows to modify the neighbours
+     */
     private void displayTab() {
         int size = 5;
         pane_tab.getChildren().clear();
@@ -268,14 +278,20 @@ public class AutomateCreatorController implements Initializable{
         }
     }
 
+
+    /**
+     * Function that display the neighbours of the cell in non 1D case
+     * It allows to modify the neighbours and their weights
+     */
     private void displayNeighbors() {
         int size = 5;
         pane_neighbors.getChildren().clear();
 
         var rule = Main.getMoteur().getAutomate().getRegle();
+        int [][] voisinage = Main.getMoteur().getAutomate().getVoisinage();
         if (rule instanceof AvgRule || rule instanceof SumRule) {
 
-            List<List<Integer>> oldNeighbors = Arrays.stream(Main.getMoteur().getAutomate().getVoisinage()).map(l -> Arrays.stream(l).boxed().toList()).toList();
+            List<List<Integer>> oldNeighbors = Arrays.stream(voisinage).map(l -> Arrays.stream(l).boxed().toList()).toList();
             List<Double> oldWeights;
             if (rule instanceof AvgRule)
                 oldWeights = ((AvgRule) rule).getWeightNeighbour();
@@ -319,7 +335,7 @@ public class AutomateCreatorController implements Initializable{
                 }
             }
         } else {
-            List<List<Integer>> oldNeighbors = Arrays.stream(Main.getMoteur().getAutomate().getVoisinage()).map(l -> Arrays.stream(l).boxed().toList()).toList();
+            List<List<Integer>> oldNeighbors = Arrays.stream(voisinage).map(l -> Arrays.stream(l).boxed().toList()).toList();
             neighbors.clear();
             for (List<Integer> oldNeighbor : oldNeighbors) {
                 neighbors.put(new ArrayList<>(oldNeighbor), 1.0);
@@ -358,6 +374,11 @@ public class AutomateCreatorController implements Initializable{
         }
     }
 
+
+    /**
+     * Function that returns the list of rules
+     * @return an array of rules
+     */
     private String[] getRules() {
         File folder = new File("rules");
         File[] listOfFiles = folder.listFiles();

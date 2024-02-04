@@ -23,46 +23,80 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Controller of the map creator.
+ * It allows to create a grid and to save it.
+ * It also allows to load a grid and to modify it.
+ * @see core.Grid
+ * @see Initializable
+ */
 public class MapCreatorController implements Initializable {
 
+    /** The grid MapCreatorController use to work with
+     *  ths grid only have integers. Colors and alphabet are not a story for this Module.
+     * */
     Grid grid;
+    /** List of 8 colors the MapCreator use for visualisation purpose */
     private final List<String> colors = Arrays.asList("#FFFFFF", "#000000", "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF");
-
+    /** Array of the cells of the grid in case of non-Hexagonal grid */
     private Rectangle[][] cells;
+    /** Array of the cells of the grid if it is a Hexagonal one*/
     private Polygon[][] hexCells;
 
+    /** Pane where the grid is displayed */
     @FXML
     private Pane pane;
+    /** Button to load a grid */
     @FXML
     private Button btn_load;
+    /** ComboBox to select the grid to load */
     @FXML
     private ComboBox<String> cb_load;
+    /** Button to save the grid */
     @FXML
     private Button btn_save;
+    /** TextField to write the name of the grid to save */
     @FXML
     private TextField fild_save;
+    /** TextField to write the size of the grid */
     @FXML
     private TextField fild_size;
+    /** Button to change grid size*/
     @FXML
     private Button btn_new;
+    /** ComboBox to select the color (and int) to draw */
     @FXML
     private ComboBox<String> cb_colors;
+    /** ComboBox to select the pen size */
     @FXML
     private ComboBox<String> cb_pen;
+
+    /** TextField to write the state to be replaced */
     @FXML
     private TextField fild_replace_1;
+    /** TextField to write the state to replace with */
     @FXML
     private TextField fild_replace_2;
+    /** Button to replace a state with another */
     @FXML
     private Button btn_replace;
+    /** Button to randomize the grid */
     @FXML
     private Button btn_random;
+    /** TextField to write the number of states */
     @FXML
     private TextField fild_random;
+    /** Button to go back to the menu */
     @FXML
     private Button btn_back;
 
 
+    /**
+     * Initialize the MapCreatorController.
+     * It sets the grid, ComboBoxes, TextFields and Buttons functions
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param rb The resources used to localize the root object, or null if the root object was not localized.
+     */
     public void initialize(URL url, ResourceBundle rb) {
 
         this.grid = Main.getMoteur().getGrid();
@@ -100,9 +134,9 @@ public class MapCreatorController implements Initializable {
         );
 
         btn_replace.setOnAction(event -> {
-                    int state1 = Integer.parseInt(fild_replace_1.getText());
-                    int state2 = Integer.parseInt(fild_replace_2.getText());
-                    this.grid.replace(state1, state2);
+                    int etat1 = Integer.parseInt(fild_replace_1.getText());
+                    int etat2 = Integer.parseInt(fild_replace_2.getText());
+                    this.grid.replace(etat1, etat2);
                     display();
                 }
         );
@@ -173,6 +207,10 @@ public class MapCreatorController implements Initializable {
         display();
     }
 
+    /**
+     * Display the grid.
+     * It uses the displayPane() or displayPaneHexa() method to display the grid.
+     */
     public void display(){
         if (Main.isHexa()) {
             displayPaneHexa();
@@ -184,6 +222,10 @@ public class MapCreatorController implements Initializable {
             }
         }
     }
+    /**
+     * Initialize the grid in the pane.
+     * It uses the cells array to display the grid.
+     */
     public void initPane(){
         pane.getChildren().clear();
         this.cells = new Rectangle[this.grid.getSize()][this.grid.getSize()];
@@ -214,6 +256,11 @@ public class MapCreatorController implements Initializable {
         }
     }
 
+
+/**
+     * Initialize the grid in the pane for 1D grids.
+     * It uses the cells array to display the grid.
+     */
     public void initPane1D(){
         pane.getChildren().clear();
         this.cells = new Rectangle[this.grid.getSize()][this.grid.getSize()];
@@ -243,6 +290,9 @@ public class MapCreatorController implements Initializable {
             this.cells[i][0] = cellRect;
         }
     }
+    /**
+     * Update colors of the cells in the grid for 2D non-Hexagonal grids.
+     */
     private void displayPane(){
         int gridSize = this.grid.getSize();
         for (int i = 0; i < gridSize; i++) {
@@ -256,6 +306,9 @@ public class MapCreatorController implements Initializable {
         }
     }
 
+    /**
+     * Updates the colors in an adapted way for 1D grids.
+     */
     private void displayPane1D(){
         int gridSize = this.grid.getSize();
         for (int i = 0; i < gridSize; i++) {
@@ -266,6 +319,11 @@ public class MapCreatorController implements Initializable {
                 cells[i][0].setFill(Color.web(this.colors.get(etat)));
         }
     }
+
+    /**
+     * Change the state of a cell in the grid for 2D non-Hexagonal grids.
+     * @param event The event that triggered the method.
+     */
     private void changeStateRectangle(javafx.scene.input.MouseEvent event){
         int gridSize = this.grid.getSize();
         Rectangle eventSource = (Rectangle) event.getSource();
@@ -279,9 +337,14 @@ public class MapCreatorController implements Initializable {
                 this.grid.setCase(new int[]{(int) row+i, (int) col+j}, etat);
         display();
     }
+
+    /**
+     * Initialize the grid in the pane for 2D Hexagonal grids.
+     * It uses the hexaCells array to store the grid.
+     */
     private void initPaneHexa(){
         pane.getChildren().clear();
-        this.hexCells = new Polygon[this.grid.getSize()][this.grid.getSize()];
+        this.hexaCells = new Polygon[this.grid.getSize()][this.grid.getSize()];
         int gridSize = this.grid.getSize();
         double cos30 = Math.sqrt(3)/2;
         double INVcos30 = 1/cos30;
@@ -318,10 +381,14 @@ public class MapCreatorController implements Initializable {
                 tile.setSmooth(true);
                 tile.setOnMouseClicked(this::changeStatePolygon);
                 pane.getChildren().add(tile);
-                this.hexCells[j][i] = tile;
+                this.hexaCells[j][i] = tile;
             }
         }
     }
+
+    /**
+     * Update colors of the hexagons in the 2D grid
+     */
     private void displayPaneHexa(){
         int gridSize = this.grid.getSize();
 
@@ -329,12 +396,18 @@ public class MapCreatorController implements Initializable {
             for (int j = 0; j < gridSize; j++) {
                 int etat = this.grid.getCase(new int[]{i, j});
                 if (etat >= this.colors.size())
-                    hexCells[i][j].setFill(Color.web("#F0F0F0"));
+                    hexaCells[i][j].setFill(Color.web("#F0F0F0"));
                 else
-                    hexCells[i][j].setFill(Color.web(this.colors.get(etat)));
+                    hexaCells[i][j].setFill(Color.web(this.colors.get(etat)));
             }
         }
     }
+
+    /**
+     * Change the state of a cell in the grid (Hexagonal).
+     * It let user draw on the grid.
+     * @param event The event that triggered the method.
+     */
     private void changeStatePolygon(javafx.scene.input.MouseEvent event){
         int gridSize = this.grid.getSize();
         Polygon tile = (Polygon) event.getSource();
@@ -346,6 +419,10 @@ public class MapCreatorController implements Initializable {
         displayPaneHexa();
     }
 
+    /**
+     * Get the grids stored in the save folder.
+     * @return that array.
+     */
     private String[] getMaps() {
         File folder = new File("save");
         folder.mkdirs();

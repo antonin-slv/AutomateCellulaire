@@ -378,7 +378,7 @@ public class GameController implements Initializable {
         }
     }
     /**
-     * display cells for non hexagonal 2D grid.
+     * update cells color for non hexagonal 2D grid.
      */
     private void displayPane(){
         //vmax is used in continuous case
@@ -484,7 +484,7 @@ public class GameController implements Initializable {
         }
     }
     /**
-     * display cells for hexagonal grid.
+     * Update colors of the cells for hexagonal grid.
      */
     private void displayPaneHexa(){
         for (int i = 0; i < gridSize; i++) {
