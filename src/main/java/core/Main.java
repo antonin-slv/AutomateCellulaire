@@ -14,9 +14,6 @@ import rules.GameRule;
 import rules.RuleDeserializer;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
-
 
 /**
  * Main class of the program. It is used to start the application

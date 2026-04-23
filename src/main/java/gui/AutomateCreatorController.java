@@ -216,7 +216,6 @@ public class AutomateCreatorController implements Initializable{
      * It allows to modify the neighbours
      */
     private void displayTab() {
-        int size = 5;
         pane_tab.getChildren().clear();
         pane_neighbors.getChildren().clear();
         Label lb_regle = new Label("Rule number :");
