@@ -9,6 +9,10 @@ Nous retrouvons notamment un automate 1D, un automate généralisant le jeu de l
 
 ## Installation et lancement
 
+### Prérequis
+
+Java 24
+
 - **Clonez le dépôt :** Clonez ce dépôt sur votre machine locale en utilisant la commande git suivante :
 ```bash
 git clone https://github.com/antonin-slv/AutomateCellulaire.git
